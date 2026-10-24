@@ -1,0 +1,32 @@
+{
+  "expo": {
+    "name": "네뷸라이저",
+    "slug": "nebulizer",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "plugins": ["./plugins/withBlePermissions.js"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "dev.local.nebulizer",
+      "infoPlist": {
+        "NSBluetoothAlwaysUsageDescription": "같은 방의 네뷸라이저와 연결합니다. 계정과 인터넷은 쓰지 않습니다.",
+        "NSBluetoothPeripheralUsageDescription": "같은 방의 네뷸라이저와 연결합니다. 계정과 인터넷은 쓰지 않습니다."
+      }
+    },
+    "android": {
+      "package": "dev.local.nebulizer",
+      "adaptiveIcon": {
+        "backgroundColor": "#1e6b45",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}
