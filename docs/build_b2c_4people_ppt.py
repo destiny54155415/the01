@@ -31,34 +31,34 @@ OUTS = [
 
 # 구현이 쉬운 순. 4명이 안 겹치게 나뉘고, 도로명 주소가 들어갈 자리가 분명한 주제.
 PROJECTS = [
-    ("1", "카페 배달", "MyBatis", "쉬움", TEAL,
+    ("1", "카페 배달", "쉬움", TEAL,
      "메뉴를 고르고, 배달 상태만 바꿉니다.",
      "A 회원·주소   B 메뉴   C 주문   D 관리자"),
-    ("2", "원데이 클래스", "JPA", "쉬움", TEAL,
+    ("2", "원데이 클래스", "쉬움", TEAL,
      "회차를 고르고, 정원만 넘지 않게 받습니다.",
      "A 회원   B 클래스   C 신청   D 관리자"),
-    ("3", "맛집 예약", "MyBatis", "쉬움", TEAL,
+    ("3", "맛집 예약", "쉬움", TEAL,
      "식당, 시간, 인원만 받으면 됩니다.",
      "A 회원   B 식당   C 예약   D 관리자"),
-    ("4", "펫 용품몰", "MyBatis", "보통", ORANGE,
+    ("4", "펫 용품몰", "보통", ORANGE,
      "담고 주문하면 재고가 줄어듭니다. 배송지가 있습니다.",
      "A 회원·배송지   B 상품   C 주문   D 관리자"),
-    ("5", "온라인 서점", "JPA", "보통", ORANGE,
+    ("5", "온라인 서점", "보통", ORANGE,
      "펫 용품몰과 같고, 리뷰만 더합니다.",
      "A 회원·배송지   B 도서   C 주문   D 관리자"),
-    ("6", "꽃·식물 구독", "JPA", "보통", ORANGE,
+    ("6", "꽃·식물 구독", "보통", ORANGE,
      "한 번 주문이 아니라 매달 배송입니다.",
      "A 회원·배송지   B 플랜   C 회차   D 관리자"),
-    ("7", "세탁 수거", "API", "보통", ORANGE,
+    ("7", "세탁 수거", "보통", ORANGE,
      "수거 주소를 받고, 상태를 다음 단계로 옮깁니다.",
      "A 회원·주소   B 요금   C 신청   D 관리자"),
-    ("8", "중고 장터", "JPA", "어려움", BLUE,
+    ("8", "중고 장터", "어려움", BLUE,
      "파는 회원과 사는 회원이 둘 다 있습니다.",
      "A 회원   B 판매글   C 거래   D 관리자"),
-    ("9", "스터디카페", "MyBatis", "어려움", BLUE,
+    ("9", "스터디카페", "어려움", BLUE,
      "같은 좌석, 같은 시간은 한 명만 됩니다.",
      "A 회원   B 좌석   C 예약   D 관리자"),
-    ("10", "영화 예매", "JPA", "어려움", BLUE,
+    ("10", "영화 예매", "어려움", BLUE,
      "영화, 상영시간, 좌석이 한꺼번에 연결됩니다.",
      "A 회원   B 영화   C 예매   D 관리자"),
 ]
@@ -142,7 +142,7 @@ def slide_cover(prs):
 
     add_text(s, 8.4, 0.42, 4.5, 0.36, "쉬운 순", size=16, bold=True, color=NAVY)
     for i, p in enumerate(PROJECTS):
-        num, name, _stack, level, color, _why, _roles = p
+        num, name, level, color, _why, _roles = p
         y = 0.9 + i * 0.6
         rect(s, 8.4, y, 4.45, 0.52, WHITE, line=LINE, radius=0.14)
         add_text(s, 8.5, y, 0.58, 0.52, num, size=16, bold=True, color=color, align="center", anchor="middle")
@@ -185,15 +185,14 @@ def slide_common(prs):
 
 
 def rank_row(slide, y, project):
-    num, name, stack, _level, color, why, roles = project
+    num, name, level, color, why, roles = project
     rect(slide, 0.48, y, 12.36, 1.05, WHITE, line=LINE, radius=0.1)
     rect(slide, 0.48, y, 0.12, 1.05, color)
     add_text(slide, 0.7, y, 0.7, 1.05, num, size=24, bold=True, color=color, anchor="middle")
-    add_text(slide, 1.45, y + 0.08, 6.6, 0.38, name, size=20, bold=True, color=NAVY, anchor="middle")
-    add_text(slide, 1.45, y + 0.44, 8.3, 0.28, why, size=13, color=INK, anchor="middle")
-    add_text(slide, 1.45, y + 0.7, 8.5, 0.28, roles, size=13, bold=True, color=MUTED, anchor="middle")
-    rect(slide, 11.15, y + 0.3, 1.42, 0.42, color, radius=0.4)
-    add_text(slide, 11.15, y + 0.3, 1.42, 0.42, stack, size=13, bold=True, color=WHITE, align="center", anchor="middle")
+    add_text(slide, 1.45, y + 0.08, 8.4, 0.38, name, size=20, bold=True, color=NAVY, anchor="middle")
+    add_text(slide, 10.3, y + 0.08, 2.25, 0.38, level, size=14, bold=True, color=color, align="right", anchor="middle")
+    add_text(slide, 1.45, y + 0.44, 11.0, 0.28, why, size=13, color=INK, anchor="middle")
+    add_text(slide, 1.45, y + 0.7, 11.0, 0.28, roles, size=13, bold=True, color=MUTED, anchor="middle")
 
 
 def slide_ranks(prs, page, heading, label, rows):
