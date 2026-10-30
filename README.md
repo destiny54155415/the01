@@ -42,6 +42,7 @@ Product, Category Entity 구현
 상품 상세 조회
 상품 검색
 관리자 상품 등록 / 수정 / 삭제
+
 3️⃣ 장바구니 담당 (Cart & Wishlist)
 
 담당 기능: 장바구니 · 찜하기
@@ -61,6 +62,7 @@ CartItem, Wishlist Entity 구현
 장바구니 상품 수량 변경 및 삭제
 장바구니 총금액 계산
 찜하기 / 찜 취소
+
 4️⃣ 주문 및 리뷰 담당 (Order & Review)
 
 담당 기능: 주문 · 결제(모의) · 리뷰
