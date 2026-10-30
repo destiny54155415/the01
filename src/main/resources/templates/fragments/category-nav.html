@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<nav class="category-nav" th:fragment="categoryNav">
+    <ul>
+        <li><a th:href="@{/products}">전체상품</a></li>
+        <li><a th:href="@{/products(category=1)}">사료</a></li>
+        <li><a th:href="@{/products(category=2)}">간식</a></li>
+        <li><a th:href="@{/products(category=3)}">장난감</a></li>
+        <li><a th:href="@{/products(category=4)}">산책용품</a></li>
+        <li><a th:href="@{/products(category=5)}">미용·목욕</a></li>
+        <li><a th:href="@{/products(category=6)}">하우스·생활용품</a></li>
+        <li><a th:href="@{/products(category=7)}">의류·패션</a></li>
+        <li><a th:href="@{/products(category=8)}">위생·배변용품</a></li>
+    </ul>
+</nav>
+
+</body>
+</html>

@@ -1,0 +1,132 @@
+
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PetShop | 반려동물 쇼핑몰</title>
+
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+</head>
+
+<body>
+
+<!-- 공통 헤더 -->
+<header th:replace="~{fragments/header :: header}"></header>
+
+<!-- 공통 카테고리 -->
+<nav th:replace="~{fragments/category-nav :: categoryNav}"></nav>
+
+<!-- 메인 콘텐츠 -->
+<main class="container page-container">
+
+    <!-- 메인 배너 -->
+    <section class="section">
+        <div class="main-banner">
+            <div class="banner-content">
+                <h1>우리 아이를 위한 특별한 쇼핑</h1>
+                <p>사료부터 간식, 장난감까지 필요한 모든 것을 만나보세요.</p>
+                <a th:href="@{/products}" class="btn btn-primary">
+                    상품 둘러보기
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 추천 상품 -->
+    <section class="section">
+        <h2 class="section-title">오늘의 추천 상품</h2>
+        <p class="text-muted">반려동물을 위한 추천 상품을 만나보세요.</p>
+
+        <div class="product-grid">
+
+            <article class="product-card">
+                <img th:src="@{/images/sample.jpg}"
+                     alt="강아지 사료"
+                     class="product-image">
+
+                <div class="product-info">
+                    <h3 class="product-name">프리미엄 강아지 사료</h3>
+                    <p class="product-price">29,900원</p>
+                    <a th:href="@{/products}" class="btn btn-primary btn-block">
+                        상품 보러 가기
+                    </a>
+                </div>
+            </article>
+
+            <article class="product-card">
+                <img th:src="@{/images/sample.jpg}"
+                     alt="반려동물 간식"
+                     class="product-image">
+
+                <div class="product-info">
+                    <h3 class="product-name">건강한 반려동물 간식</h3>
+                    <p class="product-price">12,900원</p>
+                    <a th:href="@{/products}" class="btn btn-primary btn-block">
+                        상품 보러 가기
+                    </a>
+                </div>
+            </article>
+
+            <article class="product-card">
+                <img th:src="@{/images/sample.jpg}"
+                     alt="반려동물 장난감"
+                     class="product-image">
+
+                <div class="product-info">
+                    <h3 class="product-name">반려동물 놀이 장난감</h3>
+                    <p class="product-price">8,900원</p>
+                    <a th:href="@{/products}" class="btn btn-primary btn-block">
+                        상품 보러 가기
+                    </a>
+                </div>
+            </article>
+
+            <article class="product-card">
+                <img th:src="@{/images/sample.jpg}"
+                     alt="반려동물 방석"
+                     class="product-image">
+
+                <div class="product-info">
+                    <h3 class="product-name">포근한 반려동물 방석</h3>
+                    <p class="product-price">24,900원</p>
+                    <a th:href="@{/products}" class="btn btn-primary btn-block">
+                        상품 보러 가기
+                    </a>
+                </div>
+            </article>
+
+        </div>
+    </section>
+
+    <!-- 쇼핑 안내 -->
+    <section class="section">
+        <h2 class="section-title">PetShop과 함께하는 즐거운 쇼핑</h2>
+
+        <div class="shopping-info">
+            <div>
+                <h3>다양한 상품</h3>
+                <p>반려동물에게 필요한 다양한 상품을 한곳에서!</p>
+            </div>
+
+            <div>
+                <h3>간편한 주문</h3>
+                <p>원하는 상품을 장바구니에 담고 편리하게 주문하세요.</p>
+            </div>
+
+            <div>
+                <h3>상품 리뷰</h3>
+                <p>다른 반려인들의 구매 후기도 확인해 보세요.</p>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<!-- 공통 푸터 -->
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+
+</body>
+</html>
