@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>상품 편집</title>
+    <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+<header th:replace="~{fragments/shell :: header}"></header>
+<main class="wrap narrow">
+    <h1 th:text="${form.id == null} ? '상품 추가' : '상품 수정'">상품</h1>
+    <form th:object="${form}" th:action="${form.id == null} ? @{/admin/products} : @{/admin/products/{id}(id=${form.id})}" method="post" class="form">
+        <label>카테고리
+            <select th:field="*{categoryId}" required>
+                <option value="">선택</option>
+                <optgroup th:each="parent : ${categories}" th:label="${parent.name}">
+                    <option th:each="child : ${parent.children}" th:value="${child.id}" th:text="${child.name}">건식</option>
+                </optgroup>
+            </select>
+        </label>
+        <p class="field-error" th:if="${#fields.hasErrors('categoryId')}" th:errors="*{categoryId}"></p>
+        <label>상품명
+            <input type="text" th:field="*{name}" required>
+        </label>
+        <p class="field-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+        <label>브랜드
+            <input type="text" th:field="*{brand}" required>
+        </label>
+        <p class="field-error" th:if="${#fields.hasErrors('brand')}" th:errors="*{brand}"></p>
+        <label>정가
+            <input type="number" min="0" th:field="*{price}" required>
+        </label>
+        <p class="field-error" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></p>
+        <label>할인가
+            <input type="number" min="0" th:field="*{salePrice}">
+        </label>
+        <p class="field-error" th:if="${#fields.hasErrors('salePrice')}" th:errors="*{salePrice}"></p>
+        <label>한줄 설명
+            <input type="text" th:field="*{summary}">
+        </label>
+        <label>상세 설명
+            <textarea th:field="*{description}" rows="4"></textarea>
+        </label>
+        <label>재고
+            <input type="number" min="0" th:field="*{stock}" required>
+        </label>
+        <label>상태
+            <select th:field="*{status}">
+                <option th:each="item : ${statuses}" th:value="${item}" th:text="${item.label}">판매중</option>
+            </select>
+        </label>
+        <p class="note error" th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
+        <button class="button" type="submit">저장</button>
+        <a href="/admin/products">목록</a>
+    </form>
+</main>
+</body>
+</html>
