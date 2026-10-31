@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<footer class="footer" th:fragment="footer">
+    <div class="container">
+
+        <p><strong>Shopping_Project</strong></p>
+
+        <p>
+            다양한 상품을 편리하게 둘러볼 수 있는 쇼핑몰입니다.
+        </p>
+
+        <p>
+            <a th:href="@{/terms}">이용약관</a>
+            |
+            <a th:href="@{/privacy}">개인정보처리방침</a>
+            |
+            <a th:href="@{/support}">고객센터</a>
+        </p>
+
+        <p>© 2026 Shopping_Project. All rights reserved.</p>
+
+    </div>
+</footer>
+
+</body>
+</html>

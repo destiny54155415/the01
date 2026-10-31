@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<header class="header" th:fragment="header">
+    <div class="header-inner">
+
+        <!-- 로고 -->
+        <a th:href="@{/}" class="logo">
+            Shopping_Project
+        </a>
+
+        <!-- 상품 검색 -->
+        <form class="header-search"
+              th:action="@{/products}"
+              method="get">
+
+            <input type="search"
+                   name="keyword"
+                   placeholder="찾으시는 상품을 검색하세요"
+                   aria-label="상품 검색">
+
+            <button type="submit">검색</button>
+        </form>
+
+        <!-- 회원 메뉴 -->
+        <nav class="header-menu" aria-label="회원 메뉴">
+            <a th:href="@{/login}">로그인</a>
+            <a th:href="@{/signup}">회원가입</a>
+            <a th:href="@{/cart}">장바구니</a>
+            <a th:href="@{/orders}">주문내역</a>
+        </nav>
+
+    </div>
+</header>
+
+</body>
+</html>
