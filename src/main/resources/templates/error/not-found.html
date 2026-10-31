@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>찾을 수 없음</title>
+    <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+<main class="wrap narrow">
+    <h1>찾을 수 없습니다</h1>
+    <p th:text="${message}">상품을 찾을 수 없습니다.</p>
+    <a class="button" href="/products">상품 목록</a>
+</main>
+</body>
+</html>
