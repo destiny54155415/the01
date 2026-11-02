@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${title}">답변형 게시판</title>
+    <link rel="stylesheet" th:href="@{/css/board.css}">
+</head>
+<body>
+<header th:fragment="header" class="top">
+    <a class="brand" href="/">답변형 게시판</a>
+    <a class="write" href="/posts/new">글쓰기</a>
+</header>
+</body>
+</html>

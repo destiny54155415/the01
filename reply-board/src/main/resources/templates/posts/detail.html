@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head th:replace="~{layout :: head(${post.title})}"></head>
+<body>
+<header th:replace="~{layout :: header}"></header>
+<main class="wrap article">
+    <article class="post">
+        <h1 th:text="${post.title}">게시판 글 제목</h1>
+        <div class="post-meta">
+            <div class="who">
+                <span class="avatar" th:text="${#strings.substring(post.writer, 0, 1)}">f</span>
+                <div>
+                    <strong th:text="${post.writer}">foxman12</strong>
+                    <p>
+                        <time th:text="${#temporals.format(post.createdAt, 'yyyy.MM.dd. HH:mm')}">2025.10.29. 16:25</time>
+                        <span>조회 <span th:text="${post.viewCount}">0</span></span>
+                    </p>
+                </div>
+            </div>
+            <div class="post-tools">
+                <span>댓글 <strong data-comment-count="true" th:text="${commentCount}">0</strong></span>
+                <button type="button" id="copyUrl" class="text-btn">URL 복사</button>
+            </div>
+        </div>
+        <div class="content" th:text="${post.content}">게시판 내용</div>
+        <div class="post-actions">
+            <button type="button" id="likeButton" class="text-btn">♥ 좋아요 <strong id="likeCount" th:text="${post.likeCount}">0</strong></button>
+            <span>댓글 <strong data-comment-count="true" th:text="${commentCount}">0</strong></span>
+            <span class="spacer"></span>
+            <a th:href="@{/posts/{id}/reply(id=${post.id})}">글 답글</a>
+            <a th:href="@{/posts/{id}/edit(id=${post.id})}">수정</a>
+            <form th:action="@{/posts/{id}/delete(id=${post.id})}" method="post" onsubmit="return confirm('글을 삭제할까요?');">
+                <button type="submit" class="text-btn danger">삭제</button>
+            </form>
+        </div>
+    </article>
+
+    <section id="commentApp" class="comments" th:data-post-id="${post.id}">
+        <div class="comment-toolbar">
+            <div class="sort">
+                <button type="button" id="sortAsc" class="text-btn active">등록순</button>
+                <span>|</span>
+                <button type="button" id="sortDesc" class="text-btn">최신순</button>
+            </div>
+        </div>
+        <div id="commentList"></div>
+        <p id="commentError" class="error" hidden></p>
+        <form id="commentForm" class="composer">
+            <input id="commentWriter" type="text" maxlength="30" placeholder="작성자" required>
+            <textarea id="commentContent" maxlength="1000" rows="3" placeholder="댓글을 남겨보세요" required></textarea>
+            <div class="composer-bar">
+                <span class="hint">REST로 등록되어 페이지가 새로고침되지 않습니다.</span>
+                <button class="button" type="submit">등록</button>
+            </div>
+        </form>
+    </section>
+</main>
+<script th:src="@{/js/comments.js}"></script>
+</body>
+</html>
