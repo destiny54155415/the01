@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>03model</title>
+</head>
+<body>
+    <h1>03model</h1>
+    <!-- name, age, height, birthday는 Model에 담기지 않음. 요청 파라미터로 표시 -->
+    <p>name : <span th:text="${param.name}">name</span></p>
+    <p>age : <span th:text="${param.age}">0</span></p>
+    <p>height : <span th:text="${param.height}">0</span></p>
+    <p>birthday : <span th:text="${param.birthday}">birthday</span></p>
+</body>
+</html>
