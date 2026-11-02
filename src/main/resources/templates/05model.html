@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>05model</title>
+</head>
+<body>
+    <h1>05model</h1>
+
+    <h2>humanDto</h2>
+    <p>name : <span th:text="${humanDto.name}">name</span></p>
+    <p>age : <span th:text="${humanDto.age}">0</span></p>
+    <p>height : <span th:text="${humanDto.height}">0</span></p>
+    <p>birthday : <span th:text="${humanDto.birthday}">birthday</span></p>
+
+    <h2>mapdata</h2>
+    <p>key1 : <span th:text="${mapdata.key1}">key1</span></p>
+    <p>key2 : <span th:text="${mapdata.key2}">key2</span></p>
+    <p>key3 : <span th:text="${mapdata.key3}">key3</span></p>
+    <p>key4 name : <span th:text="${mapdata.key4.name}">name</span></p>
+    <p>key4 age : <span th:text="${mapdata.key4.age}">0</span></p>
+    <p>key4 height : <span th:text="${mapdata.key4.height}">0</span></p>
+    <p>key4 birthday : <span th:text="${mapdata.key4.birthday}">birthday</span></p>
+</body>
+</html>

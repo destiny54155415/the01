@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>06model</title>
+</head>
+<body>
+    <h1>06model</h1>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>name</th>
+            <th>age</th>
+            <th>height</th>
+            <th>birthday</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="dto : ${list}">
+            <td th:text="${dto.name}">name</td>
+            <td th:text="${dto.age}">0</td>
+            <td th:text="${dto.height}">0</td>
+            <td th:text="${dto.birthday}">birthday</td>
+        </tr>
+        </tbody>
+    </table>
+</body>
+</html>
