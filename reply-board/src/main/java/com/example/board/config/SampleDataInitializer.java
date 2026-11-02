@@ -5,6 +5,8 @@ import com.example.board.domain.Post;
 import com.example.board.repository.CommentRepository;
 import com.example.board.service.PostService;
 import com.example.board.web.form.PostForm;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDateTime;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -16,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Profile("!test")
 public class SampleDataInitializer implements ApplicationRunner {
 
+    private static final Path MARKER = Path.of("data", "reply_board.seeded");
+
     private final PostService posts;
     private final CommentRepository comments;
 
@@ -26,8 +30,12 @@ public class SampleDataInitializer implements ApplicationRunner {
 
     @Override
     @Transactional
-    public void run(ApplicationArguments args) {
+    public void run(ApplicationArguments args) throws Exception {
+        if (Files.exists(MARKER)) {
+            return;
+        }
         if (!posts.findAll().isEmpty()) {
+            writeMarker();
             return;
         }
         PostForm form = new PostForm();
@@ -46,6 +54,12 @@ public class SampleDataInitializer implements ApplicationRunner {
 
         saveComment(post.getId(), null, "Rest Api를 이용한 댓글 추가", LocalDateTime.of(2025, 10, 29, 16, 26));
         saveComment(post.getId(), null, "하나디 댓글 추가", LocalDateTime.of(2025, 10, 29, 16, 26));
+        writeMarker();
+    }
+
+    private void writeMarker() throws Exception {
+        Files.createDirectories(MARKER.getParent());
+        Files.writeString(MARKER, "seeded");
     }
 
     private void saveComment(Long postId, Long parentId, String content, LocalDateTime createdAt) {

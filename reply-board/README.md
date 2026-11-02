@@ -21,7 +21,9 @@ Java 17 이상이 필요합니다. IntelliJ에서 `reply-board` 폴더를 열고
 
 앱이 실행 중일 때 http://localhost:8080/h2-console
 
-- JDBC URL: `jdbc:h2:mem:reply_board`
+글은 `data/reply_board` 파일에 저장됩니다. 앱을 종료했다가 다시 실행해도 수정한 글과 댓글이 남습니다.
+
+- JDBC URL: `jdbc:h2:file:./data/reply_board`
 - User Name: `sa`
 - Password: 비움
 
