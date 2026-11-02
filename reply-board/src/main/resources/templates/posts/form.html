@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head th:replace="~{layout :: head('글쓰기')}"></head>
+<body>
+<header th:replace="~{layout :: header}"></header>
+<main class="wrap narrow">
+    <h1 th:text="${mode == 'edit'} ? '글 수정' : (${mode == 'reply'} ? '답글' : '글쓰기')">글쓰기</h1>
+    <p class="hint" th:if="${mode == 'reply'}">원글: <span th:text="${parent.title}">제목</span></p>
+    <form class="panel" th:object="${postForm}" method="post"
+          th:action="${mode == 'edit'} ? @{/posts/{id}/edit(id=${postId})} : (${mode == 'reply'} ? @{/posts/{id}/reply(id=${parent.id})} : @{/posts})">
+        <label>
+            제목
+            <input type="text" th:field="*{title}" maxlength="200" required>
+            <span class="error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">오류</span>
+        </label>
+        <label>
+            작성자
+            <input type="text" th:field="*{writer}" maxlength="30" required>
+            <span class="error" th:if="${#fields.hasErrors('writer')}" th:errors="*{writer}">오류</span>
+        </label>
+        <label>
+            내용
+            <textarea th:field="*{content}" rows="8" required></textarea>
+            <span class="error" th:if="${#fields.hasErrors('content')}" th:errors="*{content}">오류</span>
+        </label>
+        <div class="actions">
+            <button class="button" type="submit" th:text="${mode == 'edit'} ? '저장' : '등록'">등록</button>
+            <a class="button ghost" href="/">목록</a>
+        </div>
+    </form>
+</main>
+</body>
+</html>
