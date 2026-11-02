@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head th:replace="~{layout :: head(${editing} ? '주문 수정' : '주문 등록')}"></head>
+<body>
+<header th:replace="~{layout :: header}"></header>
+<main class="wrap narrow">
+    <h1 th:text="${editing} ? '주문 수정' : '주문 등록'">주문 등록</h1>
+    <p class="empty" th:if="${#lists.isEmpty(customers)}">
+        먼저 <a th:href="@{/customers/new}">고객을 등록</a>해야 주문을 만들 수 있습니다.
+    </p>
+    <form th:object="${orderForm}"
+          th:action="${editing} ? @{/orders/{id}(id=${orderId})} : @{/orders}"
+          method="post" class="panel"
+          th:if="${!#lists.isEmpty(customers)}">
+        <label>
+            고객
+            <select th:field="*{customerId}" required>
+                <option value="">선택</option>
+                <option th:each="customer : ${customers}"
+                        th:value="${customer.id}"
+                        th:text="|${customer.name} (${customer.email})|">홍길동</option>
+            </select>
+            <span class="error" th:if="${#fields.hasErrors('customerId')}" th:errors="*{customerId}">오류</span>
+        </label>
+        <label>
+            주문번호
+            <input type="text" th:field="*{orderNumber}" maxlength="50" required>
+            <span class="error" th:if="${#fields.hasErrors('orderNumber')}" th:errors="*{orderNumber}">오류</span>
+        </label>
+        <label>
+            주문 금액
+            <input type="number" th:field="*{totalPrice}" min="0" step="0.01" required>
+            <span class="error" th:if="${#fields.hasErrors('totalPrice')}" th:errors="*{totalPrice}">오류</span>
+        </label>
+        <label>
+            주문 상태
+            <select th:field="*{status}" required>
+                <option th:each="status : ${statuses}"
+                        th:value="${status}"
+                        th:text="${status.label}">대기</option>
+            </select>
+            <span class="error" th:if="${#fields.hasErrors('status')}" th:errors="*{status}">오류</span>
+        </label>
+        <div class="actions">
+            <button type="submit" class="button" th:text="${editing} ? '저장' : '등록'">등록</button>
+            <a class="button secondary" th:href="@{/orders}">목록</a>
+        </div>
+    </form>
+</main>
+</body>
+</html>

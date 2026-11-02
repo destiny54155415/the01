@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head th:replace="~{layout :: head('고객 목록')}"></head>
+<body>
+<header th:replace="~{layout :: header}"></header>
+<main class="wrap">
+    <div class="heading">
+        <h1>고객</h1>
+        <a class="button" th:href="@{/customers/new}">고객 등록</a>
+    </div>
+    <p class="flash" th:if="${message}" th:text="${message}"></p>
+    <p class="empty" th:if="${#lists.isEmpty(customers)}">등록된 고객이 없습니다.</p>
+    <table th:unless="${#lists.isEmpty(customers)}">
+        <thead>
+        <tr>
+            <th>번호</th>
+            <th>고객명</th>
+            <th>이메일</th>
+            <th>연락처</th>
+            <th>주문 수</th>
+            <th>가입일</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="customer : ${customers}">
+            <td th:text="${customer.id}">1</td>
+            <td><a th:href="@{/customers/{id}(id=${customer.id})}" th:text="${customer.name}">홍길동</a></td>
+            <td th:text="${customer.email}">hong@test.com</td>
+            <td th:text="${customer.phone} ?: '-'">010-1234-5678</td>
+            <td th:text="${customer.orderCount}">2</td>
+            <td th:text="${#temporals.format(customer.createdAt, 'yyyy-MM-dd HH:mm')}">2026-10-11</td>
+            <td class="row-actions">
+                <a th:href="@{/customers/{id}/edit(id=${customer.id})}">수정</a>
+                <form th:action="@{/customers/{id}/delete(id=${customer.id})}" method="post"
+                      onsubmit="return confirm('고객을 삭제하면 주문도 함께 삭제됩니다. 계속할까요?');">
+                    <button type="submit" class="link">삭제</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>
