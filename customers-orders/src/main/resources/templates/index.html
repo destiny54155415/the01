@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head th:replace="~{layout :: head('고객 주문 관리')}"></head>
+<body>
+<header th:replace="~{layout :: header}"></header>
+<main class="wrap">
+    <h1>고객 1명, 주문 여러 건</h1>
+    <p class="lead">customers와 orders를 등록, 조회, 수정, 삭제합니다. 주문은 customer_id로 고객에게 연결됩니다.</p>
+    <section class="stats">
+        <article>
+            <span>고객</span>
+            <strong th:text="${customerCount}">0</strong>
+        </article>
+        <article>
+            <span>주문</span>
+            <strong th:text="${orderCount}">0</strong>
+        </article>
+    </section>
+    <div class="actions">
+        <a class="button" th:href="@{/customers/new}">고객 등록</a>
+        <a class="button secondary" th:href="@{/orders/new}">주문 등록</a>
+        <a class="button secondary" th:href="@{/customers}">통합 조회</a>
+    </div>
+</main>
+</body>
+</html>

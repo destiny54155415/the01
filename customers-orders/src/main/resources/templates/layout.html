@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${title}">고객 주문</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<header th:fragment="header" class="top">
+    <a class="brand" th:href="@{/}">고객 · 주문</a>
+    <nav>
+        <a th:href="@{/customers}">고객</a>
+        <a th:href="@{/orders}">주문</a>
+    </nav>
+</header>
+</body>
+</html>

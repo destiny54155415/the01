@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head th:replace="~{layout :: head('고객 상세')}"></head>
+<body>
+<header th:replace="~{layout :: header}"></header>
+<main class="wrap">
+    <p class="flash" th:if="${message}" th:text="${message}"></p>
+    <div class="heading">
+        <h1 th:text="${customer.name}">홍길동</h1>
+        <div class="actions">
+            <a class="button" th:href="@{/orders/new}">주문 등록</a>
+            <a class="button secondary" th:href="@{/customers/{id}/edit(id=${customer.id})}">수정</a>
+        </div>
+    </div>
+    <dl class="facts">
+        <div><dt>이메일</dt><dd th:text="${customer.email}">hong@test.com</dd></div>
+        <div><dt>연락처</dt><dd th:text="${customer.phone} ?: '-'">010-1234-5678</dd></div>
+        <div><dt>가입일</dt><dd th:text="${#temporals.format(customer.createdAt, 'yyyy-MM-dd HH:mm')}">2026-10-11</dd></div>
+    </dl>
+
+    <h2>이 고객의 주문</h2>
+    <p class="empty" th:if="${#lists.isEmpty(orders)}">주문이 없습니다.</p>
+    <table th:unless="${#lists.isEmpty(orders)}">
+        <thead>
+        <tr>
+            <th>고객명</th>
+            <th>주문번호</th>
+            <th>주문 금액</th>
+            <th>상태</th>
+            <th>주문 일시</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order : ${orders}">
+            <td th:text="${customer.name}">홍길동</td>
+            <td th:text="${order.orderNumber}">20261011-0001</td>
+            <td th:text="${#numbers.formatDecimal(order.totalPrice, 1, 'COMMA', 2, 'POINT')}">25,000.00</td>
+            <td><span class="badge" th:text="${order.status.label}">결제완료</span></td>
+            <td th:text="${#temporals.format(order.orderedAt, 'yyyy-MM-dd HH:mm')}">2026-10-11</td>
+            <td class="row-actions">
+                <a th:href="@{/orders/{id}/edit(id=${order.id})}">수정</a>
+                <form th:action="@{/orders/{id}/delete(id=${order.id})}" method="post"
+                      onsubmit="return confirm('이 주문을 삭제할까요?');">
+                    <button type="submit" class="link">삭제</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <p><a th:href="@{/customers}">고객 목록으로</a></p>
+</main>
+</body>
+</html>

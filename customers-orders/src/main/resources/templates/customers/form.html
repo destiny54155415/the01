@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head th:replace="~{layout :: head(${editing} ? '고객 수정' : '고객 등록')}"></head>
+<body>
+<header th:replace="~{layout :: header}"></header>
+<main class="wrap narrow">
+    <h1 th:text="${editing} ? '고객 수정' : '고객 등록'">고객 등록</h1>
+    <form th:object="${customerForm}"
+          th:action="${editing} ? @{/customers/{id}(id=${customerId})} : @{/customers}"
+          method="post" class="panel">
+        <label>
+            고객명
+            <input type="text" th:field="*{name}" maxlength="100" required>
+            <span class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">오류</span>
+        </label>
+        <label>
+            이메일
+            <input type="email" th:field="*{email}" maxlength="255" required>
+            <span class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">오류</span>
+        </label>
+        <label>
+            연락처
+            <input type="text" th:field="*{phone}" maxlength="30" placeholder="010-1234-5678">
+            <span class="error" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">오류</span>
+        </label>
+        <div class="actions">
+            <button type="submit" class="button" th:text="${editing} ? '저장' : '등록'">등록</button>
+            <a class="button secondary" th:href="@{/customers}">목록</a>
+        </div>
+    </form>
+</main>
+</body>
+</html>
