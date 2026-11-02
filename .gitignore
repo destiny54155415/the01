@@ -1,30 +1,35 @@
+
+# HELP
 HELP.md
-.gradle
+
+# Gradle
+.gradle/
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+# Gradle Wrapper
+!gradle/wrapper/gradle-wrapper.properties
+
 ### STS ###
-.apt_generated
+.apt_generated/
 .classpath
 .factorypath
 .project
-.settings
+.settings/
 .springBeans
-.sts4-cache
+.sts4-cache/
 bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 
 ### IntelliJ IDEA ###
-.idea
+.idea/
 *.iws
 *.iml
 *.ipr
 out/
-!**/src/main/**/out/
-!**/src/test/**/out/
 
 ### NetBeans ###
 /nbproject/private/
@@ -35,3 +40,22 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+
+# Environment / Secrets
+.env
+.env.*
+!.env.example
+
+# Local configuration
+application-local.properties
+application-local.yml
+application-secret.properties
+application-secret.yml
