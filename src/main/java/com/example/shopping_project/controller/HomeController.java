@@ -13,15 +13,15 @@ public class HomeController {
         return "index";
     }
 
-    // 로그인 페이지
+    // 로그인 페이지 (templates/member)
     @GetMapping("/login")
     public String login() {
-        return "login";
+        return "member/login";
     }
 
-    // 회원가입 페이지
+    // 회원가입 페이지 (templates/member)
     @GetMapping("/signup")
     public String signup() {
-        return "signup";
+        return "member/signup";
     }
 }
