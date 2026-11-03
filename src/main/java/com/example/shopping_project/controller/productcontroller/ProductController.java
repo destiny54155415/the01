@@ -39,7 +39,7 @@ public class ProductController {
         model.addAttribute("petType", petType);
         model.addAttribute("petTypes", PetType.values());
         model.addAttribute("pageTitle", buildTitle(keyword, selectedCategory));
-        return "product/list";
+        return "products";
     }
 
     @GetMapping("/products/{productId}")
