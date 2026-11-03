@@ -1,15 +1,23 @@
 package com.example.shopping_project.controller;
 
-
+import com.example.shopping_project.service.product.ProductService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class HomeController {
 
-    // 메인 페이지
+    private final ProductService productService;
+
+    public HomeController(ProductService productService) {
+        this.productService = productService;
+    }
+
+    // 메인 페이지 — 추천 상품은 DB 상품 목록 일부
     @GetMapping("/")
-    public String home() {
+    public String home(Model model) {
+        model.addAttribute("featuredProducts", productService.searchActive(null, null, null, 0).getContent());
         return "index";
     }
 

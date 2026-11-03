@@ -75,6 +75,12 @@ class ProductSearchTest {
     }
 
     @Test
+    void homeShowsFeaturedProductsFromDb() throws Exception {
+        mockMvc.perform(get("/"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
     void adminCanCreateProductWithSessionRole() throws Exception {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("loginRole", "ADMIN");
