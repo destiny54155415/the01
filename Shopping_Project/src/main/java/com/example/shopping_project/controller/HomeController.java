@@ -1,6 +1,6 @@
 package com.example.shopping_project.controller;
 
-import com.example.shopping_project.service.product.ProductService;
+import com.example.shopping_project.service.productservice.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
