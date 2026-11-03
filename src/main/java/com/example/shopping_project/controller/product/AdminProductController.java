@@ -1,9 +1,9 @@
-package com.example.shopping_project.controller;
+package com.example.shopping_project.controller.product;
 
-import com.example.shopping_project.dto.ProductForm;
-import com.example.shopping_project.entity.PetType;
-import com.example.shopping_project.service.CategoryService;
-import com.example.shopping_project.service.ProductService;
+import com.example.shopping_project.dto.product.ProductForm;
+import com.example.shopping_project.entity.product.PetType;
+import com.example.shopping_project.service.product.CategoryService;
+import com.example.shopping_project.service.product.ProductService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;

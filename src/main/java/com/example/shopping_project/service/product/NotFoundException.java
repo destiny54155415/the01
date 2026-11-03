@@ -1,4 +1,4 @@
-package com.example.shopping_project.service;
+package com.example.shopping_project.service.product;
 
 public class NotFoundException extends RuntimeException {
 

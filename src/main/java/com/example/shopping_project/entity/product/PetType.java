@@ -1,4 +1,4 @@
-package com.example.shopping_project.entity;
+package com.example.shopping_project.entity.product;
 
 public enum PetType {
     DOG("강아지"),

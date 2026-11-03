@@ -1,4 +1,4 @@
-package com.example.shopping_project.controller;
+package com.example.shopping_project.controller.product;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.context.annotation.Profile;

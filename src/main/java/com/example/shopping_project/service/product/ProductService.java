@@ -1,10 +1,10 @@
-package com.example.shopping_project.service;
+package com.example.shopping_project.service.product;
 
-import com.example.shopping_project.dto.ProductForm;
-import com.example.shopping_project.entity.Category;
-import com.example.shopping_project.entity.PetType;
-import com.example.shopping_project.entity.Product;
-import com.example.shopping_project.repository.ProductRepository;
+import com.example.shopping_project.dto.product.ProductForm;
+import com.example.shopping_project.entity.product.Category;
+import com.example.shopping_project.entity.product.PetType;
+import com.example.shopping_project.entity.product.Product;
+import com.example.shopping_project.repository.product.ProductRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;

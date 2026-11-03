@@ -1,10 +1,10 @@
-package com.example.shopping_project.controller;
+package com.example.shopping_project.controller.product;
 
-import com.example.shopping_project.entity.Category;
-import com.example.shopping_project.entity.PetType;
-import com.example.shopping_project.entity.Product;
-import com.example.shopping_project.service.CategoryService;
-import com.example.shopping_project.service.ProductService;
+import com.example.shopping_project.entity.product.Category;
+import com.example.shopping_project.entity.product.PetType;
+import com.example.shopping_project.entity.product.Product;
+import com.example.shopping_project.service.product.CategoryService;
+import com.example.shopping_project.service.product.ProductService;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
