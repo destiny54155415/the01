@@ -1,4 +1,4 @@
-package com.example.shopping_project.entity;
+package com.example.shopping_project.entity.product;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

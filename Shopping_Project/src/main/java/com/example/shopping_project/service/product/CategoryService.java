@@ -1,7 +1,7 @@
-package com.example.shopping_project.service;
+package com.example.shopping_project.service.product;
 
-import com.example.shopping_project.entity.Category;
-import com.example.shopping_project.repository.CategoryRepository;
+import com.example.shopping_project.entity.product.Category;
+import com.example.shopping_project.repository.product.CategoryRepository;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

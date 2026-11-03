@@ -1,7 +1,7 @@
-package com.example.shopping_project.repository;
+package com.example.shopping_project.repository.product;
 
-import com.example.shopping_project.entity.PetType;
-import com.example.shopping_project.entity.Product;
+import com.example.shopping_project.entity.product.PetType;
+import com.example.shopping_project.entity.product.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;

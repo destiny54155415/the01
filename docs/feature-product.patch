@@ -1,7 +1,7 @@
 From fd1099268631ae5556ddd58d93b656e147f952c5 Mon Sep 17 00:00:00 2001
 From: Kim seung yeon <142073825+kim-seung-yeon-0@users.noreply.github.com>
 Date: Tue, 3 Nov 2026 11:21:26 +0900
-Subject: [PATCH 1/5] Update README.md
+Subject: [PATCH 1/6] Update README.md
 
 ---
  README.md | 129 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -151,7 +151,7 @@ index 0317bf3..003bfd5 100644
 From ce031ecd4f8bf938debdc1e3970aa79c3e2df7f2 Mon Sep 17 00:00:00 2001
 From: Kim seung yeon <142073825+kim-seung-yeon-0@users.noreply.github.com>
 Date: Tue, 3 Nov 2026 11:25:59 +0900
-Subject: [PATCH 2/5] Update README.md
+Subject: [PATCH 2/6] Update README.md
 
 ---
  README.md | 96 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -271,7 +271,7 @@ index 003bfd5..b846950 100644
 From 09544215704d81f76559b351701cb93bc2ebdb17 Mon Sep 17 00:00:00 2001
 From: Kim seung yeon <142073825+kim-seung-yeon-0@users.noreply.github.com>
 Date: Tue, 3 Nov 2026 11:31:32 +0900
-Subject: [PATCH 3/5] Update README.md
+Subject: [PATCH 3/6] Update README.md
 
 ---
  README.md | 222 +-----------------------------------------------------
@@ -515,7 +515,7 @@ index b846950..16e9cb8 100644
 From 13e6ac89aa849a002f81a0b9c29e75ed272d6aff Mon Sep 17 00:00:00 2001
 From: Kim seung yeon <142073825+kim-seung-yeon-0@users.noreply.github.com>
 Date: Tue, 3 Nov 2026 11:34:43 +0900
-Subject: [PATCH 4/5] Update petshop_db.sql
+Subject: [PATCH 4/6] Update petshop_db.sql
 
 ---
  src/db/petshop_db.sql | 73 +++++++++++++++++++++++++++++++++++++++++++
@@ -609,7 +609,7 @@ index 32b1905..e646bcc 100644
 From 44454bf9ebe8bae77fe09765a22d87ba3784d2b4 Mon Sep 17 00:00:00 2001
 From: Cursor Agent <cursoragent@cursor.com>
 Date: Tue, 3 Nov 2026 06:15:49 +0000
-Subject: [PATCH 5/5] =?UTF-8?q?=EC=83=81=ED=92=88=20=EB=8B=B4=EB=8B=B9=20?=
+Subject: [PATCH 5/6] =?UTF-8?q?=EC=83=81=ED=92=88=20=EB=8B=B4=EB=8B=B9=20?=
  =?UTF-8?q?=EA=B8=B0=EB=8A=A5=20=EC=B6=94=EA=B0=80:=20Category/Product,=20?=
  =?UTF-8?q?=EB=AA=A9=EB=A1=9D=C2=B7=EC=83=81=EC=84=B8=C2=B7=EA=B2=80?=
  =?UTF-8?q?=EC=83=89,=20=EA=B4=80=EB=A6=AC=EC=9E=90=20CRUD?=
@@ -2701,6 +2701,425 @@ index 0000000..7431b64
 +spring.datasource.password=
 +spring.jpa.hibernate.ddl-auto=create-drop
 +spring.jpa.open-in-view=false
+-- 
+2.43.0
+
+
+From b822557f55b05da257e2f9c7a08ef108b5ee0d10 Mon Sep 17 00:00:00 2001
+From: Cursor Agent <cursoragent@cursor.com>
+Date: Tue, 3 Nov 2026 06:20:55 +0000
+Subject: [PATCH 6/6] =?UTF-8?q?=ED=8C=A8=ED=82=A4=EC=A7=80=EB=A5=BC=20?=
+ =?UTF-8?q?=EA=B3=84=EC=B8=B5/=EA=B8=B0=EB=8A=A5=20=ED=8F=B4=EB=8D=94=20?=
+ =?UTF-8?q?=EA=B5=AC=EC=A1=B0=EB=A1=9C=20=EC=9E=AC=EB=B0=B0=EC=B9=98?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+controller·service·repository·entity·dto·config 아래에
+member/product/cart/order/review 기능 폴더를 두고
+상품 담당 코드를 product 하위로 이동한다.
+---
+ .../config/{ => product}/GlobalModelAdvice.java      |  6 +++---
+ .../config/{ => product}/ProductDataInitializer.java | 12 ++++++------
+ .../shopping_project/controller/cart/.gitkeep        |  0
+ .../shopping_project/controller/member/.gitkeep      |  0
+ .../shopping_project/controller/order/.gitkeep       |  0
+ .../controller/{ => product}/AdminDevController.java |  2 +-
+ .../{ => product}/AdminProductController.java        | 10 +++++-----
+ .../controller/{ => product}/ProductController.java  | 12 ++++++------
+ .../shopping_project/controller/review/.gitkeep      |  0
+ .../com/example/shopping_project/dto/cart/.gitkeep   |  0
+ .../com/example/shopping_project/dto/member/.gitkeep |  0
+ .../com/example/shopping_project/dto/order/.gitkeep  |  0
+ .../dto/{ => product}/ProductForm.java               |  6 +++---
+ .../com/example/shopping_project/dto/review/.gitkeep |  0
+ .../example/shopping_project/entity/cart/.gitkeep    |  0
+ .../example/shopping_project/entity/member/.gitkeep  |  0
+ .../example/shopping_project/entity/order/.gitkeep   |  0
+ .../entity/{ => product}/Category.java               |  2 +-
+ .../entity/{ => product}/PetType.java                |  2 +-
+ .../entity/{ => product}/Product.java                |  2 +-
+ .../example/shopping_project/entity/review/.gitkeep  |  0
+ .../shopping_project/repository/cart/.gitkeep        |  0
+ .../shopping_project/repository/member/.gitkeep      |  0
+ .../shopping_project/repository/order/.gitkeep       |  0
+ .../repository/{ => product}/CategoryRepository.java |  4 ++--
+ .../repository/{ => product}/ProductRepository.java  |  6 +++---
+ .../shopping_project/repository/review/.gitkeep      |  0
+ .../example/shopping_project/service/cart/.gitkeep   |  0
+ .../example/shopping_project/service/member/.gitkeep |  0
+ .../example/shopping_project/service/order/.gitkeep  |  0
+ .../service/{ => product}/CategoryService.java       |  6 +++---
+ .../service/{ => product}/NotFoundException.java     |  2 +-
+ .../service/{ => product}/ProductService.java        | 12 ++++++------
+ .../example/shopping_project/service/review/.gitkeep |  0
+ .../example/shopping_project/ProductSearchTest.java  | 12 ++++++------
+ 35 files changed, 48 insertions(+), 48 deletions(-)
+ rename src/main/java/com/example/shopping_project/config/{ => product}/GlobalModelAdvice.java (85%)
+ rename src/main/java/com/example/shopping_project/config/{ => product}/ProductDataInitializer.java (91%)
+ create mode 100644 src/main/java/com/example/shopping_project/controller/cart/.gitkeep
+ create mode 100644 src/main/java/com/example/shopping_project/controller/member/.gitkeep
+ create mode 100644 src/main/java/com/example/shopping_project/controller/order/.gitkeep
+ rename src/main/java/com/example/shopping_project/controller/{ => product}/AdminDevController.java (95%)
+ rename src/main/java/com/example/shopping_project/controller/{ => product}/AdminProductController.java (95%)
+ rename src/main/java/com/example/shopping_project/controller/{ => product}/ProductController.java (85%)
+ create mode 100644 src/main/java/com/example/shopping_project/controller/review/.gitkeep
+ create mode 100644 src/main/java/com/example/shopping_project/dto/cart/.gitkeep
+ create mode 100644 src/main/java/com/example/shopping_project/dto/member/.gitkeep
+ create mode 100644 src/main/java/com/example/shopping_project/dto/order/.gitkeep
+ rename src/main/java/com/example/shopping_project/dto/{ => product}/ProductForm.java (95%)
+ create mode 100644 src/main/java/com/example/shopping_project/dto/review/.gitkeep
+ create mode 100644 src/main/java/com/example/shopping_project/entity/cart/.gitkeep
+ create mode 100644 src/main/java/com/example/shopping_project/entity/member/.gitkeep
+ create mode 100644 src/main/java/com/example/shopping_project/entity/order/.gitkeep
+ rename src/main/java/com/example/shopping_project/entity/{ => product}/Category.java (97%)
+ rename src/main/java/com/example/shopping_project/entity/{ => product}/PetType.java (82%)
+ rename src/main/java/com/example/shopping_project/entity/{ => product}/Product.java (98%)
+ create mode 100644 src/main/java/com/example/shopping_project/entity/review/.gitkeep
+ create mode 100644 src/main/java/com/example/shopping_project/repository/cart/.gitkeep
+ create mode 100644 src/main/java/com/example/shopping_project/repository/member/.gitkeep
+ create mode 100644 src/main/java/com/example/shopping_project/repository/order/.gitkeep
+ rename src/main/java/com/example/shopping_project/repository/{ => product}/CategoryRepository.java (75%)
+ rename src/main/java/com/example/shopping_project/repository/{ => product}/ProductRepository.java (89%)
+ create mode 100644 src/main/java/com/example/shopping_project/repository/review/.gitkeep
+ create mode 100644 src/main/java/com/example/shopping_project/service/cart/.gitkeep
+ create mode 100644 src/main/java/com/example/shopping_project/service/member/.gitkeep
+ create mode 100644 src/main/java/com/example/shopping_project/service/order/.gitkeep
+ rename src/main/java/com/example/shopping_project/service/{ => product}/CategoryService.java (87%)
+ rename src/main/java/com/example/shopping_project/service/{ => product}/NotFoundException.java (72%)
+ rename src/main/java/com/example/shopping_project/service/{ => product}/ProductService.java (91%)
+ create mode 100644 src/main/java/com/example/shopping_project/service/review/.gitkeep
+
+diff --git a/src/main/java/com/example/shopping_project/config/GlobalModelAdvice.java b/src/main/java/com/example/shopping_project/config/product/GlobalModelAdvice.java
+similarity index 85%
+rename from src/main/java/com/example/shopping_project/config/GlobalModelAdvice.java
+rename to src/main/java/com/example/shopping_project/config/product/GlobalModelAdvice.java
+index 63adca5..19293bb 100644
+--- a/src/main/java/com/example/shopping_project/config/GlobalModelAdvice.java
++++ b/src/main/java/com/example/shopping_project/config/product/GlobalModelAdvice.java
+@@ -1,7 +1,7 @@
+-package com.example.shopping_project.config;
++package com.example.shopping_project.config.product;
+ 
+-import com.example.shopping_project.service.CategoryService;
+-import com.example.shopping_project.service.NotFoundException;
++import com.example.shopping_project.service.product.CategoryService;
++import com.example.shopping_project.service.product.NotFoundException;
+ import org.springframework.http.HttpStatus;
+ import org.springframework.ui.Model;
+ import org.springframework.web.bind.annotation.ControllerAdvice;
+diff --git a/src/main/java/com/example/shopping_project/config/ProductDataInitializer.java b/src/main/java/com/example/shopping_project/config/product/ProductDataInitializer.java
+similarity index 91%
+rename from src/main/java/com/example/shopping_project/config/ProductDataInitializer.java
+rename to src/main/java/com/example/shopping_project/config/product/ProductDataInitializer.java
+index 4151fa0..5f0c6d7 100644
+--- a/src/main/java/com/example/shopping_project/config/ProductDataInitializer.java
++++ b/src/main/java/com/example/shopping_project/config/product/ProductDataInitializer.java
+@@ -1,10 +1,10 @@
+-package com.example.shopping_project.config;
++package com.example.shopping_project.config.product;
+ 
+-import com.example.shopping_project.entity.Category;
+-import com.example.shopping_project.entity.PetType;
+-import com.example.shopping_project.entity.Product;
+-import com.example.shopping_project.repository.CategoryRepository;
+-import com.example.shopping_project.repository.ProductRepository;
++import com.example.shopping_project.entity.product.Category;
++import com.example.shopping_project.entity.product.PetType;
++import com.example.shopping_project.entity.product.Product;
++import com.example.shopping_project.repository.product.CategoryRepository;
++import com.example.shopping_project.repository.product.ProductRepository;
+ import java.math.BigDecimal;
+ import java.util.List;
+ import org.springframework.boot.CommandLineRunner;
+diff --git a/src/main/java/com/example/shopping_project/controller/cart/.gitkeep b/src/main/java/com/example/shopping_project/controller/cart/.gitkeep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/src/main/java/com/example/shopping_project/controller/member/.gitkeep b/src/main/java/com/example/shopping_project/controller/member/.gitkeep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/src/main/java/com/example/shopping_project/controller/order/.gitkeep b/src/main/java/com/example/shopping_project/controller/order/.gitkeep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/src/main/java/com/example/shopping_project/controller/AdminDevController.java b/src/main/java/com/example/shopping_project/controller/product/AdminDevController.java
+similarity index 95%
+rename from src/main/java/com/example/shopping_project/controller/AdminDevController.java
+rename to src/main/java/com/example/shopping_project/controller/product/AdminDevController.java
+index d9d3583..a557afc 100644
+--- a/src/main/java/com/example/shopping_project/controller/AdminDevController.java
++++ b/src/main/java/com/example/shopping_project/controller/product/AdminDevController.java
+@@ -1,4 +1,4 @@
+-package com.example.shopping_project.controller;
++package com.example.shopping_project.controller.product;
+ 
+ import jakarta.servlet.http.HttpSession;
+ import org.springframework.context.annotation.Profile;
+diff --git a/src/main/java/com/example/shopping_project/controller/AdminProductController.java b/src/main/java/com/example/shopping_project/controller/product/AdminProductController.java
+similarity index 95%
+rename from src/main/java/com/example/shopping_project/controller/AdminProductController.java
+rename to src/main/java/com/example/shopping_project/controller/product/AdminProductController.java
+index 3990d69..463e751 100644
+--- a/src/main/java/com/example/shopping_project/controller/AdminProductController.java
++++ b/src/main/java/com/example/shopping_project/controller/product/AdminProductController.java
+@@ -1,9 +1,9 @@
+-package com.example.shopping_project.controller;
++package com.example.shopping_project.controller.product;
+ 
+-import com.example.shopping_project.dto.ProductForm;
+-import com.example.shopping_project.entity.PetType;
+-import com.example.shopping_project.service.CategoryService;
+-import com.example.shopping_project.service.ProductService;
++import com.example.shopping_project.dto.product.ProductForm;
++import com.example.shopping_project.entity.product.PetType;
++import com.example.shopping_project.service.product.CategoryService;
++import com.example.shopping_project.service.product.ProductService;
+ import jakarta.servlet.http.HttpSession;
+ import jakarta.validation.Valid;
+ import org.springframework.stereotype.Controller;
+diff --git a/src/main/java/com/example/shopping_project/controller/ProductController.java b/src/main/java/com/example/shopping_project/controller/product/ProductController.java
+similarity index 85%
+rename from src/main/java/com/example/shopping_project/controller/ProductController.java
+rename to src/main/java/com/example/shopping_project/controller/product/ProductController.java
+index 7d2ee9f..65ddcd6 100644
+--- a/src/main/java/com/example/shopping_project/controller/ProductController.java
++++ b/src/main/java/com/example/shopping_project/controller/product/ProductController.java
+@@ -1,10 +1,10 @@
+-package com.example.shopping_project.controller;
++package com.example.shopping_project.controller.product;
+ 
+-import com.example.shopping_project.entity.Category;
+-import com.example.shopping_project.entity.PetType;
+-import com.example.shopping_project.entity.Product;
+-import com.example.shopping_project.service.CategoryService;
+-import com.example.shopping_project.service.ProductService;
++import com.example.shopping_project.entity.product.Category;
++import com.example.shopping_project.entity.product.PetType;
++import com.example.shopping_project.entity.product.Product;
++import com.example.shopping_project.service.product.CategoryService;
++import com.example.shopping_project.service.product.ProductService;
+ import org.springframework.data.domain.Page;
+ import org.springframework.stereotype.Controller;
+ import org.springframework.ui.Model;
+diff --git a/src/main/java/com/example/shopping_project/controller/review/.gitkeep b/src/main/java/com/example/shopping_project/controller/review/.gitkeep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/src/main/java/com/example/shopping_project/dto/cart/.gitkeep b/src/main/java/com/example/shopping_project/dto/cart/.gitkeep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/src/main/java/com/example/shopping_project/dto/member/.gitkeep b/src/main/java/com/example/shopping_project/dto/member/.gitkeep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/src/main/java/com/example/shopping_project/dto/order/.gitkeep b/src/main/java/com/example/shopping_project/dto/order/.gitkeep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/src/main/java/com/example/shopping_project/dto/ProductForm.java b/src/main/java/com/example/shopping_project/dto/product/ProductForm.java
+similarity index 95%
+rename from src/main/java/com/example/shopping_project/dto/ProductForm.java
+rename to src/main/java/com/example/shopping_project/dto/product/ProductForm.java
+index 51df8f1..1230910 100644
+--- a/src/main/java/com/example/shopping_project/dto/ProductForm.java
++++ b/src/main/java/com/example/shopping_project/dto/product/ProductForm.java
+@@ -1,7 +1,7 @@
+-package com.example.shopping_project.dto;
++package com.example.shopping_project.dto.product;
+ 
+-import com.example.shopping_project.entity.PetType;
+-import com.example.shopping_project.entity.Product;
++import com.example.shopping_project.entity.product.PetType;
++import com.example.shopping_project.entity.product.Product;
+ import jakarta.validation.constraints.DecimalMin;
+ import jakarta.validation.constraints.Min;
+ import jakarta.validation.constraints.NotBlank;
+diff --git a/src/main/java/com/example/shopping_project/dto/review/.gitkeep b/src/main/java/com/example/shopping_project/dto/review/.gitkeep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/src/main/java/com/example/shopping_project/entity/cart/.gitkeep b/src/main/java/com/example/shopping_project/entity/cart/.gitkeep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/src/main/java/com/example/shopping_project/entity/member/.gitkeep b/src/main/java/com/example/shopping_project/entity/member/.gitkeep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/src/main/java/com/example/shopping_project/entity/order/.gitkeep b/src/main/java/com/example/shopping_project/entity/order/.gitkeep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/src/main/java/com/example/shopping_project/entity/Category.java b/src/main/java/com/example/shopping_project/entity/product/Category.java
+similarity index 97%
+rename from src/main/java/com/example/shopping_project/entity/Category.java
+rename to src/main/java/com/example/shopping_project/entity/product/Category.java
+index bdf4f7e..fa42466 100644
+--- a/src/main/java/com/example/shopping_project/entity/Category.java
++++ b/src/main/java/com/example/shopping_project/entity/product/Category.java
+@@ -1,4 +1,4 @@
+-package com.example.shopping_project.entity;
++package com.example.shopping_project.entity.product;
+ 
+ import jakarta.persistence.Column;
+ import jakarta.persistence.Entity;
+diff --git a/src/main/java/com/example/shopping_project/entity/PetType.java b/src/main/java/com/example/shopping_project/entity/product/PetType.java
+similarity index 82%
+rename from src/main/java/com/example/shopping_project/entity/PetType.java
+rename to src/main/java/com/example/shopping_project/entity/product/PetType.java
+index c508f1c..eaa3dd7 100644
+--- a/src/main/java/com/example/shopping_project/entity/PetType.java
++++ b/src/main/java/com/example/shopping_project/entity/product/PetType.java
+@@ -1,4 +1,4 @@
+-package com.example.shopping_project.entity;
++package com.example.shopping_project.entity.product;
+ 
+ public enum PetType {
+     DOG("강아지"),
+diff --git a/src/main/java/com/example/shopping_project/entity/Product.java b/src/main/java/com/example/shopping_project/entity/product/Product.java
+similarity index 98%
+rename from src/main/java/com/example/shopping_project/entity/Product.java
+rename to src/main/java/com/example/shopping_project/entity/product/Product.java
+index 309ffb6..e12c7d8 100644
+--- a/src/main/java/com/example/shopping_project/entity/Product.java
++++ b/src/main/java/com/example/shopping_project/entity/product/Product.java
+@@ -1,4 +1,4 @@
+-package com.example.shopping_project.entity;
++package com.example.shopping_project.entity.product;
+ 
+ import jakarta.persistence.Column;
+ import jakarta.persistence.Entity;
+diff --git a/src/main/java/com/example/shopping_project/entity/review/.gitkeep b/src/main/java/com/example/shopping_project/entity/review/.gitkeep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/src/main/java/com/example/shopping_project/repository/cart/.gitkeep b/src/main/java/com/example/shopping_project/repository/cart/.gitkeep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/src/main/java/com/example/shopping_project/repository/member/.gitkeep b/src/main/java/com/example/shopping_project/repository/member/.gitkeep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/src/main/java/com/example/shopping_project/repository/order/.gitkeep b/src/main/java/com/example/shopping_project/repository/order/.gitkeep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/src/main/java/com/example/shopping_project/repository/CategoryRepository.java b/src/main/java/com/example/shopping_project/repository/product/CategoryRepository.java
+similarity index 75%
+rename from src/main/java/com/example/shopping_project/repository/CategoryRepository.java
+rename to src/main/java/com/example/shopping_project/repository/product/CategoryRepository.java
+index d07ba9e..2d5e552 100644
+--- a/src/main/java/com/example/shopping_project/repository/CategoryRepository.java
++++ b/src/main/java/com/example/shopping_project/repository/product/CategoryRepository.java
+@@ -1,6 +1,6 @@
+-package com.example.shopping_project.repository;
++package com.example.shopping_project.repository.product;
+ 
+-import com.example.shopping_project.entity.Category;
++import com.example.shopping_project.entity.product.Category;
+ import java.util.List;
+ import org.springframework.data.jpa.repository.JpaRepository;
+ 
+diff --git a/src/main/java/com/example/shopping_project/repository/ProductRepository.java b/src/main/java/com/example/shopping_project/repository/product/ProductRepository.java
+similarity index 89%
+rename from src/main/java/com/example/shopping_project/repository/ProductRepository.java
+rename to src/main/java/com/example/shopping_project/repository/product/ProductRepository.java
+index 8669cfa..2d373e3 100644
+--- a/src/main/java/com/example/shopping_project/repository/ProductRepository.java
++++ b/src/main/java/com/example/shopping_project/repository/product/ProductRepository.java
+@@ -1,7 +1,7 @@
+-package com.example.shopping_project.repository;
++package com.example.shopping_project.repository.product;
+ 
+-import com.example.shopping_project.entity.PetType;
+-import com.example.shopping_project.entity.Product;
++import com.example.shopping_project.entity.product.PetType;
++import com.example.shopping_project.entity.product.Product;
+ import org.springframework.data.domain.Page;
+ import org.springframework.data.domain.Pageable;
+ import org.springframework.data.jpa.repository.EntityGraph;
+diff --git a/src/main/java/com/example/shopping_project/repository/review/.gitkeep b/src/main/java/com/example/shopping_project/repository/review/.gitkeep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/src/main/java/com/example/shopping_project/service/cart/.gitkeep b/src/main/java/com/example/shopping_project/service/cart/.gitkeep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/src/main/java/com/example/shopping_project/service/member/.gitkeep b/src/main/java/com/example/shopping_project/service/member/.gitkeep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/src/main/java/com/example/shopping_project/service/order/.gitkeep b/src/main/java/com/example/shopping_project/service/order/.gitkeep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/src/main/java/com/example/shopping_project/service/CategoryService.java b/src/main/java/com/example/shopping_project/service/product/CategoryService.java
+similarity index 87%
+rename from src/main/java/com/example/shopping_project/service/CategoryService.java
+rename to src/main/java/com/example/shopping_project/service/product/CategoryService.java
+index f4f9375..1d885ca 100644
+--- a/src/main/java/com/example/shopping_project/service/CategoryService.java
++++ b/src/main/java/com/example/shopping_project/service/product/CategoryService.java
+@@ -1,7 +1,7 @@
+-package com.example.shopping_project.service;
++package com.example.shopping_project.service.product;
+ 
+-import com.example.shopping_project.entity.Category;
+-import com.example.shopping_project.repository.CategoryRepository;
++import com.example.shopping_project.entity.product.Category;
++import com.example.shopping_project.repository.product.CategoryRepository;
+ import java.util.List;
+ import org.springframework.stereotype.Service;
+ import org.springframework.transaction.annotation.Transactional;
+diff --git a/src/main/java/com/example/shopping_project/service/NotFoundException.java b/src/main/java/com/example/shopping_project/service/product/NotFoundException.java
+similarity index 72%
+rename from src/main/java/com/example/shopping_project/service/NotFoundException.java
+rename to src/main/java/com/example/shopping_project/service/product/NotFoundException.java
+index ea1ba2d..43f521b 100644
+--- a/src/main/java/com/example/shopping_project/service/NotFoundException.java
++++ b/src/main/java/com/example/shopping_project/service/product/NotFoundException.java
+@@ -1,4 +1,4 @@
+-package com.example.shopping_project.service;
++package com.example.shopping_project.service.product;
+ 
+ public class NotFoundException extends RuntimeException {
+ 
+diff --git a/src/main/java/com/example/shopping_project/service/ProductService.java b/src/main/java/com/example/shopping_project/service/product/ProductService.java
+similarity index 91%
+rename from src/main/java/com/example/shopping_project/service/ProductService.java
+rename to src/main/java/com/example/shopping_project/service/product/ProductService.java
+index 7722cfd..3017ed3 100644
+--- a/src/main/java/com/example/shopping_project/service/ProductService.java
++++ b/src/main/java/com/example/shopping_project/service/product/ProductService.java
+@@ -1,10 +1,10 @@
+-package com.example.shopping_project.service;
++package com.example.shopping_project.service.product;
+ 
+-import com.example.shopping_project.dto.ProductForm;
+-import com.example.shopping_project.entity.Category;
+-import com.example.shopping_project.entity.PetType;
+-import com.example.shopping_project.entity.Product;
+-import com.example.shopping_project.repository.ProductRepository;
++import com.example.shopping_project.dto.product.ProductForm;
++import com.example.shopping_project.entity.product.Category;
++import com.example.shopping_project.entity.product.PetType;
++import com.example.shopping_project.entity.product.Product;
++import com.example.shopping_project.repository.product.ProductRepository;
+ import org.springframework.data.domain.Page;
+ import org.springframework.data.domain.PageRequest;
+ import org.springframework.data.domain.Sort;
+diff --git a/src/main/java/com/example/shopping_project/service/review/.gitkeep b/src/main/java/com/example/shopping_project/service/review/.gitkeep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/src/test/java/com/example/shopping_project/ProductSearchTest.java b/src/test/java/com/example/shopping_project/ProductSearchTest.java
+index 3175b6b..d9c99cb 100644
+--- a/src/test/java/com/example/shopping_project/ProductSearchTest.java
++++ b/src/test/java/com/example/shopping_project/ProductSearchTest.java
+@@ -6,12 +6,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
+ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+ 
+-import com.example.shopping_project.entity.Category;
+-import com.example.shopping_project.entity.PetType;
+-import com.example.shopping_project.entity.Product;
+-import com.example.shopping_project.repository.CategoryRepository;
+-import com.example.shopping_project.repository.ProductRepository;
+-import com.example.shopping_project.service.ProductService;
++import com.example.shopping_project.entity.product.Category;
++import com.example.shopping_project.entity.product.PetType;
++import com.example.shopping_project.entity.product.Product;
++import com.example.shopping_project.repository.product.CategoryRepository;
++import com.example.shopping_project.repository.product.ProductRepository;
++import com.example.shopping_project.service.product.ProductService;
+ import java.math.BigDecimal;
+ import org.junit.jupiter.api.BeforeEach;
+ import org.junit.jupiter.api.Test;
 -- 
 2.43.0
 

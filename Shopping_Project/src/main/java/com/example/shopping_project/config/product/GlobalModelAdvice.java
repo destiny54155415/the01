@@ -1,7 +1,7 @@
-package com.example.shopping_project.config;
+package com.example.shopping_project.config.product;
 
-import com.example.shopping_project.service.CategoryService;
-import com.example.shopping_project.service.NotFoundException;
+import com.example.shopping_project.service.product.CategoryService;
+import com.example.shopping_project.service.product.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;

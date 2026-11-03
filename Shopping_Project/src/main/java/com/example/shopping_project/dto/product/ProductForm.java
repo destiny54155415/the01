@@ -1,7 +1,7 @@
-package com.example.shopping_project.dto;
+package com.example.shopping_project.dto.product;
 
-import com.example.shopping_project.entity.PetType;
-import com.example.shopping_project.entity.Product;
+import com.example.shopping_project.entity.product.PetType;
+import com.example.shopping_project.entity.product.Product;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;

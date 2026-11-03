@@ -1,10 +1,10 @@
-package com.example.shopping_project.config;
+package com.example.shopping_project.config.product;
 
-import com.example.shopping_project.entity.Category;
-import com.example.shopping_project.entity.PetType;
-import com.example.shopping_project.entity.Product;
-import com.example.shopping_project.repository.CategoryRepository;
-import com.example.shopping_project.repository.ProductRepository;
+import com.example.shopping_project.entity.product.Category;
+import com.example.shopping_project.entity.product.PetType;
+import com.example.shopping_project.entity.product.Product;
+import com.example.shopping_project.repository.product.CategoryRepository;
+import com.example.shopping_project.repository.product.ProductRepository;
 import java.math.BigDecimal;
 import java.util.List;
 import org.springframework.boot.CommandLineRunner;

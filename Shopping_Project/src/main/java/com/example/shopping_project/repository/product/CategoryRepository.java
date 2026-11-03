@@ -1,6 +1,6 @@
-package com.example.shopping_project.repository;
+package com.example.shopping_project.repository.product;
 
-import com.example.shopping_project.entity.Category;
+import com.example.shopping_project.entity.product.Category;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
