@@ -51,6 +51,7 @@ CREATE TABLE IF NOT EXISTS products (
     description     TEXT,
     price           DECIMAL(12, 2) NOT NULL,
     stock           INT NOT NULL DEFAULT 0,
+    sales_count     INT NOT NULL DEFAULT 0,
     pet_type        VARCHAR(20) NOT NULL DEFAULT 'COMMON',
     image_url       VARCHAR(500),
     is_active       BOOLEAN NOT NULL DEFAULT TRUE,
@@ -61,11 +62,16 @@ CREATE TABLE IF NOT EXISTS products (
         FOREIGN KEY (category_id) REFERENCES categories(category_id),
     CONSTRAINT chk_products_price CHECK (price >= 0),
     CONSTRAINT chk_products_stock CHECK (stock >= 0),
+    CONSTRAINT chk_products_sales_count CHECK (sales_count >= 0),
     CONSTRAINT chk_products_pet_type CHECK (pet_type IN ('DOG', 'CAT', 'COMMON')),
     INDEX idx_products_category (category_id),
     INDEX idx_products_name (product_name),
-    INDEX idx_products_active (is_active)
+    INDEX idx_products_active (is_active),
+    INDEX idx_products_sales (sales_count)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 기존 DB에 컬럼이 없을 때 (이미 products 테이블이 있는 경우)
+-- ALTER TABLE products ADD COLUMN sales_count INT NOT NULL DEFAULT 0 AFTER stock;
 
 
 -- =========================================================

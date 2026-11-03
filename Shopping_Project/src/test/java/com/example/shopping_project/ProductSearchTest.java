@@ -81,6 +81,25 @@ class ProductSearchTest {
     }
 
     @Test
+    void bestsellersOrderedBySalesCount() {
+        Product low = productRepository.findAll().stream()
+                .filter(p -> "참치 츄르".equals(p.getProductName()))
+                .findFirst()
+                .orElseThrow();
+        low.setSalesCount(10);
+        Product high = productRepository.findAll().stream()
+                .filter(p -> "실내묘 건식사료".equals(p.getProductName()))
+                .findFirst()
+                .orElseThrow();
+        high.setSalesCount(999);
+        productRepository.flush();
+
+        assertThat(productService.findBestsellers(2))
+                .extracting(Product::getProductName)
+                .containsExactly("실내묘 건식사료", "참치 츄르");
+    }
+
+    @Test
     void adminCanCreateProductWithSessionRole() throws Exception {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("loginRole", "ADMIN");
@@ -92,6 +111,7 @@ class ProductSearchTest {
                         .param("description", "고양이 타워")
                         .param("price", "79000")
                         .param("stock", "5")
+                        .param("salesCount", "10")
                         .param("petType", "CAT")
                         .param("isActive", "true"))
                 .andExpect(status().is3xxRedirection())

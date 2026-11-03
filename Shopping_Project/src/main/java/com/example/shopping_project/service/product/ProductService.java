@@ -5,6 +5,7 @@ import com.example.shopping_project.entity.product.Category;
 import com.example.shopping_project.entity.product.PetType;
 import com.example.shopping_project.entity.product.Product;
 import com.example.shopping_project.repository.product.ProductRepository;
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -32,8 +33,17 @@ public class ProductService {
                 categoryId,
                 petType,
                 false,
-                PageRequest.of(Math.max(page, 0), PAGE_SIZE, Sort.by(Sort.Direction.DESC, "createdAt", "productId"))
+                PageRequest.of(Math.max(page, 0), PAGE_SIZE,
+                        Sort.by(Sort.Direction.DESC, "salesCount", "productId"))
         );
+    }
+
+    @Transactional(readOnly = true)
+    public List<Product> findBestsellers(int limit) {
+        int size = Math.max(limit, 1);
+        return productRepository
+                .findByIsActiveTrueOrderBySalesCountDescProductIdDesc(PageRequest.of(0, size))
+                .getContent();
     }
 
     @Transactional(readOnly = true)
@@ -72,6 +82,7 @@ public class ProductService {
                 blankToNull(form.getDescription()),
                 form.getPrice(),
                 form.getStock(),
+                form.getSalesCount() == null ? 0 : form.getSalesCount(),
                 form.getPetType(),
                 blankToNull(form.getImageUrl())
         );
@@ -87,6 +98,7 @@ public class ProductService {
         product.setDescription(blankToNull(form.getDescription()));
         product.setPrice(form.getPrice());
         product.setStock(form.getStock());
+        product.setSalesCount(form.getSalesCount() == null ? 0 : form.getSalesCount());
         product.setPetType(form.getPetType());
         product.setImageUrl(blankToNull(form.getImageUrl()));
         product.setIsActive(form.getIsActive() == null || form.getIsActive());
