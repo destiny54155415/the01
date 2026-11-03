@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "categories")
-public class Category {
+public class CategoryEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,10 +30,10 @@ public class Category {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    protected Category() {
+    protected CategoryEntity() {
     }
 
-    public Category(String categoryName, Integer displayOrder) {
+    public CategoryEntity(String categoryName, Integer displayOrder) {
         this.categoryName = categoryName;
         this.displayOrder = displayOrder;
         this.isActive = true;

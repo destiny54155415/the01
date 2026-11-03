@@ -1,6 +1,6 @@
 package com.example.shopping_project.controller.productcontroller;
 
-import com.example.shopping_project.dto.productdto.ProductForm;
+import com.example.shopping_project.dto.productdto.ProductDto;
 import com.example.shopping_project.entity.productentity.PetType;
 import com.example.shopping_project.service.productservice.CategoryService;
 import com.example.shopping_project.service.productservice.ProductService;
@@ -52,14 +52,14 @@ public class AdminProductController {
             return "redirect:/login";
         }
         if (!model.containsAttribute("form")) {
-            model.addAttribute("form", new ProductForm());
+            model.addAttribute("form", new ProductDto());
         }
         addFormOptions(model);
         return "product/admin-form";
     }
 
     @PostMapping("/admin/products")
-    public String create(@Valid @ModelAttribute("form") ProductForm form,
+    public String create(@Valid @ModelAttribute("form") ProductDto form,
                          BindingResult bindingResult,
                          HttpSession session,
                          Model model,
@@ -82,7 +82,7 @@ public class AdminProductController {
             return "redirect:/login";
         }
         if (!model.containsAttribute("form")) {
-            model.addAttribute("form", ProductForm.from(productService.getProduct(productId)));
+            model.addAttribute("form", ProductDto.from(productService.getProduct(productId)));
         }
         addFormOptions(model);
         return "product/admin-form";
@@ -90,7 +90,7 @@ public class AdminProductController {
 
     @PostMapping("/admin/products/{productId}")
     public String update(@PathVariable Long productId,
-                         @Valid @ModelAttribute("form") ProductForm form,
+                         @Valid @ModelAttribute("form") ProductDto form,
                          BindingResult bindingResult,
                          HttpSession session,
                          Model model,

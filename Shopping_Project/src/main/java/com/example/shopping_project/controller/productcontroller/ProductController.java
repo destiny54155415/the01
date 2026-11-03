@@ -1,8 +1,8 @@
 package com.example.shopping_project.controller.productcontroller;
 
-import com.example.shopping_project.entity.productentity.Category;
+import com.example.shopping_project.entity.productentity.CategoryEntity;
 import com.example.shopping_project.entity.productentity.PetType;
-import com.example.shopping_project.entity.productentity.Product;
+import com.example.shopping_project.entity.productentity.ProductEntity;
 import com.example.shopping_project.service.productservice.CategoryService;
 import com.example.shopping_project.service.productservice.ProductService;
 import org.springframework.data.domain.Page;
@@ -29,8 +29,8 @@ public class ProductController {
                        @RequestParam(required = false) PetType petType,
                        @RequestParam(defaultValue = "0") int page,
                        Model model) {
-        Page<Product> result = productService.searchActive(keyword, categoryId, petType, page);
-        Category selectedCategory = categoryId == null ? null : categoryService.getActiveCategory(categoryId);
+        Page<ProductEntity> result = productService.searchActive(keyword, categoryId, petType, page);
+        CategoryEntity selectedCategory = categoryId == null ? null : categoryService.getActiveCategory(categoryId);
 
         model.addAttribute("result", result);
         model.addAttribute("keyword", keyword == null ? "" : keyword.trim());
@@ -48,7 +48,7 @@ public class ProductController {
         return "product/detail";
     }
 
-    private String buildTitle(String keyword, Category selectedCategory) {
+    private String buildTitle(String keyword, CategoryEntity selectedCategory) {
         if (keyword != null && !keyword.isBlank()) {
             return keyword.trim() + " 검색 결과";
         }

@@ -6,9 +6,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.example.shopping_project.entity.productentity.Category;
+import com.example.shopping_project.entity.productentity.CategoryEntity;
 import com.example.shopping_project.entity.productentity.PetType;
-import com.example.shopping_project.entity.productentity.Product;
+import com.example.shopping_project.entity.productentity.ProductEntity;
 import com.example.shopping_project.repository.productrepository.CategoryRepository;
 import com.example.shopping_project.repository.productrepository.ProductRepository;
 import com.example.shopping_project.service.productservice.ProductService;
@@ -38,18 +38,18 @@ class ProductSearchTest {
     @Autowired
     ProductService productService;
 
-    Category food;
-    Category snack;
+    CategoryEntity food;
+    CategoryEntity snack;
 
     @BeforeEach
     void setUp() {
-        food = categoryRepository.save(new Category("사료", 1));
-        snack = categoryRepository.save(new Category("간식", 2));
-        productRepository.save(new Product(food, "실내묘 건식사료", "고양이 사료",
+        food = categoryRepository.save(new CategoryEntity("사료", 1));
+        snack = categoryRepository.save(new CategoryEntity("간식", 2));
+        productRepository.save(new ProductEntity(food, "실내묘 건식사료", "고양이 사료",
                 new BigDecimal("20000"), 10, PetType.CAT, null));
-        productRepository.save(new Product(snack, "참치 츄르", "고양이 간식",
+        productRepository.save(new ProductEntity(snack, "참치 츄르", "고양이 간식",
                 new BigDecimal("3000"), 50, PetType.CAT, null));
-        Product hidden = new Product(food, "숨긴 사료", "비공개",
+        ProductEntity hidden = new ProductEntity(food, "숨긴 사료", "비공개",
                 new BigDecimal("1000"), 1, PetType.DOG, null);
         hidden.setIsActive(false);
         productRepository.save(hidden);
@@ -58,10 +58,10 @@ class ProductSearchTest {
     @Test
     void searchesByKeywordAndCategory() {
         assertThat(productService.searchActive("츄르", null, null, 0).getContent())
-                .extracting(Product::getProductName)
+                .extracting(ProductEntity::getProductName)
                 .containsExactly("참치 츄르");
         assertThat(productService.searchActive(null, food.getCategoryId(), PetType.CAT, 0).getContent())
-                .extracting(Product::getProductName)
+                .extracting(ProductEntity::getProductName)
                 .containsExactly("실내묘 건식사료");
         assertThat(productService.searchActive(null, null, null, 0).getTotalElements()).isEqualTo(2);
     }
@@ -82,12 +82,12 @@ class ProductSearchTest {
 
     @Test
     void bestsellersOrderedBySalesCount() {
-        Product low = productRepository.findAll().stream()
+        ProductEntity low = productRepository.findAll().stream()
                 .filter(p -> "참치 츄르".equals(p.getProductName()))
                 .findFirst()
                 .orElseThrow();
         low.setSalesCount(10);
-        Product high = productRepository.findAll().stream()
+        ProductEntity high = productRepository.findAll().stream()
                 .filter(p -> "실내묘 건식사료".equals(p.getProductName()))
                 .findFirst()
                 .orElseThrow();
@@ -95,7 +95,7 @@ class ProductSearchTest {
         productRepository.flush();
 
         assertThat(productService.findBestsellers(2))
-                .extracting(Product::getProductName)
+                .extracting(ProductEntity::getProductName)
                 .containsExactly("실내묘 건식사료", "참치 츄르");
     }
 
@@ -118,7 +118,7 @@ class ProductSearchTest {
                 .andExpect(redirectedUrl("/admin/products"));
 
         assertThat(productRepository.findAll())
-                .extracting(Product::getProductName)
+                .extracting(ProductEntity::getProductName)
                 .contains("캣타워");
     }
 }

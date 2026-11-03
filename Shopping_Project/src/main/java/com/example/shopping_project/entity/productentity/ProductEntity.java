@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "products")
-public class Product {
+public class ProductEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +27,7 @@ public class Product {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "category_id", nullable = false)
-    private Category category;
+    private CategoryEntity category;
 
     @Column(name = "product_name", nullable = false, length = 150)
     private String productName;
@@ -61,15 +61,15 @@ public class Product {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    protected Product() {
+    protected ProductEntity() {
     }
 
-    public Product(Category category, String productName, String description, BigDecimal price,
+    public ProductEntity(CategoryEntity category, String productName, String description, BigDecimal price,
                    Integer stock, PetType petType, String imageUrl) {
         this(category, productName, description, price, stock, 0, petType, imageUrl);
     }
 
-    public Product(Category category, String productName, String description, BigDecimal price,
+    public ProductEntity(CategoryEntity category, String productName, String description, BigDecimal price,
                    Integer stock, Integer salesCount, PetType petType, String imageUrl) {
         this.category = category;
         this.productName = productName;
@@ -114,11 +114,11 @@ public class Product {
         return productId;
     }
 
-    public Category getCategory() {
+    public CategoryEntity getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(CategoryEntity category) {
         this.category = category;
     }
 
