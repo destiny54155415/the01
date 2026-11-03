@@ -1,3 +1,76 @@
+-- 1. 회원
+-- =========================================================
+CREATE TABLE IF NOT EXISTS members (
+    member_id       BIGINT AUTO_INCREMENT PRIMARY KEY,
+    username        VARCHAR(50)  NOT NULL UNIQUE COMMENT '로그인 아이디',
+    password        VARCHAR(255) NOT NULL COMMENT '해시된 비밀번호',
+    name            VARCHAR(50)  NOT NULL,
+    email           VARCHAR(100) NOT NULL UNIQUE,
+    phone           VARCHAR(20),
+    zipcode         VARCHAR(10),
+    address         VARCHAR(255),
+    address_detail  VARCHAR(255),
+    role            VARCHAR(20)  NOT NULL DEFAULT 'USER',
+    created_at      DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at      DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP
+                                  ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT chk_members_role CHECK (role IN ('USER', 'ADMIN'))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+-- =========================================================
+-- 2. 상품 카테고리
+-- =========================================================
+CREATE TABLE IF NOT EXISTS categories (
+    category_id     BIGINT AUTO_INCREMENT PRIMARY KEY,
+    category_name   VARCHAR(50) NOT NULL UNIQUE,
+    display_order   INT NOT NULL DEFAULT 0,
+    is_active       BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at      DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT IGNORE INTO categories (category_name, display_order) VALUES
+('사료', 1),
+('간식', 2),
+('장난감', 3),
+('산책용품', 4),
+('미용·목욕', 5),
+('하우스·생활용품', 6),
+('의류·패션', 7),
+('위생·배변용품', 8);
+
+
+-- =========================================================
+-- 3. 상품
+-- pet_type: DOG / CAT / COMMON
+-- =========================================================
+CREATE TABLE IF NOT EXISTS products (
+    product_id      BIGINT AUTO_INCREMENT PRIMARY KEY,
+    category_id     BIGINT NOT NULL,
+    product_name    VARCHAR(150) NOT NULL,
+    description     TEXT,
+    price           DECIMAL(12, 2) NOT NULL,
+    stock           INT NOT NULL DEFAULT 0,
+    pet_type        VARCHAR(20) NOT NULL DEFAULT 'COMMON',
+    image_url       VARCHAR(500),
+    is_active       BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at      DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at      DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+                                  ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_products_category
+        FOREIGN KEY (category_id) REFERENCES categories(category_id),
+    CONSTRAINT chk_products_price CHECK (price >= 0),
+    CONSTRAINT chk_products_stock CHECK (stock >= 0),
+    CONSTRAINT chk_products_pet_type CHECK (pet_type IN ('DOG', 'CAT', 'COMMON')),
+    INDEX idx_products_category (category_id),
+    INDEX idx_products_name (product_name),
+    INDEX idx_products_active (is_active)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+-- =========================================================
+-- 4. 장바구니 상품
+-- 한 회원은 같은 상품을 장바구니에 한 행으로 보관
 -- =========================================================
 CREATE TABLE IF NOT EXISTS cart_items (
     cart_item_id    BIGINT AUTO_INCREMENT PRIMARY KEY,
