@@ -46,6 +46,7 @@
                 <th>카테고리</th>
                 <th>가격</th>
                 <th>재고</th>
+                <th>판매량</th>
                 <th>구분</th>
                 <th>상태</th>
                 <th></th>
@@ -57,6 +58,7 @@
                 <td th:text="${product.category.categoryName}">카테고리</td>
                 <td th:text="${#numbers.formatInteger(product.price, 0, 'COMMA')} + '원'">0원</td>
                 <td th:text="${product.stock}">0</td>
+                <td th:text="${product.salesCount}">0</td>
                 <td th:text="${product.petType.label}">공용</td>
                 <td th:text="${product.isActive} ? '판매중' : '비활성'">판매중</td>
                 <td class="admin-actions">

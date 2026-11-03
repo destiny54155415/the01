@@ -2,6 +2,7 @@ package com.example.shopping_project.repository.product;
 
 import com.example.shopping_project.entity.product.PetType;
 import com.example.shopping_project.entity.product.Product;
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -10,6 +11,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
+
+    Optional<Product> findByProductName(String productName);
+
+    @EntityGraph(attributePaths = "category")
+    Page<Product> findByIsActiveTrueOrderBySalesCountDescProductIdDesc(Pageable pageable);
 
     @EntityGraph(attributePaths = "category")
     @Query("""

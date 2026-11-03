@@ -17,7 +17,7 @@ public class HomeController {
     // 메인 페이지 — 추천 상품은 DB 상품 목록 일부
     @GetMapping("/")
     public String home(Model model) {
-        model.addAttribute("featuredProducts", productService.searchActive(null, null, null, 0).getContent());
+        model.addAttribute("featuredProducts", productService.findBestsellers(4));
         return "index";
     }
 

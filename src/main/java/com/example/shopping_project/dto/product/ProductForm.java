@@ -31,6 +31,10 @@ public class ProductForm {
     @Min(value = 0, message = "재고는 0개 이상입니다.")
     private Integer stock;
 
+    @NotNull(message = "판매량을 입력해 주세요.")
+    @Min(value = 0, message = "판매량은 0 이상입니다.")
+    private Integer salesCount = 0;
+
     @NotNull(message = "반려동물 구분을 선택해 주세요.")
     private PetType petType = PetType.COMMON;
 
@@ -47,6 +51,7 @@ public class ProductForm {
         form.description = product.getDescription();
         form.price = product.getPrice();
         form.stock = product.getStock();
+        form.salesCount = product.getSalesCount();
         form.petType = product.getPetType();
         form.imageUrl = product.getImageUrl();
         form.isActive = product.getIsActive();
@@ -99,6 +104,14 @@ public class ProductForm {
 
     public void setStock(Integer stock) {
         this.stock = stock;
+    }
+
+    public Integer getSalesCount() {
+        return salesCount;
+    }
+
+    public void setSalesCount(Integer salesCount) {
+        this.salesCount = salesCount;
     }
 
     public PetType getPetType() {

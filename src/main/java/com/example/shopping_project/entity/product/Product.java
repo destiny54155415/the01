@@ -41,6 +41,10 @@ public class Product {
     @Column(name = "stock", nullable = false)
     private Integer stock = 0;
 
+    /** 누적 판매량 — 인기/추천 정렬에 사용 */
+    @Column(name = "sales_count", nullable = false)
+    private Integer salesCount = 0;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "pet_type", nullable = false, length = 20)
     private PetType petType = PetType.COMMON;
@@ -62,11 +66,17 @@ public class Product {
 
     public Product(Category category, String productName, String description, BigDecimal price,
                    Integer stock, PetType petType, String imageUrl) {
+        this(category, productName, description, price, stock, 0, petType, imageUrl);
+    }
+
+    public Product(Category category, String productName, String description, BigDecimal price,
+                   Integer stock, Integer salesCount, PetType petType, String imageUrl) {
         this.category = category;
         this.productName = productName;
         this.description = description;
         this.price = price;
         this.stock = stock;
+        this.salesCount = salesCount == null ? 0 : salesCount;
         this.petType = petType;
         this.imageUrl = imageUrl;
         this.isActive = true;
@@ -79,6 +89,9 @@ public class Product {
         updatedAt = now;
         if (stock == null) {
             stock = 0;
+        }
+        if (salesCount == null) {
+            salesCount = 0;
         }
         if (petType == null) {
             petType = PetType.COMMON;
@@ -139,6 +152,14 @@ public class Product {
 
     public void setStock(Integer stock) {
         this.stock = stock;
+    }
+
+    public Integer getSalesCount() {
+        return salesCount;
+    }
+
+    public void setSalesCount(Integer salesCount) {
+        this.salesCount = salesCount;
     }
 
     public PetType getPetType() {
