@@ -4,15 +4,15 @@
 
 <nav class="category-nav" th:fragment="categoryNav">
     <ul>
-        <li><a th:href="@{/products}">전체상품</a></li>
-        <li><a th:href="@{/products(category=1)}">사료</a></li>
-        <li><a th:href="@{/products(category=2)}">간식</a></li>
-        <li><a th:href="@{/products(category=3)}">장난감</a></li>
-        <li><a th:href="@{/products(category=4)}">산책용품</a></li>
-        <li><a th:href="@{/products(category=5)}">미용·목욕</a></li>
-        <li><a th:href="@{/products(category=6)}">하우스·생활용품</a></li>
-        <li><a th:href="@{/products(category=7)}">의류·패션</a></li>
-        <li><a th:href="@{/products(category=8)}">위생·배변용품</a></li>
+        <li>
+            <a th:href="@{/products}"
+               th:classappend="${categoryId == null} ? 'is-active'">전체상품</a>
+        </li>
+        <li th:each="category : ${categories}">
+            <a th:href="@{/products(categoryId=${category.categoryId})}"
+               th:text="${category.categoryName}"
+               th:classappend="${categoryId == category.categoryId} ? 'is-active'">카테고리</a>
+        </li>
     </ul>
 </nav>
 

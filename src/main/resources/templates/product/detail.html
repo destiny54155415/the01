@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${product.productName} + ' | PetShop'">상품 상세</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/product.css}">
+</head>
+<body>
+<header th:replace="~{fragments/header :: header}"></header>
+<nav th:replace="~{fragments/category-nav :: categoryNav}"></nav>
+
+<main class="page-container">
+    <p class="crumb">
+        <a th:href="@{/products}">전체상품</a>
+        <span>/</span>
+        <a th:href="@{/products(categoryId=${product.category.categoryId})}"
+           th:text="${product.category.categoryName}">카테고리</a>
+    </p>
+
+    <section class="product-detail">
+        <div class="product-detail-image product-image-placeholder"
+             th:classappend="'tone-' + (${product.category.categoryId} % 6)"
+             th:text="${product.petType.label}">고양이</div>
+
+        <div class="product-detail-info">
+            <p class="product-category" th:text="${product.category.categoryName}">사료</p>
+            <h1 th:text="${product.productName}">상품명</h1>
+            <p class="product-price">
+                <span th:text="${#numbers.formatInteger(product.price, 0, 'COMMA')} + '원'">0원</span>
+            </p>
+            <p class="text-muted" th:text="|구분: ${product.petType.label}|">구분</p>
+            <p class="text-muted" th:text="|재고: ${product.stock}개|">재고</p>
+            <p class="product-description" th:text="${product.description}">설명</p>
+
+            <div class="product-actions">
+                <a class="btn btn-primary" th:href="@{/cart}">장바구니로 이동</a>
+                <a class="btn btn-outline" th:href="@{/products(categoryId=${product.category.categoryId})}">같은 카테고리 보기</a>
+            </div>
+            <p class="text-muted">장바구니 담기는 3번 담당, 리뷰는 4번 담당 기능입니다.</p>
+        </div>
+    </section>
+</main>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+</body>
+</html>
