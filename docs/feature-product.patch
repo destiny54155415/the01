@@ -1,7 +1,7 @@
 From fd1099268631ae5556ddd58d93b656e147f952c5 Mon Sep 17 00:00:00 2001
 From: Kim seung yeon <142073825+kim-seung-yeon-0@users.noreply.github.com>
 Date: Tue, 3 Nov 2026 11:21:26 +0900
-Subject: [PATCH 1/6] Update README.md
+Subject: [PATCH 1/7] Update README.md
 
 ---
  README.md | 129 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -151,7 +151,7 @@ index 0317bf3..003bfd5 100644
 From ce031ecd4f8bf938debdc1e3970aa79c3e2df7f2 Mon Sep 17 00:00:00 2001
 From: Kim seung yeon <142073825+kim-seung-yeon-0@users.noreply.github.com>
 Date: Tue, 3 Nov 2026 11:25:59 +0900
-Subject: [PATCH 2/6] Update README.md
+Subject: [PATCH 2/7] Update README.md
 
 ---
  README.md | 96 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -271,7 +271,7 @@ index 003bfd5..b846950 100644
 From 09544215704d81f76559b351701cb93bc2ebdb17 Mon Sep 17 00:00:00 2001
 From: Kim seung yeon <142073825+kim-seung-yeon-0@users.noreply.github.com>
 Date: Tue, 3 Nov 2026 11:31:32 +0900
-Subject: [PATCH 3/6] Update README.md
+Subject: [PATCH 3/7] Update README.md
 
 ---
  README.md | 222 +-----------------------------------------------------
@@ -515,7 +515,7 @@ index b846950..16e9cb8 100644
 From 13e6ac89aa849a002f81a0b9c29e75ed272d6aff Mon Sep 17 00:00:00 2001
 From: Kim seung yeon <142073825+kim-seung-yeon-0@users.noreply.github.com>
 Date: Tue, 3 Nov 2026 11:34:43 +0900
-Subject: [PATCH 4/6] Update petshop_db.sql
+Subject: [PATCH 4/7] Update petshop_db.sql
 
 ---
  src/db/petshop_db.sql | 73 +++++++++++++++++++++++++++++++++++++++++++
@@ -609,7 +609,7 @@ index 32b1905..e646bcc 100644
 From 44454bf9ebe8bae77fe09765a22d87ba3784d2b4 Mon Sep 17 00:00:00 2001
 From: Cursor Agent <cursoragent@cursor.com>
 Date: Tue, 3 Nov 2026 06:15:49 +0000
-Subject: [PATCH 5/6] =?UTF-8?q?=EC=83=81=ED=92=88=20=EB=8B=B4=EB=8B=B9=20?=
+Subject: [PATCH 5/7] =?UTF-8?q?=EC=83=81=ED=92=88=20=EB=8B=B4=EB=8B=B9=20?=
  =?UTF-8?q?=EA=B8=B0=EB=8A=A5=20=EC=B6=94=EA=B0=80:=20Category/Product,=20?=
  =?UTF-8?q?=EB=AA=A9=EB=A1=9D=C2=B7=EC=83=81=EC=84=B8=C2=B7=EA=B2=80?=
  =?UTF-8?q?=EC=83=89,=20=EA=B4=80=EB=A6=AC=EC=9E=90=20CRUD?=
@@ -2708,7 +2708,7 @@ index 0000000..7431b64
 From b822557f55b05da257e2f9c7a08ef108b5ee0d10 Mon Sep 17 00:00:00 2001
 From: Cursor Agent <cursoragent@cursor.com>
 Date: Tue, 3 Nov 2026 06:20:55 +0000
-Subject: [PATCH 6/6] =?UTF-8?q?=ED=8C=A8=ED=82=A4=EC=A7=80=EB=A5=BC=20?=
+Subject: [PATCH 6/7] =?UTF-8?q?=ED=8C=A8=ED=82=A4=EC=A7=80=EB=A5=BC=20?=
  =?UTF-8?q?=EA=B3=84=EC=B8=B5/=EA=B8=B0=EB=8A=A5=20=ED=8F=B4=EB=8D=94=20?=
  =?UTF-8?q?=EA=B5=AC=EC=A1=B0=EB=A1=9C=20=EC=9E=AC=EB=B0=B0=EC=B9=98?=
 MIME-Version: 1.0
@@ -3120,6 +3120,221 @@ index 3175b6b..d9c99cb 100644
  import java.math.BigDecimal;
  import org.junit.jupiter.api.BeforeEach;
  import org.junit.jupiter.api.Test;
+-- 
+2.43.0
+
+
+From 6de7daa7ee359e58881965eb4a60f7b83f1b9694 Mon Sep 17 00:00:00 2001
+From: Cursor Agent <cursoragent@cursor.com>
+Date: Tue, 3 Nov 2026 06:47:50 +0000
+Subject: [PATCH 7/7] =?UTF-8?q?=EC=BD=94=EB=94=A9=20=EC=A3=BC=EC=9D=98?=
+ =?UTF-8?q?=EC=82=AC=ED=95=AD=EC=97=90=20=EB=A7=9E=EC=B6=B0=20=ED=8F=B4?=
+ =?UTF-8?q?=EB=8D=94=20=EA=B5=AC=EC=A1=B0=EB=A5=BC=20=EB=B3=B4=EC=99=84?=
+ =?UTF-8?q?=ED=95=9C=EB=8B=A4?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+templates를 member/product/cart/order/review로 나누고
+static/js·images와 README 협업 규칙을 추가한다.
+---
+ README.md                                     |  31 ++++++++++++++++++
+ .../controller/HomeController.java            |   8 ++---
+ src/main/resources/static/images/sample.jpg   | Bin 0 -> 331 bytes
+ src/main/resources/static/js/product.js       |   1 +
+ src/main/resources/templates/cart/.gitkeep    |   0
+ .../templates/{ => member}/login.html         |   0
+ .../resources/templates/member/signup.html    |  23 +++++++++++++
+ src/main/resources/templates/order/.gitkeep   |   0
+ .../templates/product/admin-form.html         |   1 +
+ .../templates/product/admin-list.html         |   1 +
+ .../resources/templates/product/detail.html   |   1 +
+ .../resources/templates/product/list.html     |   1 +
+ src/main/resources/templates/review/.gitkeep  |   0
+ 13 files changed, 63 insertions(+), 4 deletions(-)
+ create mode 100644 src/main/resources/static/images/sample.jpg
+ create mode 100644 src/main/resources/static/js/product.js
+ create mode 100644 src/main/resources/templates/cart/.gitkeep
+ rename src/main/resources/templates/{ => member}/login.html (100%)
+ create mode 100644 src/main/resources/templates/member/signup.html
+ create mode 100644 src/main/resources/templates/order/.gitkeep
+ create mode 100644 src/main/resources/templates/review/.gitkeep
+
+diff --git a/README.md b/README.md
+index 16e9cb8..2391efa 100644
+--- a/README.md
++++ b/README.md
+@@ -96,6 +96,37 @@ Order, OrderItem, Review Entity 구현
+ 
+ 4번	주문 및 리뷰 관리	주문, 모의 결제, 리뷰
+ 
++---
++
++## 코딩 시 주의사항
++
++### 폴더 및 파일 규칙
++머지·코드 리뷰가 쉽도록 아래 구조를 유지합니다.
++
++**Java**
++- `controller` / `service` / `repository` / `entity` / `dto`
++- 기능별 하위 패키지: `member`, `product`, `cart`, `order`, `review`
++  - 예: `controller.product.ProductController`, `entity.product.Product`
++
++**HTML (templates)**
++- 공통 조각: `templates/fragments/` → `header.html`, `category-nav.html`, `footer.html`
++- 화면: `templates/member|product|cart|order|review/`
++
++**정적 자원**
++- `static/css/common.css` (공통)
++- 기능 CSS 예: `static/css/product.css`
++- `static/js/`, `static/images/`
++
++**DB**
++- 스키마 기준 파일: `db/petshop_db.sql` (프로젝트 루트)
++
++### GitHub 협업 방식
++- `main`: 실행 가능한 공통 코드 + 리뷰 완료 기능만
++- 기능 브랜치: `feature/member`, `feature/product`, `feature/cart`, `feature/order-review`
++- 흐름: 작업 → commit → push → PR → 동작 확인 → (팀원 리뷰 권장) → `main` 머지
++- 공통 HTML/CSS, DB 스키마, `application.properties` 변경은 **수정 전에 팀 공유**
++
++상품 담당은 반드시 `feature/product` 브랜치에서 작업합니다. **main에 직접 커밋하지 마세요.**
+ 
+ 
+ 
+diff --git a/src/main/java/com/example/shopping_project/controller/HomeController.java b/src/main/java/com/example/shopping_project/controller/HomeController.java
+index c58ed2e..a2c88e2 100644
+--- a/src/main/java/com/example/shopping_project/controller/HomeController.java
++++ b/src/main/java/com/example/shopping_project/controller/HomeController.java
+@@ -13,15 +13,15 @@ public class HomeController {
+         return "index";
+     }
+ 
+-    // 로그인 페이지
++    // 로그인 페이지 (templates/member)
+     @GetMapping("/login")
+     public String login() {
+-        return "login";
++        return "member/login";
+     }
+ 
+-    // 회원가입 페이지
++    // 회원가입 페이지 (templates/member)
+     @GetMapping("/signup")
+     public String signup() {
+-        return "signup";
++        return "member/signup";
+     }
+ }
+diff --git a/src/main/resources/static/images/sample.jpg b/src/main/resources/static/images/sample.jpg
+new file mode 100644
+index 0000000000000000000000000000000000000000..d26140329fd28ee7c0a5ab086c60c715abd6e563
+GIT binary patch
+literal 331
+zcmex=<NpH&0WUXCHwH#V1_nkTWcYuZ!I^=Bjg6g+m4ls~os*M;i${c)hnt&6Qb?Fz
+zL{>^(PF6}rMnOeST|r4lSw=>~TvNxu(8R<<Uft5x!pKI?*u?1n0S0akka>)Zf(-wU
+zFvtT9X9aSAfB^~^nV4Bv+1NQaxwwG}whAyXF)}kVu`si;vakSE*8=4kSOi&x6b&8O
+zgaZ@Vl?p|S8YeE~P<GmQP&DY`2NmO_q9#r*F>wh=DOELf4NWZ*Q!{f5ODks=S2uSL
+zPp{yR(6I1`$f)F$)U@=B%&g*)(z5c3%Btp;*0%PJ&aO$5r%atTea6gLixw|gx@`H1
+zm8&*w-m-Pu_8mKS9XfpE=&|D`PM*4S`O4L6*Kgds_3+W-Cr_U}fAR9w$4{TXeEs(Q
+T$IoB?Z!vIy{A15h|NkZcO66%|
+
+literal 0
+HcmV?d00001
+
+diff --git a/src/main/resources/static/js/product.js b/src/main/resources/static/js/product.js
+new file mode 100644
+index 0000000..6054a02
+--- /dev/null
++++ b/src/main/resources/static/js/product.js
+@@ -0,0 +1 @@
++/* 상품 담당(feature/product) 공통 스크립트 자리 */
+diff --git a/src/main/resources/templates/cart/.gitkeep b/src/main/resources/templates/cart/.gitkeep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/src/main/resources/templates/login.html b/src/main/resources/templates/member/login.html
+similarity index 100%
+rename from src/main/resources/templates/login.html
+rename to src/main/resources/templates/member/login.html
+diff --git a/src/main/resources/templates/member/signup.html b/src/main/resources/templates/member/signup.html
+new file mode 100644
+index 0000000..009d23c
+--- /dev/null
++++ b/src/main/resources/templates/member/signup.html
+@@ -0,0 +1,23 @@
++<!DOCTYPE html>
++<html lang="ko" xmlns:th="http://www.thymeleaf.org">
++<head>
++    <meta charset="UTF-8">
++    <meta name="viewport" content="width=device-width, initial-scale=1.0">
++    <title>회원가입 | Shopping_Project</title>
++    <link rel="stylesheet" th:href="@{/css/common.css}">
++</head>
++<body>
++<header th:replace="~{fragments/header :: header}"></header>
++<nav th:replace="~{fragments/category-nav :: categoryNav}"></nav>
++
++<main class="page-container">
++    <div class="auth-container">
++        <h1 class="auth-title">회원가입</h1>
++        <p class="text-muted">회원 담당(feature/member)에서 구현 예정입니다.</p>
++        <p><a th:href="@{/login}">로그인으로 이동</a></p>
++    </div>
++</main>
++
++<footer th:replace="~{fragments/footer :: footer}"></footer>
++</body>
++</html>
+diff --git a/src/main/resources/templates/order/.gitkeep b/src/main/resources/templates/order/.gitkeep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/src/main/resources/templates/product/admin-form.html b/src/main/resources/templates/product/admin-form.html
+index 23e47a5..16591bf 100644
+--- a/src/main/resources/templates/product/admin-form.html
++++ b/src/main/resources/templates/product/admin-form.html
+@@ -75,5 +75,6 @@
+ </main>
+ 
+ <footer th:replace="~{fragments/footer :: footer}"></footer>
++<script th:src="@{/js/product.js}"></script>
+ </body>
+ </html>
+diff --git a/src/main/resources/templates/product/admin-list.html b/src/main/resources/templates/product/admin-list.html
+index 63af22d..95951ca 100644
+--- a/src/main/resources/templates/product/admin-list.html
++++ b/src/main/resources/templates/product/admin-list.html
+@@ -88,5 +88,6 @@
+ </main>
+ 
+ <footer th:replace="~{fragments/footer :: footer}"></footer>
++<script th:src="@{/js/product.js}"></script>
+ </body>
+ </html>
+diff --git a/src/main/resources/templates/product/detail.html b/src/main/resources/templates/product/detail.html
+index dcd898a..fc2fef1 100644
+--- a/src/main/resources/templates/product/detail.html
++++ b/src/main/resources/templates/product/detail.html
+@@ -44,5 +44,6 @@
+ </main>
+ 
+ <footer th:replace="~{fragments/footer :: footer}"></footer>
++<script th:src="@{/js/product.js}"></script>
+ </body>
+ </html>
+diff --git a/src/main/resources/templates/product/list.html b/src/main/resources/templates/product/list.html
+index cc2b147..9afb877 100644
+--- a/src/main/resources/templates/product/list.html
++++ b/src/main/resources/templates/product/list.html
+@@ -63,5 +63,6 @@
+ </main>
+ 
+ <footer th:replace="~{fragments/footer :: footer}"></footer>
++<script th:src="@{/js/product.js}"></script>
+ </body>
+ </html>
+diff --git a/src/main/resources/templates/review/.gitkeep b/src/main/resources/templates/review/.gitkeep
+new file mode 100644
+index 0000000..e69de29
 -- 
 2.43.0
 
