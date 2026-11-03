@@ -6,12 +6,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.example.shopping_project.entity.product.Category;
-import com.example.shopping_project.entity.product.PetType;
-import com.example.shopping_project.entity.product.Product;
-import com.example.shopping_project.repository.product.CategoryRepository;
-import com.example.shopping_project.repository.product.ProductRepository;
-import com.example.shopping_project.service.product.ProductService;
+import com.example.shopping_project.entity.productentity.Category;
+import com.example.shopping_project.entity.productentity.PetType;
+import com.example.shopping_project.entity.productentity.Product;
+import com.example.shopping_project.repository.productrepository.CategoryRepository;
+import com.example.shopping_project.repository.productrepository.ProductRepository;
+import com.example.shopping_project.service.productservice.ProductService;
 import java.math.BigDecimal;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
