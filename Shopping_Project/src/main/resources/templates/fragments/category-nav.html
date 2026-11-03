@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<nav class="category-nav" th:fragment="categoryNav">
+    <ul>
+        <li>
+            <a th:href="@{/products}"
+               th:classappend="${categoryId == null} ? 'is-active'">전체상품</a>
+        </li>
+        <li th:each="category : ${categories}">
+            <a th:href="@{/products(categoryId=${category.categoryId})}"
+               th:text="${category.categoryName}"
+               th:classappend="${categoryId == category.categoryId} ? 'is-active'">카테고리</a>
+        </li>
+    </ul>
+</nav>
+
+</body>
+</html>

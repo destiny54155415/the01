@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${form.productId == null} ? '상품 등록' : '상품 수정'">상품 편집</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/product.css}">
+</head>
+<body>
+<header th:replace="~{fragments/header :: header}"></header>
+<nav th:replace="~{fragments/category-nav :: categoryNav}"></nav>
+
+<main class="page-container narrow">
+    <h1 class="section-title" th:text="${form.productId == null} ? '상품 등록' : '상품 수정'">상품 등록</h1>
+
+    <form class="admin-form" th:object="${form}"
+          th:action="${form.productId == null} ? @{/admin/products} : @{/admin/products/{id}(id=${form.productId})}"
+          method="post">
+        <div class="form-group">
+            <label class="form-label" for="categoryId">카테고리</label>
+            <select id="categoryId" class="form-control" th:field="*{categoryId}" required>
+                <option value="">선택</option>
+                <option th:each="category : ${adminCategories}"
+                        th:value="${category.categoryId}"
+                        th:text="${category.categoryName}">사료</option>
+            </select>
+            <p class="field-error" th:if="${#fields.hasErrors('categoryId')}" th:errors="*{categoryId}"></p>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="productName">상품명</label>
+            <input id="productName" type="text" class="form-control" th:field="*{productName}" required>
+            <p class="field-error" th:if="${#fields.hasErrors('productName')}" th:errors="*{productName}"></p>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="description">상품 설명</label>
+            <textarea id="description" class="form-control" rows="5" th:field="*{description}"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="price">가격</label>
+            <input id="price" type="number" min="0" step="100" class="form-control" th:field="*{price}" required>
+            <p class="field-error" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></p>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="stock">재고</label>
+            <input id="stock" type="number" min="0" class="form-control" th:field="*{stock}" required>
+            <p class="field-error" th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}"></p>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="petType">반려동물 구분</label>
+            <select id="petType" class="form-control" th:field="*{petType}">
+                <option th:each="type : ${petTypes}" th:value="${type}" th:text="${type.label}">공용</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="imageUrl">이미지 URL</label>
+            <input id="imageUrl" type="text" class="form-control" th:field="*{imageUrl}" placeholder="선택 사항">
+        </div>
+
+        <div class="form-group check-row">
+            <label>
+                <input type="checkbox" th:field="*{isActive}"> 판매중으로 표시
+            </label>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">저장</button>
+        <a class="btn btn-outline btn-block" th:href="@{/admin/products}">목록으로</a>
+    </form>
+</main>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+</body>
+</html>
