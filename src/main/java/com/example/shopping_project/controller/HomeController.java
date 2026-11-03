@@ -14,22 +14,10 @@ public class HomeController {
         this.productService = productService;
     }
 
-    // 메인 페이지 — 추천 상품은 DB 상품 목록 일부
+    /** 메인 — 인기 상품(상품 담당) */
     @GetMapping("/")
     public String home(Model model) {
         model.addAttribute("featuredProducts", productService.findBestsellers(4));
         return "index";
-    }
-
-    // 로그인 페이지 (templates/member)
-    @GetMapping("/login")
-    public String login() {
-        return "member/login";
-    }
-
-    // 회원가입 페이지 (templates/member)
-    @GetMapping("/signup")
-    public String signup() {
-        return "member/signup";
     }
 }

@@ -1,7 +1,7 @@
 package com.example.shopping_project.dto.productdto;
 
 import com.example.shopping_project.entity.productentity.PetType;
-import com.example.shopping_project.entity.productentity.Product;
+import com.example.shopping_project.entity.productentity.ProductEntity;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -9,7 +9,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 
-public class ProductForm {
+public class ProductDto {
 
     private Long productId;
 
@@ -43,8 +43,8 @@ public class ProductForm {
 
     private Boolean isActive = true;
 
-    public static ProductForm from(Product product) {
-        ProductForm form = new ProductForm();
+    public static ProductDto from(ProductEntity product) {
+        ProductDto form = new ProductDto();
         form.productId = product.getProductId();
         form.categoryId = product.getCategory().getCategoryId();
         form.productName = product.getProductName();

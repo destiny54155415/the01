@@ -103,19 +103,17 @@ Order, OrderItem, Review Entity 구현
 ### 폴더 및 파일 규칙
 머지·코드 리뷰가 쉽도록 아래 구조를 유지합니다.
 
-**Java**
-- `controller` / `service` / `repository` / `entity` / `dto` / `config`
-- 기능별 하위 패키지 예 (상품 담당):
-  - `controller/productcontroller`
-  - `service/productservice`
-  - `repository/productrepository`
-  - `entity/productentity`
-  - `dto/productdto`
-  - (회원 예: `controller/membercontroller`, `service/memberservice` …)
+**Java** (회원 예시와 동일 규칙)
+- `controller/membercontroller` → 상품은 `controller/productcontroller`
+- `service/memberservice` → `service/productservice`
+- `repository/memberrepository` → `repository/productrepository`
+- `entity/memberentity` → `entity/productentity`
+- `dto/memberdto` → `dto/productdto`
+- `config/` : 상품용 `GlobalModelAdvice`, `ProductDataInitializer`
 
 **HTML (templates)**
-- 공통 조각: `templates/fragments/` → `header.html`, `category-nav.html`, `footer.html`
-- 화면: `templates/member|product|cart|order|review/`
+- 공통 조각: `templates/fragments/`
+- 상품 화면: `templates/product/` (회원은 `templates/member/`)
 
 **정적 자원**
 - `static/css/common.css` (공통)

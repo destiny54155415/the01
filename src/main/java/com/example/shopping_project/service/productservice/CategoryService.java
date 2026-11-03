@@ -1,6 +1,6 @@
 package com.example.shopping_project.service.productservice;
 
-import com.example.shopping_project.entity.productentity.Category;
+import com.example.shopping_project.entity.productentity.CategoryEntity;
 import com.example.shopping_project.repository.productrepository.CategoryRepository;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -16,16 +16,16 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-    public List<Category> findActiveCategories() {
+    public List<CategoryEntity> findActiveCategories() {
         return categoryRepository.findByIsActiveTrueOrderByDisplayOrderAscCategoryIdAsc();
     }
 
-    public List<Category> findAllCategories() {
+    public List<CategoryEntity> findAllCategories() {
         return categoryRepository.findAllByOrderByDisplayOrderAscCategoryIdAsc();
     }
 
-    public Category getActiveCategory(Long categoryId) {
-        Category category = categoryRepository.findById(categoryId)
+    public CategoryEntity getActiveCategory(Long categoryId) {
+        CategoryEntity category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new NotFoundException("카테고리를 찾을 수 없습니다."));
         if (!Boolean.TRUE.equals(category.getIsActive())) {
             throw new NotFoundException("카테고리를 찾을 수 없습니다.");
@@ -33,7 +33,7 @@ public class CategoryService {
         return category;
     }
 
-    public Category getCategory(Long categoryId) {
+    public CategoryEntity getCategory(Long categoryId) {
         return categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new NotFoundException("카테고리를 찾을 수 없습니다."));
     }

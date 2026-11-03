@@ -1,8 +1,8 @@
 package com.example.shopping_project.config;
 
-import com.example.shopping_project.entity.productentity.Category;
+import com.example.shopping_project.entity.productentity.CategoryEntity;
 import com.example.shopping_project.entity.productentity.PetType;
-import com.example.shopping_project.entity.productentity.Product;
+import com.example.shopping_project.entity.productentity.ProductEntity;
 import com.example.shopping_project.repository.productrepository.CategoryRepository;
 import com.example.shopping_project.repository.productrepository.ProductRepository;
 import java.math.BigDecimal;
@@ -57,30 +57,30 @@ public class ProductDataInitializer implements CommandLineRunner {
             return;
         }
         List.of(
-                new Category("사료", 1),
-                new Category("간식", 2),
-                new Category("장난감", 3),
-                new Category("산책용품", 4),
-                new Category("미용·목욕", 5),
-                new Category("하우스·생활용품", 6),
-                new Category("의류·패션", 7),
-                new Category("위생·배변용품", 8)
+                new CategoryEntity("사료", 1),
+                new CategoryEntity("간식", 2),
+                new CategoryEntity("장난감", 3),
+                new CategoryEntity("산책용품", 4),
+                new CategoryEntity("미용·목욕", 5),
+                new CategoryEntity("하우스·생활용품", 6),
+                new CategoryEntity("의류·패션", 7),
+                new CategoryEntity("위생·배변용품", 8)
         ).forEach(categoryRepository::save);
     }
 
     private void syncBestsellers() {
-        List<Category> categories = categoryRepository.findAllByOrderByDisplayOrderAscCategoryIdAsc();
+        List<CategoryEntity> categories = categoryRepository.findAllByOrderByDisplayOrderAscCategoryIdAsc();
         if (categories.size() < 8) {
             return;
         }
-        Category food = categories.get(0);
-        Category snack = categories.get(1);
-        Category toy = categories.get(2);
-        Category walk = categories.get(3);
-        Category bath = categories.get(4);
-        Category house = categories.get(5);
-        Category fashion = categories.get(6);
-        Category hygiene = categories.get(7);
+        CategoryEntity food = categories.get(0);
+        CategoryEntity snack = categories.get(1);
+        CategoryEntity toy = categories.get(2);
+        CategoryEntity walk = categories.get(3);
+        CategoryEntity bath = categories.get(4);
+        CategoryEntity house = categories.get(5);
+        CategoryEntity fashion = categories.get(6);
+        CategoryEntity hygiene = categories.get(7);
 
         // salesCount = 상대적 인기(높을수록 메인 추천 상단)
         upsert(food, "실내묘 헤어볼 케어 사료 2kg",
@@ -155,7 +155,7 @@ public class ProductDataInitializer implements CommandLineRunner {
                 "7900", 95, 1450, PetType.CAT);
     }
 
-    private void upsert(Category category, String name, String description, String price,
+    private void upsert(CategoryEntity category, String name, String description, String price,
                         int stock, int salesCount, PetType petType) {
         productRepository.findByProductName(name).ifPresentOrElse(existing -> {
             existing.setCategory(category);
@@ -165,7 +165,7 @@ public class ProductDataInitializer implements CommandLineRunner {
             existing.setSalesCount(salesCount);
             existing.setPetType(petType);
             existing.setIsActive(true);
-        }, () -> productRepository.save(new Product(
+        }, () -> productRepository.save(new ProductEntity(
                 category, name, description, new BigDecimal(price), stock, salesCount, petType, null)));
     }
 

@@ -1,9 +1,9 @@
 package com.example.shopping_project.service.productservice;
 
-import com.example.shopping_project.dto.productdto.ProductForm;
-import com.example.shopping_project.entity.productentity.Category;
+import com.example.shopping_project.dto.productdto.ProductDto;
+import com.example.shopping_project.entity.productentity.CategoryEntity;
 import com.example.shopping_project.entity.productentity.PetType;
-import com.example.shopping_project.entity.productentity.Product;
+import com.example.shopping_project.entity.productentity.ProductEntity;
 import com.example.shopping_project.repository.productrepository.ProductRepository;
 import java.util.List;
 import org.springframework.data.domain.Page;
@@ -27,7 +27,7 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Product> searchActive(String keyword, Long categoryId, PetType petType, int page) {
+    public Page<ProductEntity> searchActive(String keyword, Long categoryId, PetType petType, int page) {
         return productRepository.search(
                 blankToNull(keyword),
                 categoryId,
@@ -39,7 +39,7 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public List<Product> findBestsellers(int limit) {
+    public List<ProductEntity> findBestsellers(int limit) {
         int size = Math.max(limit, 1);
         return productRepository
                 .findByIsActiveTrueOrderBySalesCountDescProductIdDesc(PageRequest.of(0, size))
@@ -47,7 +47,7 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Product> searchAdmin(String keyword, Long categoryId, PetType petType, int page) {
+    public Page<ProductEntity> searchAdmin(String keyword, Long categoryId, PetType petType, int page) {
         return productRepository.search(
                 blankToNull(keyword),
                 categoryId,
@@ -58,8 +58,8 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public Product getActiveProduct(Long productId) {
-        Product product = productRepository.findWithCategoryByProductId(productId)
+    public ProductEntity getActiveProduct(Long productId) {
+        ProductEntity product = productRepository.findWithCategoryByProductId(productId)
                 .orElseThrow(() -> new NotFoundException("상품을 찾을 수 없습니다."));
         if (!Boolean.TRUE.equals(product.getIsActive())
                 || !Boolean.TRUE.equals(product.getCategory().getIsActive())) {
@@ -69,14 +69,14 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public Product getProduct(Long productId) {
+    public ProductEntity getProduct(Long productId) {
         return productRepository.findWithCategoryByProductId(productId)
                 .orElseThrow(() -> new NotFoundException("상품을 찾을 수 없습니다."));
     }
 
-    public Product create(ProductForm form) {
-        Category category = categoryService.getCategory(form.getCategoryId());
-        Product product = new Product(
+    public ProductEntity create(ProductDto form) {
+        CategoryEntity category = categoryService.getCategory(form.getCategoryId());
+        ProductEntity product = new ProductEntity(
                 category,
                 form.getProductName().trim(),
                 blankToNull(form.getDescription()),
@@ -90,9 +90,9 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public Product update(Long productId, ProductForm form) {
-        Product product = getProduct(productId);
-        Category category = categoryService.getCategory(form.getCategoryId());
+    public ProductEntity update(Long productId, ProductDto form) {
+        ProductEntity product = getProduct(productId);
+        CategoryEntity category = categoryService.getCategory(form.getCategoryId());
         product.setCategory(category);
         product.setProductName(form.getProductName().trim());
         product.setDescription(blankToNull(form.getDescription()));
