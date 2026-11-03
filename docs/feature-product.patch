@@ -1,7 +1,7 @@
 From fd1099268631ae5556ddd58d93b656e147f952c5 Mon Sep 17 00:00:00 2001
 From: Kim seung yeon <142073825+kim-seung-yeon-0@users.noreply.github.com>
 Date: Tue, 3 Nov 2026 11:21:26 +0900
-Subject: [PATCH 1/7] Update README.md
+Subject: [PATCH 1/8] Update README.md
 
 ---
  README.md | 129 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -151,7 +151,7 @@ index 0317bf3..003bfd5 100644
 From ce031ecd4f8bf938debdc1e3970aa79c3e2df7f2 Mon Sep 17 00:00:00 2001
 From: Kim seung yeon <142073825+kim-seung-yeon-0@users.noreply.github.com>
 Date: Tue, 3 Nov 2026 11:25:59 +0900
-Subject: [PATCH 2/7] Update README.md
+Subject: [PATCH 2/8] Update README.md
 
 ---
  README.md | 96 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -271,7 +271,7 @@ index 003bfd5..b846950 100644
 From 09544215704d81f76559b351701cb93bc2ebdb17 Mon Sep 17 00:00:00 2001
 From: Kim seung yeon <142073825+kim-seung-yeon-0@users.noreply.github.com>
 Date: Tue, 3 Nov 2026 11:31:32 +0900
-Subject: [PATCH 3/7] Update README.md
+Subject: [PATCH 3/8] Update README.md
 
 ---
  README.md | 222 +-----------------------------------------------------
@@ -515,7 +515,7 @@ index b846950..16e9cb8 100644
 From 13e6ac89aa849a002f81a0b9c29e75ed272d6aff Mon Sep 17 00:00:00 2001
 From: Kim seung yeon <142073825+kim-seung-yeon-0@users.noreply.github.com>
 Date: Tue, 3 Nov 2026 11:34:43 +0900
-Subject: [PATCH 4/7] Update petshop_db.sql
+Subject: [PATCH 4/8] Update petshop_db.sql
 
 ---
  src/db/petshop_db.sql | 73 +++++++++++++++++++++++++++++++++++++++++++
@@ -609,7 +609,7 @@ index 32b1905..e646bcc 100644
 From 44454bf9ebe8bae77fe09765a22d87ba3784d2b4 Mon Sep 17 00:00:00 2001
 From: Cursor Agent <cursoragent@cursor.com>
 Date: Tue, 3 Nov 2026 06:15:49 +0000
-Subject: [PATCH 5/7] =?UTF-8?q?=EC=83=81=ED=92=88=20=EB=8B=B4=EB=8B=B9=20?=
+Subject: [PATCH 5/8] =?UTF-8?q?=EC=83=81=ED=92=88=20=EB=8B=B4=EB=8B=B9=20?=
  =?UTF-8?q?=EA=B8=B0=EB=8A=A5=20=EC=B6=94=EA=B0=80:=20Category/Product,=20?=
  =?UTF-8?q?=EB=AA=A9=EB=A1=9D=C2=B7=EC=83=81=EC=84=B8=C2=B7=EA=B2=80?=
  =?UTF-8?q?=EC=83=89,=20=EA=B4=80=EB=A6=AC=EC=9E=90=20CRUD?=
@@ -2708,7 +2708,7 @@ index 0000000..7431b64
 From b822557f55b05da257e2f9c7a08ef108b5ee0d10 Mon Sep 17 00:00:00 2001
 From: Cursor Agent <cursoragent@cursor.com>
 Date: Tue, 3 Nov 2026 06:20:55 +0000
-Subject: [PATCH 6/7] =?UTF-8?q?=ED=8C=A8=ED=82=A4=EC=A7=80=EB=A5=BC=20?=
+Subject: [PATCH 6/8] =?UTF-8?q?=ED=8C=A8=ED=82=A4=EC=A7=80=EB=A5=BC=20?=
  =?UTF-8?q?=EA=B3=84=EC=B8=B5/=EA=B8=B0=EB=8A=A5=20=ED=8F=B4=EB=8D=94=20?=
  =?UTF-8?q?=EA=B5=AC=EC=A1=B0=EB=A1=9C=20=EC=9E=AC=EB=B0=B0=EC=B9=98?=
 MIME-Version: 1.0
@@ -3127,7 +3127,7 @@ index 3175b6b..d9c99cb 100644
 From 6de7daa7ee359e58881965eb4a60f7b83f1b9694 Mon Sep 17 00:00:00 2001
 From: Cursor Agent <cursoragent@cursor.com>
 Date: Tue, 3 Nov 2026 06:47:50 +0000
-Subject: [PATCH 7/7] =?UTF-8?q?=EC=BD=94=EB=94=A9=20=EC=A3=BC=EC=9D=98?=
+Subject: [PATCH 7/8] =?UTF-8?q?=EC=BD=94=EB=94=A9=20=EC=A3=BC=EC=9D=98?=
  =?UTF-8?q?=EC=82=AC=ED=95=AD=EC=97=90=20=EB=A7=9E=EC=B6=B0=20=ED=8F=B4?=
  =?UTF-8?q?=EB=8D=94=20=EA=B5=AC=EC=A1=B0=EB=A5=BC=20=EB=B3=B4=EC=99=84?=
  =?UTF-8?q?=ED=95=9C=EB=8B=A4?=
@@ -3335,6 +3335,237 @@ index cc2b147..9afb877 100644
 diff --git a/src/main/resources/templates/review/.gitkeep b/src/main/resources/templates/review/.gitkeep
 new file mode 100644
 index 0000000..e69de29
+-- 
+2.43.0
+
+
+From 1f8746b2cd4342d6fd4917f904d031cfd69778ac Mon Sep 17 00:00:00 2001
+From: Cursor Agent <cursoragent@cursor.com>
+Date: Tue, 3 Nov 2026 06:54:24 +0000
+Subject: [PATCH 8/8] =?UTF-8?q?=EB=A9=94=EC=9D=B8=20=EC=B6=94=EC=B2=9C=20?=
+ =?UTF-8?q?=EC=83=81=ED=92=88=EC=9D=84=20DB=20=EC=83=81=ED=92=88=EA=B3=BC?=
+ =?UTF-8?q?=20=EC=97=B0=EA=B2=B0=ED=95=9C=EB=8B=A4?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+홈이 예전 고정 카드로 보여 업데이트가 안 된 것처럼 보이던 문제를
+실제 상품 목록 연동으로 바로 확인할 수 있게 한다.
+---
+ .../controller/HomeController.java            |  14 ++-
+ src/main/resources/templates/index.html       | 105 +++++-------------
+ .../shopping_project/ProductSearchTest.java   |   6 +
+ 3 files changed, 43 insertions(+), 82 deletions(-)
+
+diff --git a/src/main/java/com/example/shopping_project/controller/HomeController.java b/src/main/java/com/example/shopping_project/controller/HomeController.java
+index a2c88e2..1a1f3e1 100644
+--- a/src/main/java/com/example/shopping_project/controller/HomeController.java
++++ b/src/main/java/com/example/shopping_project/controller/HomeController.java
+@@ -1,15 +1,23 @@
+ package com.example.shopping_project.controller;
+ 
+-
++import com.example.shopping_project.service.product.ProductService;
+ import org.springframework.stereotype.Controller;
++import org.springframework.ui.Model;
+ import org.springframework.web.bind.annotation.GetMapping;
+ 
+ @Controller
+ public class HomeController {
+ 
+-    // 메인 페이지
++    private final ProductService productService;
++
++    public HomeController(ProductService productService) {
++        this.productService = productService;
++    }
++
++    // 메인 페이지 — 추천 상품은 DB 상품 목록 일부
+     @GetMapping("/")
+-    public String home() {
++    public String home(Model model) {
++        model.addAttribute("featuredProducts", productService.searchActive(null, null, null, 0).getContent());
+         return "index";
+     }
+ 
+diff --git a/src/main/resources/templates/index.html b/src/main/resources/templates/index.html
+index 11d5930..b54bf7a 100644
+--- a/src/main/resources/templates/index.html
++++ b/src/main/resources/templates/index.html
+@@ -1,121 +1,70 @@
+-
+ <!DOCTYPE html>
+ <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+-
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+-
+     <title>PetShop | 반려동물 쇼핑몰</title>
+-
+     <link rel="stylesheet" th:href="@{/css/common.css}">
++    <link rel="stylesheet" th:href="@{/css/product.css}">
+ </head>
+-
+ <body>
+ 
+-<!-- 공통 헤더 -->
+ <header th:replace="~{fragments/header :: header}"></header>
+-
+-<!-- 공통 카테고리 -->
+ <nav th:replace="~{fragments/category-nav :: categoryNav}"></nav>
+ 
+-<!-- 메인 콘텐츠 -->
+ <main class="container page-container">
+ 
+-    <!-- 메인 배너 -->
+     <section class="section">
+         <div class="main-banner">
+             <div class="banner-content">
+                 <h1>우리 아이를 위한 특별한 쇼핑</h1>
+                 <p>사료부터 간식, 장난감까지 필요한 모든 것을 만나보세요.</p>
+-                <a th:href="@{/products}" class="btn btn-primary">
+-                    상품 둘러보기
+-                </a>
++                <a th:href="@{/products}" class="btn btn-primary">상품 둘러보기</a>
+             </div>
+         </div>
+     </section>
+ 
+-    <!-- 추천 상품 -->
+     <section class="section">
+         <h2 class="section-title">오늘의 추천 상품</h2>
+-        <p class="text-muted">반려동물을 위한 추천 상품을 만나보세요.</p>
+-
+-        <div class="product-grid">
+-
+-            <article class="product-card">
+-                <img th:src="@{/images/sample.jpg}"
+-                     alt="강아지 사료"
+-                     class="product-image">
+-
+-                <div class="product-info">
+-                    <h3 class="product-name">프리미엄 강아지 사료</h3>
+-                    <p class="product-price">29,900원</p>
+-                    <a th:href="@{/products}" class="btn btn-primary btn-block">
+-                        상품 보러 가기
+-                    </a>
+-                </div>
+-            </article>
+-
+-            <article class="product-card">
+-                <img th:src="@{/images/sample.jpg}"
+-                     alt="반려동물 간식"
+-                     class="product-image">
+-
+-                <div class="product-info">
+-                    <h3 class="product-name">건강한 반려동물 간식</h3>
+-                    <p class="product-price">12,900원</p>
+-                    <a th:href="@{/products}" class="btn btn-primary btn-block">
+-                        상품 보러 가기
+-                    </a>
+-                </div>
+-            </article>
+-
+-            <article class="product-card">
+-                <img th:src="@{/images/sample.jpg}"
+-                     alt="반려동물 장난감"
+-                     class="product-image">
+-
+-                <div class="product-info">
+-                    <h3 class="product-name">반려동물 놀이 장난감</h3>
+-                    <p class="product-price">8,900원</p>
+-                    <a th:href="@{/products}" class="btn btn-primary btn-block">
+-                        상품 보러 가기
+-                    </a>
+-                </div>
+-            </article>
+-
+-            <article class="product-card">
+-                <img th:src="@{/images/sample.jpg}"
+-                     alt="반려동물 방석"
+-                     class="product-image">
+-
+-                <div class="product-info">
+-                    <h3 class="product-name">포근한 반려동물 방석</h3>
+-                    <p class="product-price">24,900원</p>
+-                    <a th:href="@{/products}" class="btn btn-primary btn-block">
+-                        상품 보러 가기
+-                    </a>
+-                </div>
++        <p class="text-muted">등록된 상품 중에서 일부를 보여줍니다.</p>
++
++        <p class="empty-state" th:if="${#lists.isEmpty(featuredProducts)}">
++            아직 등록된 상품이 없습니다. 관리자 상품 등록 또는 샘플 데이터를 확인해 주세요.
++        </p>
++
++        <div class="product-grid" th:if="${!#lists.isEmpty(featuredProducts)}">
++            <article class="product-card" th:each="product, stat : ${featuredProducts}" th:if="${stat.index < 4}">
++                <a th:href="@{/products/{id}(id=${product.productId})}">
++                    <div class="product-image product-image-placeholder"
++                         th:classappend="'tone-' + (${product.category.categoryId} % 6)"
++                         th:text="${product.petType.label}">고양이</div>
++                    <div class="product-info">
++                        <p class="product-category" th:text="${product.category.categoryName}">사료</p>
++                        <h3 class="product-name" th:text="${product.productName}">상품명</h3>
++                        <p class="product-price">
++                            <span th:text="${#numbers.formatInteger(product.price, 0, 'COMMA')} + '원'">0원</span>
++                        </p>
++                    </div>
++                </a>
+             </article>
+-
+         </div>
++
++        <p style="margin-top: 16px;">
++            <a class="btn btn-outline" th:href="@{/products}">전체 상품 보기</a>
++        </p>
+     </section>
+ 
+-    <!-- 쇼핑 안내 -->
+     <section class="section">
+         <h2 class="section-title">PetShop과 함께하는 즐거운 쇼핑</h2>
+-
+         <div class="shopping-info">
+             <div>
+                 <h3>다양한 상품</h3>
+                 <p>반려동물에게 필요한 다양한 상품을 한곳에서!</p>
+             </div>
+-
+             <div>
+                 <h3>간편한 주문</h3>
+                 <p>원하는 상품을 장바구니에 담고 편리하게 주문하세요.</p>
+             </div>
+-
+             <div>
+                 <h3>상품 리뷰</h3>
+                 <p>다른 반려인들의 구매 후기도 확인해 보세요.</p>
+@@ -125,8 +74,6 @@
+ 
+ </main>
+ 
+-<!-- 공통 푸터 -->
+ <footer th:replace="~{fragments/footer :: footer}"></footer>
+-
+ </body>
+ </html>
+diff --git a/src/test/java/com/example/shopping_project/ProductSearchTest.java b/src/test/java/com/example/shopping_project/ProductSearchTest.java
+index d9c99cb..d7bc0e1 100644
+--- a/src/test/java/com/example/shopping_project/ProductSearchTest.java
++++ b/src/test/java/com/example/shopping_project/ProductSearchTest.java
+@@ -74,6 +74,12 @@ class ProductSearchTest {
+                 .andExpect(status().isOk());
+     }
+ 
++    @Test
++    void homeShowsFeaturedProductsFromDb() throws Exception {
++        mockMvc.perform(get("/"))
++                .andExpect(status().isOk());
++    }
++
+     @Test
+     void adminCanCreateProductWithSessionRole() throws Exception {
+         MockHttpSession session = new MockHttpSession();
 -- 
 2.43.0
 
