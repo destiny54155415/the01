@@ -1,14 +1,21 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title th:text="${form.productId == null} ? '상품 등록' : '상품 수정'">상품 편집</title>
+
     <link rel="stylesheet" th:href="@{/css/common.css}">
-    <link rel="stylesheet" th:href="@{/css/product.css}">
 </head>
+
 <body>
+
+<!-- 공통 헤더 -->
 <header th:replace="~{fragments/header :: header}"></header>
+
+<!-- 공통 카테고리 -->
 <nav th:replace="~{fragments/category-nav :: categoryNav}"></nav>
 
 <main class="page-container narrow">
@@ -81,6 +88,7 @@
     </form>
 </main>
 
+<!-- 공통 푸터 -->
 <footer th:replace="~{fragments/footer :: footer}"></footer>
 <script th:src="@{/js/product.js}"></script>
 </body>
