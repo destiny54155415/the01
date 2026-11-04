@@ -43,14 +43,9 @@
     <section class="product-grid" th:if="${result.totalElements > 0}">
         <article class="product-card" th:each="product : ${result.content}">
             <a th:href="@{/products/{id}(id=${product.productId})}">
-                <img th:if="${product.imageUrl != null and !#strings.isEmpty(product.imageUrl)}"
-                     th:src="@{${product.imageUrl}}"
-                     th:alt="${product.productName}"
-                     class="product-image">
-                <div th:unless="${product.imageUrl != null and !#strings.isEmpty(product.imageUrl)}"
-                     class="product-image product-image-placeholder"
-                     th:classappend="'tone-' + (${product.category.categoryId} % 6)"
-                     th:text="${product.petType.label}">고양이</div>
+                <img class="product-image"
+                     th:src="@{${product.imageUrl != null and !#strings.isEmpty(product.imageUrl) ? product.imageUrl : '/images/sample.jpg'}}"
+                     th:alt="${product.productName}">
                 <div class="product-info">
                     <p class="product-category" th:text="${product.category.categoryName}">사료</p>
                     <h3 class="product-name" th:text="${product.productName}">상품명</h3>
