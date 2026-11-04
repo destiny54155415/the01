@@ -20,7 +20,12 @@
     </p>
 
     <section class="product-detail">
-        <div class="product-detail-image product-image-placeholder"
+        <img th:if="${product.imageUrl != null and !#strings.isEmpty(product.imageUrl)}"
+             th:src="@{${product.imageUrl}}"
+             th:alt="${product.productName}"
+             class="product-detail-image">
+        <div th:unless="${product.imageUrl != null and !#strings.isEmpty(product.imageUrl)}"
+             class="product-detail-image product-image-placeholder"
              th:classappend="'tone-' + (${product.category.categoryId} % 6)"
              th:text="${product.petType.label}">고양이</div>
 

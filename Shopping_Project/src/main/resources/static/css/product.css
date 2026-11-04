@@ -33,6 +33,27 @@
     min-height: 180px;
 }
 
+.product-detail {
+    display: grid;
+    grid-template-columns: minmax(280px, 420px) 1fr;
+    gap: 32px;
+    align-items: start;
+}
+
+.product-detail-image {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 8px;
+    background-color: #f5f5f5;
+}
+
+@media (max-width: 768px) {
+    .product-detail {
+        grid-template-columns: 1fr;
+    }
+}
+
 .tone-0 { background: #e07a2c; }
 .tone-1 { background: #1c6b64; }
 .tone-2 { background: #2a4c78; }
