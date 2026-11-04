@@ -14,7 +14,6 @@ public class HomeController {
         this.productService = productService;
     }
 
-    /** 메인 — 인기 상품(상품 담당) */
     @GetMapping("/")
     public String home(Model model) {
         model.addAttribute("featuredProducts", productService.findBestsellers(4));
