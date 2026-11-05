@@ -18,69 +18,50 @@
 <!-- 공통 카테고리 -->
 <nav th:replace="~{fragments/category-nav :: categoryNav}"></nav>
 
-<!-- 메인 콘텐츠: 왼쪽 필터 + 본문 -->
+<!-- 메인: 왼쪽 필터 + 바로 상품 목록 -->
 <main class="container page-container shop-layout">
 
     <aside th:replace="~{fragments/product-filter-sidebar :: productFilterSidebar}"></aside>
 
     <div class="shop-content">
-        <!-- 메인 배너 -->
-        <section class="section">
-            <div class="main-banner">
-                <div class="banner-content">
-                    <h1>우리 아이를 위한 특별한 쇼핑</h1>
-                    <p>사료부터 간식, 장난감까지 필요한 모든 것을 만나보세요.</p>
-                    <a th:href="@{/products}" class="btn btn-primary">
-                        상품 둘러보기
-                    </a>
-                </div>
+        <div class="product-list-head">
+            <div>
+                <h1 class="section-title">우리 아이를 위한 특별한 쇼핑</h1>
+                <p class="text-muted"
+                   th:text="|총 ${result.totalElements}개 상품 · 왼쪽 필터로 바로 찾아보세요|">총 0개 상품</p>
             </div>
+        </div>
+
+        <p class="empty-state" th:if="${result.totalElements == 0}">등록된 상품이 없습니다.</p>
+
+        <section class="product-grid" th:if="${result.totalElements > 0}">
+            <article class="product-card" th:each="product : ${result.content}">
+                <a th:href="@{/products/{id}(id=${product.productId})}">
+                    <img class="product-image"
+                         th:src="@{${product.imageUrl != null and !#strings.isEmpty(product.imageUrl) ? product.imageUrl : '/images/sample.jpg'}}"
+                         th:alt="${product.productName}">
+                    <div class="product-info">
+                        <p class="product-category" th:text="${product.category.categoryName}">사료</p>
+                        <h3 class="product-name" th:text="${product.productName}">상품명</h3>
+                        <p class="product-price">
+                            <span th:text="${#numbers.formatInteger(product.price, 0, 'COMMA')} + '원'">0원</span>
+                        </p>
+                        <p class="product-stock"
+                           th:text="|재고 ${product.stock}개 · 판매 ${product.salesCount}|">재고 0개</p>
+                    </div>
+                </a>
+            </article>
         </section>
 
-        <!-- 추천 상품 -->
-        <section class="section">
-            <h2 class="section-title">오늘의 추천 상품</h2>
-            <p class="text-muted">왼쪽 금액·카테고리 필터로 원하는 상품을 바로 찾아보세요.</p>
-
-            <div class="product-grid" th:if="${featuredProducts != null and !#lists.isEmpty(featuredProducts)}">
-                <article class="product-card" th:each="product : ${featuredProducts}">
-                    <a th:href="@{/products/{id}(id=${product.productId})}">
-                        <img class="product-image"
-                             th:src="@{${product.imageUrl != null and !#strings.isEmpty(product.imageUrl) ? product.imageUrl : '/images/sample.jpg'}}"
-                             th:alt="${product.productName}">
-                        <div class="product-info">
-                            <p class="product-category" th:text="${product.category.categoryName}">사료</p>
-                            <h3 class="product-name" th:text="${product.productName}">상품명</h3>
-                            <p class="product-price">
-                                <span th:text="${#numbers.formatInteger(product.price, 0, 'COMMA')} + '원'">0원</span>
-                            </p>
-                        </div>
-                    </a>
-                </article>
-            </div>
-        </section>
-
-        <!-- 쇼핑 안내 -->
-        <section class="section">
-            <h2 class="section-title">PetShop과 함께하는 즐거운 쇼핑</h2>
-
-            <div class="shopping-info">
-                <div>
-                    <h3>다양한 상품</h3>
-                    <p>반려동물에게 필요한 다양한 상품을 한곳에서!</p>
-                </div>
-
-                <div>
-                    <h3>간편한 주문</h3>
-                    <p>원하는 상품을 장바구니에 담고 편리하게 주문하세요.</p>
-                </div>
-
-                <div>
-                    <h3>상품 리뷰</h3>
-                    <p>다른 반려인들의 구매 후기도 확인해 보세요.</p>
-                </div>
-            </div>
-        </section>
+        <nav class="pager" th:if="${result.totalPages > 1}" aria-label="페이지">
+            <a th:if="${result.hasPrevious()}"
+               class="btn btn-outline"
+               th:href="@{/(keyword=${keyword}, categoryId=${categoryId}, petType=${petType}, minPrice=${minPrice}, maxPrice=${maxPrice}, page=${result.number - 1})}">이전</a>
+            <span th:text="|${result.number + 1} / ${result.totalPages}|">1 / 1</span>
+            <a th:if="${result.hasNext()}"
+               class="btn btn-outline"
+               th:href="@{/(keyword=${keyword}, categoryId=${categoryId}, petType=${petType}, minPrice=${minPrice}, maxPrice=${maxPrice}, page=${result.number + 1})}">다음</a>
+        </nav>
     </div>
 
 </main>

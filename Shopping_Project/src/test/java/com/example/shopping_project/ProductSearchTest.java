@@ -91,8 +91,10 @@ class ProductSearchTest {
     }
 
     @Test
-    void homeShowsFeaturedProductsFromDb() throws Exception {
+    void homeShowsProductListDirectly() throws Exception {
         mockMvc.perform(get("/"))
+                .andExpect(status().isOk());
+        mockMvc.perform(get("/").param("minPrice", "10000").param("maxPrice", "30000"))
                 .andExpect(status().isOk());
     }
 
