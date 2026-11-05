@@ -22,21 +22,19 @@ public class HomeController {
     public String home(@RequestParam(required = false) String keyword,
                        @RequestParam(required = false) Long categoryId,
                        @RequestParam(required = false) PetType petType,
-                       @RequestParam(required = false) PriceRange priceRange,
+                       @RequestParam(required = false) BigDecimal minPrice,
+                       @RequestParam(required = false) BigDecimal maxPrice,
                        @RequestParam(defaultValue = "0") int page,
                        Model model) {
-        BigDecimal minPrice = priceRange == null ? null : priceRange.getMinPrice();
-        BigDecimal maxPrice = priceRange == null ? null : priceRange.getMaxPrice();
-
         model.addAttribute("result", productService.searchActive(
                 keyword, categoryId, petType, minPrice, maxPrice, page));
         model.addAttribute("keyword", keyword == null ? "" : keyword.trim());
         model.addAttribute("categoryId", categoryId);
         model.addAttribute("petType", petType);
-        model.addAttribute("priceRange", priceRange);
-        model.addAttribute("selectedPriceRange", priceRange);
         model.addAttribute("minPrice", minPrice);
         model.addAttribute("maxPrice", maxPrice);
+        model.addAttribute("selectedPriceRange",
+                PriceRange.fromBounds(minPrice, maxPrice).orElse(null));
         model.addAttribute("pageTitle", "전체 상품");
         return "index";
     }
