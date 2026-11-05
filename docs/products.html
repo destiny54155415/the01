@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title th:text="${pageTitle} + ' | PetShop'">상품 목록</title>
+
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+</head>
+
+<body>
+
+<!-- 공통 헤더 -->
+<header th:replace="~{fragments/header :: header}"></header>
+
+<!-- 공통 카테고리 -->
+<nav th:replace="~{fragments/category-nav :: categoryNav}"></nav>
+
+<main class="page-container">
+    <div class="product-list-head">
+        <div>
+            <h1 class="section-title" th:text="${pageTitle}">전체 상품</h1>
+            <p class="text-muted" th:text="|총 ${result.totalElements}개 상품|">총 0개 상품</p>
+        </div>
+    </div>
+
+    <p class="empty-state" th:if="${result.totalElements == 0}">등록된 상품이 없습니다.</p>
+
+    <section class="product-grid" th:if="${result.totalElements > 0}">
+        <article class="product-card" th:each="product : ${result.content}">
+            <a th:href="@{/products/{id}(id=${product.productId})}">
+                <img class="product-image"
+                     th:src="@{${product.imageUrl != null and !#strings.isEmpty(product.imageUrl) ? product.imageUrl : '/images/sample.jpg'}}"
+                     th:alt="${product.productName}">
+                <div class="product-info">
+                    <p class="product-category" th:text="${product.category.categoryName}">사료</p>
+                    <h3 class="product-name" th:text="${product.productName}">상품명</h3>
+                    <p class="product-price">
+                        <span th:text="${#numbers.formatInteger(product.price, 0, 'COMMA')} + '원'">0원</span>
+                    </p>
+                    <p class="product-stock"
+                       th:text="|재고 ${product.stock}개 · 판매 ${product.salesCount}|">재고 0개</p>
+                </div>
+            </a>
+        </article>
+    </section>
+
+    <nav class="pager" th:if="${result.totalPages > 1}" aria-label="페이지">
+        <a th:if="${result.hasPrevious()}"
+           class="btn btn-outline"
+           th:href="@{/products(keyword=${keyword}, categoryId=${categoryId}, page=${result.number - 1})}">이전</a>
+        <span th:text="|${result.number + 1} / ${result.totalPages}|">1 / 1</span>
+        <a th:if="${result.hasNext()}"
+           class="btn btn-outline"
+           th:href="@{/products(keyword=${keyword}, categoryId=${categoryId}, page=${result.number + 1})}">다음</a>
+    </nav>
+</main>
+
+<!-- 공통 푸터 -->
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+<script th:src="@{/js/product.js}"></script>
+</body>
+</html>

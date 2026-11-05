@@ -24,21 +24,9 @@
             <h1 class="section-title" th:text="${pageTitle}">전체 상품</h1>
             <p class="text-muted" th:text="|총 ${result.totalElements}개 상품|">총 0개 상품</p>
         </div>
-        <form class="product-filter" method="get" th:action="@{/products}">
-            <input type="hidden" name="categoryId" th:value="${categoryId}">
-            <input type="search" name="keyword" class="form-control" th:value="${keyword}" placeholder="상품명 검색">
-            <select name="petType" class="form-control">
-                <option value="">전체 동물</option>
-                <option th:each="type : ${petTypes}"
-                        th:value="${type}"
-                        th:text="${type.label}"
-                        th:selected="${petType == type}"></option>
-            </select>
-            <button type="submit" class="btn btn-primary">검색</button>
-        </form>
     </div>
 
-    <p class="empty-state" th:if="${result.totalElements == 0}">검색 조건에 맞는 상품이 없습니다.</p>
+    <p class="empty-state" th:if="${result.totalElements == 0}">등록된 상품이 없습니다.</p>
 
     <section class="product-grid" th:if="${result.totalElements > 0}">
         <article class="product-card" th:each="product : ${result.content}">
@@ -62,11 +50,11 @@
     <nav class="pager" th:if="${result.totalPages > 1}" aria-label="페이지">
         <a th:if="${result.hasPrevious()}"
            class="btn btn-outline"
-           th:href="@{/products(keyword=${keyword}, categoryId=${categoryId}, petType=${petType}, page=${result.number - 1})}">이전</a>
+           th:href="@{/products(keyword=${keyword}, categoryId=${categoryId}, page=${result.number - 1})}">이전</a>
         <span th:text="|${result.number + 1} / ${result.totalPages}|">1 / 1</span>
         <a th:if="${result.hasNext()}"
            class="btn btn-outline"
-           th:href="@{/products(keyword=${keyword}, categoryId=${categoryId}, petType=${petType}, page=${result.number + 1})}">다음</a>
+           th:href="@{/products(keyword=${keyword}, categoryId=${categoryId}, page=${result.number + 1})}">다음</a>
     </nav>
 </main>
 
