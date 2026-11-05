@@ -32,7 +32,11 @@
             </div>
         </div>
 
-        <p class="empty-state" th:if="${result.totalElements == 0}">조건에 맞는 상품이 없습니다.</p>
+        <div class="empty-state" th:if="${result.totalElements == 0}">
+            <p>조건에 맞는 상품이 없습니다.</p>
+            <p class="text-muted">카테고리·동물·금액 조건을 넓히거나 초기화해 보세요.</p>
+            <a class="btn btn-outline" th:href="@{/}">필터 초기화</a>
+        </div>
 
         <section class="product-grid" th:if="${result.totalElements > 0}">
             <article class="product-card" th:each="product : ${result.content}">
@@ -56,11 +60,11 @@
         <nav class="pager" th:if="${result.totalPages > 1}" aria-label="페이지">
             <a th:if="${result.hasPrevious()}"
                class="btn btn-outline"
-               th:href="@{/(keyword=${keyword}, categoryId=${categoryId}, petType=${petType}, minPrice=${minPrice}, maxPrice=${maxPrice}, page=${result.number - 1})}">이전</a>
+               th:href="@{/(keyword=${keyword}, categoryId=${categoryId}, petType=${petType}, priceRange=${priceRange}, page=${result.number - 1})}">이전</a>
             <span th:text="|${result.number + 1} / ${result.totalPages}|">1 / 1</span>
             <a th:if="${result.hasNext()}"
                class="btn btn-outline"
-               th:href="@{/(keyword=${keyword}, categoryId=${categoryId}, petType=${petType}, minPrice=${minPrice}, maxPrice=${maxPrice}, page=${result.number + 1})}">다음</a>
+               th:href="@{/(keyword=${keyword}, categoryId=${categoryId}, petType=${petType}, priceRange=${priceRange}, page=${result.number + 1})}">다음</a>
         </nav>
     </div>
 

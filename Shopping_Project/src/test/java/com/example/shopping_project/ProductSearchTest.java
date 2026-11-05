@@ -73,7 +73,7 @@ class ProductSearchTest {
                 .extracting(ProductEntity::getProductName)
                 .containsExactly("실내묘 건식사료");
         assertThat(productService.searchActive(null, null, null,
-                null, new BigDecimal("10000"), 0).getContent())
+                new BigDecimal("0"), new BigDecimal("10000"), 0).getContent())
                 .extracting(ProductEntity::getProductName)
                 .containsExactly("참치 츄르");
     }
@@ -84,9 +84,7 @@ class ProductSearchTest {
                 .andExpect(status().isOk());
         mockMvc.perform(get("/products").param("categoryId", String.valueOf(snack.getCategoryId())))
                 .andExpect(status().isOk());
-        mockMvc.perform(get("/products")
-                        .param("minPrice", "10000")
-                        .param("maxPrice", "30000"))
+        mockMvc.perform(get("/products").param("priceRange", "FROM_10000_TO_30000"))
                 .andExpect(status().isOk());
     }
 
@@ -94,8 +92,14 @@ class ProductSearchTest {
     void homeShowsProductListDirectly() throws Exception {
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk());
-        mockMvc.perform(get("/").param("minPrice", "10000").param("maxPrice", "30000"))
-                .andExpect(status().isOk());
+        mockMvc.perform(get("/").param("priceRange", "UNDER_10000"))
+                .andExpect(status().isOk())
+                .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers
+                        .content().string(org.hamcrest.Matchers.containsString("참치 츄르")));
+        mockMvc.perform(get("/").param("priceRange", "FROM_10000_TO_30000"))
+                .andExpect(status().isOk())
+                .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers
+                        .content().string(org.hamcrest.Matchers.containsString("실내묘 건식사료")));
     }
 
     @Test

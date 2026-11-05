@@ -29,14 +29,14 @@ public class ProductController {
     public String list(@RequestParam(required = false) String keyword,
                        @RequestParam(required = false) Long categoryId,
                        @RequestParam(required = false) PetType petType,
-                       @RequestParam(required = false) BigDecimal minPrice,
-                       @RequestParam(required = false) BigDecimal maxPrice,
+                       @RequestParam(required = false) PriceRange priceRange,
                        @RequestParam(defaultValue = "0") int page,
                        Model model) {
+        BigDecimal minPrice = priceRange == null ? null : priceRange.getMinPrice();
+        BigDecimal maxPrice = priceRange == null ? null : priceRange.getMaxPrice();
         Page<ProductEntity> result = productService.searchActive(
                 keyword, categoryId, petType, minPrice, maxPrice, page);
         CategoryEntity selectedCategory = categoryId == null ? null : categoryService.getActiveCategory(categoryId);
-        PriceRange selectedPriceRange = PriceRange.fromBounds(minPrice, maxPrice).orElse(null);
 
         model.addAttribute("result", result);
         model.addAttribute("keyword", keyword == null ? "" : keyword.trim());
@@ -44,11 +44,12 @@ public class ProductController {
         model.addAttribute("selectedCategory", selectedCategory);
         model.addAttribute("petType", petType);
         model.addAttribute("petTypes", PetType.values());
+        model.addAttribute("priceRange", priceRange);
+        model.addAttribute("selectedPriceRange", priceRange);
         model.addAttribute("minPrice", minPrice);
         model.addAttribute("maxPrice", maxPrice);
-        model.addAttribute("selectedPriceRange", selectedPriceRange);
         model.addAttribute("priceRanges", PriceRange.values());
-        model.addAttribute("pageTitle", buildTitle(keyword, selectedCategory, selectedPriceRange));
+        model.addAttribute("pageTitle", buildTitle(keyword, selectedCategory, priceRange));
         return "products";
     }
 
@@ -58,15 +59,15 @@ public class ProductController {
         return "product/detail";
     }
 
-    private String buildTitle(String keyword, CategoryEntity selectedCategory, PriceRange selectedPriceRange) {
+    private String buildTitle(String keyword, CategoryEntity selectedCategory, PriceRange priceRange) {
         if (keyword != null && !keyword.isBlank()) {
             return keyword.trim() + " 검색 결과";
         }
         if (selectedCategory != null) {
             return selectedCategory.getCategoryName();
         }
-        if (selectedPriceRange != null) {
-            return selectedPriceRange.getLabel() + " 상품";
+        if (priceRange != null) {
+            return priceRange.getLabel() + " 상품";
         }
         return "전체 상품";
     }
