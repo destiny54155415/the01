@@ -1,0 +1,25 @@
+Cat-related product images replaced with royalty-free real photos.
+Licenses: Unsplash License (https://unsplash.com/license)
+           Pexels License (https://www.pexels.com/license/)
+Both allow free commercial use without requiring permission.
+
+food-cat.jpg: Unsplash photo-1514888286974-6c03e2ca1dba
+  https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=1200&h=1200&fit=crop&q=80
+food-pouch.jpg: Unsplash photo-1574158622682-e40e69881006
+  https://images.unsplash.com/photo-1574158622682-e40e69881006?w=1200&h=1200&fit=crop&q=80
+churu-tuna.jpg: Unsplash photo-1592194996308-7b43878e84a6
+  https://images.unsplash.com/photo-1592194996308-7b43878e84a6?w=1200&h=1200&fit=crop&q=80
+churu-salmon.jpg: Unsplash photo-1573865526739-10659fec78a5
+  https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=1200&h=1200&fit=crop&q=80
+toy-wand.jpg: Unsplash photo-1526336024174-e58f5cdd8e13
+  https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?w=1200&h=1200&fit=crop&q=80
+toy-catnip.jpg: Unsplash photo-1543852786-1cf6624b9987
+  https://images.unsplash.com/photo-1543852786-1cf6624b9987?w=1200&h=1200&fit=crop&q=80
+house.jpg: Pexels 1170986
+  https://images.pexels.com/photos/1170986/pexels-photo-1170986.jpeg?auto=compress&cs=tinysrgb&w=1200&h=1200&fit=crop
+tofu-sand.jpg: Unsplash photo-1495360010541-f48722b34f7d
+  https://images.unsplash.com/photo-1495360010541-f48722b34f7d?w=1200&h=1200&fit=crop&q=80
+bentonite.jpg: Unsplash photo-1513360371669-4adf3dd7dff8
+  https://images.unsplash.com/photo-1513360371669-4adf3dd7dff8?w=1200&h=1200&fit=crop&q=80
+scoop.jpg: Pexels 416160
+  https://images.pexels.com/photos/416160/pexels-photo-416160.jpeg?auto=compress&cs=tinysrgb&w=1200&h=1200&fit=crop
