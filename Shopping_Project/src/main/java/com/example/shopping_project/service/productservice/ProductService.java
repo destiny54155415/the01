@@ -92,6 +92,8 @@ public class ProductService {
                 form.getPetType(),
                 blankToNull(form.getImageUrl())
         );
+        product.setImageUrl2(blankToNull(form.getImageUrl2()));
+        product.setImageUrl3(blankToNull(form.getImageUrl3()));
         product.setIsActive(form.getIsActive() == null || form.getIsActive());
         return productRepository.save(product);
     }
@@ -107,6 +109,8 @@ public class ProductService {
         product.setSalesCount(form.getSalesCount() == null ? 0 : form.getSalesCount());
         product.setPetType(form.getPetType());
         product.setImageUrl(blankToNull(form.getImageUrl()));
+        product.setImageUrl2(blankToNull(form.getImageUrl2()));
+        product.setImageUrl3(blankToNull(form.getImageUrl3()));
         product.setIsActive(form.getIsActive() == null || form.getIsActive());
         return product;
     }

@@ -27,9 +27,43 @@
     </p>
 
     <section class="product-detail">
-        <img class="product-detail-image"
-             th:src="@{${product.imageUrl != null and !#strings.isEmpty(product.imageUrl) ? product.imageUrl : '/images/sample.jpg'}}"
-             th:alt="${product.productName}">
+        <div class="product-gallery">
+            <img id="productMainImage"
+                 class="product-detail-image"
+                 th:src="@{${product.imageUrl != null and !#strings.isEmpty(product.imageUrl) ? product.imageUrl : '/images/sample.jpg'}}"
+                 th:alt="${product.productName}">
+
+            <div class="product-thumbs" aria-label="상품 이미지 미리보기">
+                <button type="button"
+                        class="product-thumb is-active"
+                        th:attr="data-full=@{${product.imageUrl != null and !#strings.isEmpty(product.imageUrl) ? product.imageUrl : '/images/sample.jpg'}}"
+                        aria-label="대표 이미지">
+                    <img th:src="@{${product.imageUrl != null and !#strings.isEmpty(product.imageUrl) ? product.imageUrl : '/images/sample.jpg'}}"
+                         th:alt="|${product.productName} 대표|">
+                    <span class="thumb-label">대표</span>
+                </button>
+
+                <button type="button"
+                        class="product-thumb"
+                        th:if="${product.imageUrl2 != null and !#strings.isEmpty(product.imageUrl2)}"
+                        th:attr="data-full=@{${product.imageUrl2}}"
+                        aria-label="박스 형태 이미지">
+                    <img th:src="@{${product.imageUrl2}}"
+                         th:alt="|${product.productName} 박스|">
+                    <span class="thumb-label">박스</span>
+                </button>
+
+                <button type="button"
+                        class="product-thumb"
+                        th:if="${product.imageUrl3 != null and !#strings.isEmpty(product.imageUrl3)}"
+                        th:attr="data-full=@{${product.imageUrl3}}"
+                        aria-label="제품 분리 이미지">
+                    <img th:src="@{${product.imageUrl3}}"
+                         th:alt="|${product.productName} 구성|">
+                    <span class="thumb-label">구성</span>
+                </button>
+            </div>
+        </div>
 
         <div class="product-detail-info">
             <p class="product-category" th:text="${product.category.categoryName}">사료</p>

@@ -41,6 +41,12 @@ public class ProductDto {
     @Size(max = 500, message = "이미지 주소는 500자 이하입니다.")
     private String imageUrl;
 
+    @Size(max = 500, message = "이미지 주소는 500자 이하입니다.")
+    private String imageUrl2;
+
+    @Size(max = 500, message = "이미지 주소는 500자 이하입니다.")
+    private String imageUrl3;
+
     private Boolean isActive = true;
 
     public static ProductDto from(ProductEntity product) {
@@ -54,6 +60,8 @@ public class ProductDto {
         form.salesCount = product.getSalesCount();
         form.petType = product.getPetType();
         form.imageUrl = product.getImageUrl();
+        form.imageUrl2 = product.getImageUrl2();
+        form.imageUrl3 = product.getImageUrl3();
         form.isActive = product.getIsActive();
         return form;
     }
@@ -128,6 +136,22 @@ public class ProductDto {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getImageUrl2() {
+        return imageUrl2;
+    }
+
+    public void setImageUrl2(String imageUrl2) {
+        this.imageUrl2 = imageUrl2;
+    }
+
+    public String getImageUrl3() {
+        return imageUrl3;
+    }
+
+    public void setImageUrl3(String imageUrl3) {
+        this.imageUrl3 = imageUrl3;
     }
 
     public Boolean getIsActive() {

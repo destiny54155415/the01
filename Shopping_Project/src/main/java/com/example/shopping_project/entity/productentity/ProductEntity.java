@@ -52,6 +52,14 @@ public class ProductEntity {
     @Column(name = "image_url", length = 500)
     private String imageUrl;
 
+    /** 상세 갤러리: 박스 형태 */
+    @Column(name = "image_url_2", length = 500)
+    private String imageUrl2;
+
+    /** 상세 갤러리: 제품 분리/구성컷 */
+    @Column(name = "image_url_3", length = 500)
+    private String imageUrl3;
+
     @Column(name = "is_active", nullable = false)
     private Boolean isActive = true;
 
@@ -176,6 +184,22 @@ public class ProductEntity {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getImageUrl2() {
+        return imageUrl2;
+    }
+
+    public void setImageUrl2(String imageUrl2) {
+        this.imageUrl2 = imageUrl2;
+    }
+
+    public String getImageUrl3() {
+        return imageUrl3;
+    }
+
+    public void setImageUrl3(String imageUrl3) {
+        this.imageUrl3 = imageUrl3;
     }
 
     public Boolean getIsActive() {

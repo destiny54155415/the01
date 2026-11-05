@@ -85,9 +85,19 @@
         </div>
 
         <div class="form-group">
-            <label class="form-label" for="imageUrl">이미지 URL</label>
+            <label class="form-label" for="imageUrl">대표 이미지 URL</label>
             <input id="imageUrl" type="text" class="form-control" th:field="*{imageUrl}"
                    placeholder="/images/food-cat.jpg">
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="imageUrl2">박스 형태 이미지 URL</label>
+            <input id="imageUrl2" type="text" class="form-control" th:field="*{imageUrl2}"
+                   placeholder="/images/gallery/food-box.jpg">
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="imageUrl3">제품 분리/구성 이미지 URL</label>
+            <input id="imageUrl3" type="text" class="form-control" th:field="*{imageUrl3}"
+                   placeholder="/images/gallery/food-open.jpg">
         </div>
 
         <div class="form-group check-row">

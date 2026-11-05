@@ -309,6 +309,7 @@ public class ProductDataInitializer implements CommandLineRunner {
 
     private void upsert(CategoryEntity category, String name, String description, String price,
                         int stock, int salesCount, PetType petType, String imageUrl) {
+        String[] gallery = galleryFor(category.getCategoryName(), name, imageUrl);
         productRepository.findByProductName(name).ifPresentOrElse(existing -> {
             existing.setCategory(category);
             existing.setDescription(description);
@@ -316,9 +317,68 @@ public class ProductDataInitializer implements CommandLineRunner {
             existing.setStock(stock);
             existing.setSalesCount(salesCount);
             existing.setPetType(petType);
-            existing.setImageUrl(imageUrl);
+            existing.setImageUrl(gallery[0]);
+            existing.setImageUrl2(gallery[1]);
+            existing.setImageUrl3(gallery[2]);
             existing.setIsActive(true);
-        }, () -> productRepository.save(new ProductEntity(
-                category, name, description, new BigDecimal(price), stock, salesCount, petType, imageUrl)));
+        }, () -> {
+            ProductEntity created = new ProductEntity(
+                    category, name, description, new BigDecimal(price), stock, salesCount, petType, gallery[0]);
+            created.setImageUrl2(gallery[1]);
+            created.setImageUrl3(gallery[2]);
+            productRepository.save(created);
+        });
+    }
+
+    /** 대표컷 + 박스 형태 + 제품 분리컷 */
+    private String[] galleryFor(String categoryName, String productName, String mainImage) {
+        if (productName.contains("두부모래")) {
+            return new String[]{
+                    mainImage,
+                    "/images/gallery/tofu-sand-box.jpg",
+                    "/images/gallery/tofu-sand-open.jpg"
+            };
+        }
+        String box;
+        String open;
+        switch (categoryName) {
+            case "사료" -> {
+                box = "/images/gallery/food-box.jpg";
+                open = "/images/gallery/food-open.jpg";
+            }
+            case "간식" -> {
+                box = "/images/gallery/snack-box.jpg";
+                open = "/images/gallery/snack-open.jpg";
+            }
+            case "장난감" -> {
+                box = "/images/gallery/toy-box.jpg";
+                open = "/images/gallery/toy-open.jpg";
+            }
+            case "산책용품" -> {
+                box = "/images/gallery/walk-box.jpg";
+                open = "/images/gallery/walk-open.jpg";
+            }
+            case "미용·목욕" -> {
+                box = "/images/gallery/bath-box.jpg";
+                open = "/images/gallery/bath-open.jpg";
+            }
+            case "하우스·생활용품" -> {
+                box = "/images/gallery/house-box.jpg";
+                open = "/images/gallery/house-open.jpg";
+            }
+            case "의류·패션" -> {
+                box = "/images/gallery/fashion-box.jpg";
+                open = "/images/gallery/fashion-open.jpg";
+            }
+            case "위생·배변용품" -> {
+                box = "/images/gallery/hygiene-box.jpg";
+                open = "/images/gallery/hygiene-open.jpg";
+            }
+            default -> {
+                box = "/images/gallery/gallery-box.jpg";
+                open = "/images/gallery/gallery-open.jpg";
+            }
+        }
+        return new String[]{mainImage, box, open};
     }
 }
