@@ -20,9 +20,9 @@
 
 <main class="page-container">
     <p class="crumb">
-        <a th:href="@{/products}">전체상품</a>
+        <a th:href="@{/}">전체상품</a>
         <span>/</span>
-        <a th:href="@{/products(categoryId=${product.category.categoryId})}"
+        <a th:href="@{/(categoryId=${product.category.categoryId})}"
            th:text="${product.category.categoryName}">카테고리</a>
     </p>
 
@@ -39,13 +39,31 @@
             </p>
             <p class="text-muted" th:text="|구분: ${product.petType.label}|">구분</p>
             <p class="text-muted" th:text="|재고: ${product.stock}개|">재고</p>
-            <p class="product-description" th:text="${product.description}">설명</p>
+            <p class="product-summary"
+               th:text="${product.description != null ? #strings.substringBefore(product.description, '【').trim() : ''}">요약</p>
 
             <div class="product-actions">
                 <a class="btn btn-primary" th:href="@{/cart}">장바구니로 이동</a>
-                <a class="btn btn-outline" th:href="@{/products(categoryId=${product.category.categoryId})}">같은 카테고리 보기</a>
+                <a class="btn btn-outline" th:href="@{/(categoryId=${product.category.categoryId})}">같은 카테고리 보기</a>
             </div>
             <p class="text-muted">장바구니 담기는 3번 담당, 리뷰는 4번 담당 기능입니다.</p>
+        </div>
+    </section>
+
+    <!-- 이미지 하단 상세 페이지 -->
+    <section class="product-detail-body" th:if="${product.description != null and !#strings.isEmpty(product.description)}">
+        <h2 class="product-detail-title">상품 상세 정보</h2>
+        <div class="product-detail-content" th:text="${product.description}">상세 설명</div>
+
+        <div class="product-detail-meta">
+            <h3>기본 정보</h3>
+            <ul>
+                <li th:text="|상품명: ${product.productName}|">상품명</li>
+                <li th:text="|카테고리: ${product.category.categoryName}|">카테고리</li>
+                <li th:text="|반려동물 구분: ${product.petType.label}|">구분</li>
+                <li th:text="|판매가: ${#numbers.formatInteger(product.price, 0, 'COMMA')}원|">가격</li>
+                <li th:text="|재고: ${product.stock}개|">재고</li>
+            </ul>
         </div>
     </section>
 </main>
