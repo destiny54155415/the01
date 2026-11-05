@@ -27,15 +27,21 @@ public class ProductService {
         this.categoryService = categoryService;
     }
 
+    private static final BigDecimal PRICE_FLOOR = BigDecimal.ZERO;
+    private static final BigDecimal PRICE_CEILING = new BigDecimal("999999999");
+
     @Transactional(readOnly = true)
     public Page<ProductEntity> searchActive(String keyword, Long categoryId, PetType petType,
                                             BigDecimal minPrice, BigDecimal maxPrice, int page) {
+        // Hibernate null 파라미터 비교 이슈 회피: 항상 숫자 구간으로 조회
+        BigDecimal effectiveMin = minPrice == null ? PRICE_FLOOR : minPrice;
+        BigDecimal effectiveMax = maxPrice == null ? PRICE_CEILING : maxPrice;
         return productRepository.search(
                 blankToNull(keyword),
                 categoryId,
                 petType,
-                minPrice,
-                maxPrice,
+                effectiveMin,
+                effectiveMax,
                 false,
                 PageRequest.of(Math.max(page, 0), PAGE_SIZE,
                         Sort.by(Sort.Direction.DESC, "salesCount", "productId"))
@@ -56,8 +62,8 @@ public class ProductService {
                 blankToNull(keyword),
                 categoryId,
                 petType,
-                null,
-                null,
+                PRICE_FLOOR,
+                PRICE_CEILING,
                 true,
                 PageRequest.of(Math.max(page, 0), PAGE_SIZE, Sort.by(Sort.Direction.DESC, "updatedAt", "productId"))
         );

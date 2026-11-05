@@ -36,11 +36,22 @@
                 <a th:href="@{/(keyword=${keyword}, categoryId=${categoryId}, petType=${petType})}"
                    th:classappend="${selectedPriceRange == null} ? ' is-active'">전체 금액</a>
             </li>
-            <li th:each="range : ${priceRanges}">
-                <!-- min/max 항상 숫자 (빈 값 없음) → HomeController 수정 없이 동작 -->
-                <a th:href="@{/(keyword=${keyword}, categoryId=${categoryId}, petType=${petType}, minPrice=${range.minPrice}, maxPrice=${range.maxPrice})}"
-                   th:text="${range.label}"
-                   th:classappend="${selectedPriceRange == range} ? ' is-active'">1만원 미만</a>
+            <!-- 숫자 리터럴로 고정 → BigDecimal URL 변환 문제 방지 -->
+            <li>
+                <a th:href="@{/(keyword=${keyword}, categoryId=${categoryId}, petType=${petType}, minPrice=0, maxPrice=10000)}"
+                   th:classappend="${selectedPriceRange != null and selectedPriceRange.name() == 'UNDER_10000'} ? ' is-active'">1만원 미만</a>
+            </li>
+            <li>
+                <a th:href="@{/(keyword=${keyword}, categoryId=${categoryId}, petType=${petType}, minPrice=10000, maxPrice=30000)}"
+                   th:classappend="${selectedPriceRange != null and selectedPriceRange.name() == 'FROM_10000_TO_30000'} ? ' is-active'">1만원 ~ 3만원</a>
+            </li>
+            <li>
+                <a th:href="@{/(keyword=${keyword}, categoryId=${categoryId}, petType=${petType}, minPrice=30000, maxPrice=50000)}"
+                   th:classappend="${selectedPriceRange != null and selectedPriceRange.name() == 'FROM_30000_TO_50000'} ? ' is-active'">3만원 ~ 5만원</a>
+            </li>
+            <li>
+                <a th:href="@{/(keyword=${keyword}, categoryId=${categoryId}, petType=${petType}, minPrice=50000, maxPrice=999999999)}"
+                   th:classappend="${selectedPriceRange != null and selectedPriceRange.name() == 'FROM_50000'} ? ' is-active'">5만원 이상</a>
             </li>
         </ul>
     </div>

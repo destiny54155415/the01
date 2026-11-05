@@ -24,8 +24,8 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
             where (:includeInactive = true or p.isActive = true)
               and (:categoryId is null or p.category.categoryId = :categoryId)
               and (:petType is null or p.petType = :petType)
-              and (:minPrice is null or p.price >= :minPrice)
-              and (:maxPrice is null or p.price < :maxPrice)
+              and p.price >= :minPrice
+              and p.price < :maxPrice
               and (
                     :keyword is null
                     or lower(p.productName) like lower(concat('%', :keyword, '%'))
