@@ -1,5 +1,7 @@
 package com.example.shopping_project.config;
 
+import com.example.shopping_project.entity.productentity.PetType;
+import com.example.shopping_project.entity.productentity.PriceRange;
 import com.example.shopping_project.service.productservice.CategoryService;
 import com.example.shopping_project.service.productservice.NotFoundException;
 import org.springframework.http.HttpStatus;
@@ -21,6 +23,16 @@ public class GlobalModelAdvice {
     @ModelAttribute("categories")
     public Object categories() {
         return categoryService.findActiveCategories();
+    }
+
+    @ModelAttribute("petTypes")
+    public PetType[] petTypes() {
+        return PetType.values();
+    }
+
+    @ModelAttribute("priceRanges")
+    public PriceRange[] priceRanges() {
+        return PriceRange.values();
     }
 
     @ModelAttribute("categoryId")

@@ -5,6 +5,7 @@ import com.example.shopping_project.entity.productentity.CategoryEntity;
 import com.example.shopping_project.entity.productentity.PetType;
 import com.example.shopping_project.entity.productentity.ProductEntity;
 import com.example.shopping_project.repository.productrepository.ProductRepository;
+import java.math.BigDecimal;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,11 +28,14 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ProductEntity> searchActive(String keyword, Long categoryId, PetType petType, int page) {
+    public Page<ProductEntity> searchActive(String keyword, Long categoryId, PetType petType,
+                                            BigDecimal minPrice, BigDecimal maxPrice, int page) {
         return productRepository.search(
                 blankToNull(keyword),
                 categoryId,
                 petType,
+                minPrice,
+                maxPrice,
                 false,
                 PageRequest.of(Math.max(page, 0), PAGE_SIZE,
                         Sort.by(Sort.Direction.DESC, "salesCount", "productId"))
@@ -52,6 +56,8 @@ public class ProductService {
                 blankToNull(keyword),
                 categoryId,
                 petType,
+                null,
+                null,
                 true,
                 PageRequest.of(Math.max(page, 0), PAGE_SIZE, Sort.by(Sort.Direction.DESC, "updatedAt", "productId"))
         );

@@ -57,13 +57,25 @@ class ProductSearchTest {
 
     @Test
     void searchesByKeywordAndCategory() {
-        assertThat(productService.searchActive("츄르", null, null, 0).getContent())
+        assertThat(productService.searchActive("츄르", null, null, null, null, 0).getContent())
                 .extracting(ProductEntity::getProductName)
                 .containsExactly("참치 츄르");
-        assertThat(productService.searchActive(null, food.getCategoryId(), PetType.CAT, 0).getContent())
+        assertThat(productService.searchActive(null, food.getCategoryId(), PetType.CAT, null, null, 0).getContent())
                 .extracting(ProductEntity::getProductName)
                 .containsExactly("실내묘 건식사료");
-        assertThat(productService.searchActive(null, null, null, 0).getTotalElements()).isEqualTo(2);
+        assertThat(productService.searchActive(null, null, null, null, null, 0).getTotalElements()).isEqualTo(2);
+    }
+
+    @Test
+    void searchesByPriceRange() {
+        assertThat(productService.searchActive(null, null, null,
+                new BigDecimal("10000"), new BigDecimal("30000"), 0).getContent())
+                .extracting(ProductEntity::getProductName)
+                .containsExactly("실내묘 건식사료");
+        assertThat(productService.searchActive(null, null, null,
+                null, new BigDecimal("10000"), 0).getContent())
+                .extracting(ProductEntity::getProductName)
+                .containsExactly("참치 츄르");
     }
 
     @Test
@@ -71,6 +83,10 @@ class ProductSearchTest {
         mockMvc.perform(get("/products").param("keyword", "건식"))
                 .andExpect(status().isOk());
         mockMvc.perform(get("/products").param("categoryId", String.valueOf(snack.getCategoryId())))
+                .andExpect(status().isOk());
+        mockMvc.perform(get("/products")
+                        .param("minPrice", "10000")
+                        .param("maxPrice", "30000"))
                 .andExpect(status().isOk());
     }
 

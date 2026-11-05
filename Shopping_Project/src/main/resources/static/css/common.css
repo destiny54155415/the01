@@ -831,3 +831,85 @@ textarea.form-control {
         width: 100%;
     }
 }
+
+/* ========================================
+   왼쪽 필터 사이드바 (금액/카테고리/동물)
+======================================== */
+
+.shop-layout {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 28px;
+    align-items: start;
+}
+
+.filter-sidebar {
+    position: sticky;
+    top: 20px;
+    padding: 18px 16px;
+    background: #fafafa;
+    border: 1px solid #ececec;
+    border-radius: 10px;
+}
+
+.filter-group + .filter-group {
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 1px solid #e5e5e5;
+}
+
+.filter-title {
+    margin: 0 0 12px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #222;
+}
+
+.filter-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.filter-list li + li {
+    margin-top: 4px;
+}
+
+.filter-list a {
+    display: block;
+    padding: 8px 10px;
+    border-radius: 6px;
+    color: #444;
+    text-decoration: none;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.filter-list a:hover {
+    background: #f0f0f0;
+    color: #111;
+}
+
+.filter-list a.is-active {
+    background: #ececec;
+    color: #c0392b;
+    font-weight: 700;
+}
+
+.filter-price a.is-active {
+    color: #1f6feb;
+}
+
+.shop-content .section-title {
+    margin-bottom: 12px;
+}
+
+@media (max-width: 900px) {
+    .shop-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .filter-sidebar {
+        position: static;
+    }
+}
