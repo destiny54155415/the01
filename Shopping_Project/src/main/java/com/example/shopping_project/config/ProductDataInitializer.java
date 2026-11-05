@@ -75,6 +75,12 @@ public class ProductDataInitializer implements CommandLineRunner {
         upsert(food, "고양이 주식 파우치 12개입",
                 "습식 주식으로 자주 재구매되는 파우치 세트입니다.",
                 "18900", 95, 1560, PetType.CAT, "/images/food-pouch.jpg");
+        upsert(food, "고양이 주식캔 6개입",
+                "기호성 좋은 습식 캔. 파우치와 함께 많이 담기는 기본 주식입니다.",
+                "15900", 100, 1320, PetType.CAT, "/images/food-can.jpg");
+        upsert(food, "퍼피·키튼 스타터 사료 1.5kg",
+                "성장기 전용 소프트 키블. 귀여운 패키지로 선물용 구매도 많은 사료입니다.",
+                "27900", 65, 980, PetType.COMMON, "/images/food-starter.jpg");
 
         upsert(snack, "짜먹는 츄르 참치 20개입",
                 "고양이 간식 부동의 1위. 기호성 좋은 참치 츄르입니다.",
