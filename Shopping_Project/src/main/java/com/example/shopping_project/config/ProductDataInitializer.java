@@ -28,42 +28,49 @@ public class ProductDataInitializer implements CommandLineRunner {
         this.productRepository = productRepository;
     }
 
+    private static final List<String> CATEGORY_NAMES = List.of(
+            "사료",
+            "간식",
+            "장난감",
+            "산책용품",
+            "미용·목욕",
+            "하우스·생활용품",
+            "의류·패션",
+            "위생·배변용품"
+    );
+
     @Override
     @Transactional
     public void run(String... args) {
-        seedCategoriesIfEmpty();
+        ensureCategories();
         syncBestsellers();
     }
 
-    private void seedCategoriesIfEmpty() {
-        if (categoryRepository.count() > 0) {
-            return;
+    private void ensureCategories() {
+        for (int i = 0; i < CATEGORY_NAMES.size(); i++) {
+            String name = CATEGORY_NAMES.get(i);
+            int order = i + 1;
+            categoryRepository.findByCategoryName(name).ifPresentOrElse(existing -> {
+                existing.setDisplayOrder(order);
+                existing.setIsActive(true);
+            }, () -> categoryRepository.save(new CategoryEntity(name, order)));
         }
-        List.of(
-                new CategoryEntity("사료", 1),
-                new CategoryEntity("간식", 2),
-                new CategoryEntity("장난감", 3),
-                new CategoryEntity("산책용품", 4),
-                new CategoryEntity("미용·목욕", 5),
-                new CategoryEntity("하우스·생활용품", 6),
-                new CategoryEntity("의류·패션", 7),
-                new CategoryEntity("위생·배변용품", 8)
-        ).forEach(categoryRepository::save);
+    }
+
+    private CategoryEntity category(String name) {
+        return categoryRepository.findByCategoryName(name)
+                .orElseThrow(() -> new IllegalStateException("카테고리 없음: " + name));
     }
 
     private void syncBestsellers() {
-        List<CategoryEntity> categories = categoryRepository.findAllByOrderByDisplayOrderAscCategoryIdAsc();
-        if (categories.size() < 8) {
-            return;
-        }
-        CategoryEntity food = categories.get(0);
-        CategoryEntity snack = categories.get(1);
-        CategoryEntity toy = categories.get(2);
-        CategoryEntity walk = categories.get(3);
-        CategoryEntity bath = categories.get(4);
-        CategoryEntity house = categories.get(5);
-        CategoryEntity fashion = categories.get(6);
-        CategoryEntity hygiene = categories.get(7);
+        CategoryEntity food = category("사료");
+        CategoryEntity snack = category("간식");
+        CategoryEntity toy = category("장난감");
+        CategoryEntity walk = category("산책용품");
+        CategoryEntity bath = category("미용·목욕");
+        CategoryEntity house = category("하우스·생활용품");
+        CategoryEntity fashion = category("의류·패션");
+        CategoryEntity hygiene = category("위생·배변용품");
 
         // salesCount = 상대적 인기(높을수록 목록 상단)
         upsert(food, "실내묘 헤어볼 케어 사료 2kg",
