@@ -32,7 +32,7 @@
             </div>
         </div>
 
-        <p class="empty-state" th:if="${result.totalElements == 0}">등록된 상품이 없습니다.</p>
+        <p class="empty-state" th:if="${result.totalElements == 0}">조건에 맞는 상품이 없습니다.</p>
 
         <section class="product-grid" th:if="${result.totalElements > 0}">
             <article class="product-card" th:each="product : ${result.content}">

@@ -7,7 +7,6 @@ import com.example.shopping_project.repository.productrepository.CategoryReposit
 import com.example.shopping_project.repository.productrepository.ProductRepository;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Set;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -15,26 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 펫샵에서 잘 팔리는 SKU 위주로 카탈로그를 맞춘다.
- * 동일 상품명이 있으면 가격·재고·판매량·이미지를 갱신하고, 옛 샘플명은 비활성화한다.
+ * 동일 상품명이 있으면 가격·재고·판매량·이미지를 갱신한다.
  */
 @Component
 @Profile("!test")
 public class ProductDataInitializer implements CommandLineRunner {
-
-    private static final Set<String> LEGACY_SAMPLE_NAMES = Set.of(
-            "실내묘 건식사료 2kg",
-            "참치 주식캔 12개입",
-            "짜먹는 간식 참치맛 4개입",
-            "동결건조 치킨 트릿 80g",
-            "애벌레 줄 낚시대",
-            "캣닢 생쥐 인형",
-            "리드줄 기본형",
-            "저자극 샴푸 300ml",
-            "숨숨집 하우스",
-            "후드 티셔츠",
-            "먼지적은 두부모래 2.6kg",
-            "벤토나이트 모래 6kg"
-    );
 
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
@@ -49,7 +33,6 @@ public class ProductDataInitializer implements CommandLineRunner {
     public void run(String... args) {
         seedCategoriesIfEmpty();
         syncBestsellers();
-        deactivateLegacySamples();
     }
 
     private void seedCategoriesIfEmpty() {
@@ -82,7 +65,7 @@ public class ProductDataInitializer implements CommandLineRunner {
         CategoryEntity fashion = categories.get(6);
         CategoryEntity hygiene = categories.get(7);
 
-        // salesCount = 상대적 인기(높을수록 메인 추천 상단)
+        // salesCount = 상대적 인기(높을수록 목록 상단)
         upsert(food, "실내묘 헤어볼 케어 사료 2kg",
                 "국내 펫샵 스테디셀러. 헤어볼·실내묘 전용 건식 사료입니다.",
                 "32900", 85, 1820, PetType.CAT, "/images/food-cat.jpg");
@@ -116,19 +99,27 @@ public class ProductDataInitializer implements CommandLineRunner {
                 "실내 놀이용으로 많이 찾는 저가 묶음 상품입니다.",
                 "7900", 90, 760, PetType.DOG, "/images/toy-ball.jpg");
 
+        // 산책용품 3
         upsert(walk, "쿠션 하네스 M",
                 "산책 필수템. 목줄 대신 많이 선택되는 하네스입니다.",
                 "24900", 55, 890, PetType.DOG, "/images/harness.jpg");
         upsert(walk, "자동 리드줄 5m",
                 "중형견 보호자에게 판매량이 높은 자동 리드줄입니다.",
                 "21900", 48, 720, PetType.DOG, "/images/leash.jpg");
+        upsert(walk, "고양이 산책 하네스 세트",
+                "실외 적응·병원 이동용으로 찾는 고양이 전용 하네스+리드 세트입니다.",
+                "19900", 42, 560, PetType.CAT, "/images/cat-harness.jpg");
 
+        // 미용·목욕 3
         upsert(bath, "저자극 펫샴푸 500ml",
                 "목욕 시즌·정기 구매가 많은 저자극 샴푸입니다.",
                 "16900", 60, 640, PetType.COMMON, "/images/shampoo.jpg");
         upsert(bath, "털제거 브러시",
                 "털갈이 시즌마다 판매가 크게 오르는 브러시입니다.",
                 "12900", 80, 880, PetType.COMMON, "/images/brush.jpg");
+        upsert(bath, "펫 목욕 가운 타월",
+                "목욕 후 물기 제거용으로 함께 담기는 극세사 가운 타월입니다.",
+                "14900", 70, 510, PetType.COMMON, "/images/bath-towel.jpg");
 
         upsert(house, "고양이 스크래쳐 하우스",
                 "스크래쳐+숨숨집 겸용으로 객단가가 높은 인기 상품입니다.",
@@ -137,9 +128,16 @@ public class ProductDataInitializer implements CommandLineRunner {
                 "강아지·고양이 공용으로 회전율이 좋은 방석입니다.",
                 "24900", 50, 830, PetType.COMMON, "/images/cushion.jpg");
 
+        // 의류·패션 3
         upsert(fashion, "방수 올인원 레인코트",
                 "비 오는 날 수요가 몰리는 강아지 레인코트입니다.",
                 "27900", 28, 310, PetType.DOG, "/images/raincoat.jpg");
+        upsert(fashion, "후드 맨투맨",
+                "환절기·실내복으로 많이 찾는 강아지 후드 맨투맨입니다.",
+                "22900", 36, 420, PetType.DOG, "/images/hoodie.jpg");
+        upsert(fashion, "니트 목도리 케이프",
+                "사진·외출용으로 인기인 공용 니트 케이프입니다.",
+                "15900", 45, 380, PetType.COMMON, "/images/boots.jpg");
 
         upsert(hygiene, "먼지 적은 두부모래 7L",
                 "고양이 모래 카테고리 최다 판매. 응고력·저분진 타입입니다.",
@@ -168,11 +166,5 @@ public class ProductDataInitializer implements CommandLineRunner {
             existing.setIsActive(true);
         }, () -> productRepository.save(new ProductEntity(
                 category, name, description, new BigDecimal(price), stock, salesCount, petType, imageUrl)));
-    }
-
-    private void deactivateLegacySamples() {
-        for (String name : LEGACY_SAMPLE_NAMES) {
-            productRepository.findByProductName(name).ifPresent(product -> product.setIsActive(false));
-        }
     }
 }
