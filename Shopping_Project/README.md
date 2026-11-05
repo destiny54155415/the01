@@ -96,40 +96,6 @@ Order, OrderItem, Review Entity 구현
 
 4번	주문 및 리뷰 관리	주문, 모의 결제, 리뷰
 
----
-
-## 코딩 시 주의사항
-
-### 폴더 및 파일 규칙
-머지·코드 리뷰가 쉽도록 아래 구조를 유지합니다.
-
-**Java** (회원 예시와 동일 규칙)
-- `controller/membercontroller` → 상품은 `controller/productcontroller`
-- `service/memberservice` → `service/productservice`
-- `repository/memberrepository` → `repository/productrepository`
-- `entity/memberentity` → `entity/productentity`
-- `dto/memberdto` → `dto/productdto`
-- `config/` : 상품용 `GlobalModelAdvice`, `ProductDataInitializer`
-
-**HTML (templates)**
-- 공통 조각: `templates/fragments/`
-- 상품 화면: `templates/product/` (회원은 `templates/member/`)
-
-**정적 자원**
-- `static/css/common.css` (공통)
-- 기능 CSS 예: `static/css/product.css`
-- `static/js/`, `static/images/`
-
-**DB**
-- 스키마 기준 파일: `db/petshop_db.sql` (프로젝트 루트)
-
-### GitHub 협업 방식
-- `main`: 실행 가능한 공통 코드 + 리뷰 완료 기능만
-- 기능 브랜치: `feature/member`, `feature/product`, `feature/cart`, `feature/order-review`
-- 흐름: 작업 → commit → push → PR → 동작 확인 → (팀원 리뷰 권장) → `main` 머지
-- 공통 HTML/CSS, DB 스키마, `application.properties` 변경은 **수정 전에 팀 공유**
-
-상품 담당은 반드시 `feature/product` 브랜치에서 작업합니다. **main에 직접 커밋하지 마세요.**
 
 
 
