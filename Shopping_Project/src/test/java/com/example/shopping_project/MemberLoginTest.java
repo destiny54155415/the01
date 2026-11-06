@@ -54,12 +54,19 @@ class MemberLoginTest {
                         .param("password", "aa"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/"))
+                .andExpect(flash().attributeExists("loginSuccessMessage"))
                 .andReturn();
 
         MockHttpSession session = (MockHttpSession) loginResult.getRequest().getSession(false);
         assertThat(session).isNotNull();
         assertThat(session.getAttribute("loginMember")).isInstanceOf(MemberEntity.class);
+        assertThat(session.getAttribute("loginMemberName")).isEqualTo("테스트");
         assertThat(session.getAttribute("loginRole")).isEqualTo("USER");
+
+        mockMvc.perform(get("/").session(session))
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("loggedIn", true))
+                .andExpect(model().attribute("loginMemberName", "테스트"));
     }
 
     @Test

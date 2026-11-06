@@ -1,10 +1,12 @@
 package com.example.shopping_project.config.productconfig;
 
+import com.example.shopping_project.entity.memberentity.MemberEntity;
 import com.example.shopping_project.entity.productentity.PetType;
 import com.example.shopping_project.entity.productentity.PriceRange;
 import com.example.shopping_project.entity.productentity.ProductSort;
 import com.example.shopping_project.service.productservice.CategoryService;
 import com.example.shopping_project.service.productservice.NotFoundException;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -19,6 +21,35 @@ public class GlobalModelAdvice {
 
     public GlobalModelAdvice(CategoryService categoryService) {
         this.categoryService = categoryService;
+    }
+
+    @ModelAttribute("loggedIn")
+    public boolean loggedIn(HttpSession session) {
+        return resolveLoginName(session) != null;
+    }
+
+    @ModelAttribute("loginMemberName")
+    public String loginMemberName(HttpSession session) {
+        return resolveLoginName(session);
+    }
+
+    private static String resolveLoginName(HttpSession session) {
+        Object name = session.getAttribute("loginMemberName");
+        if (name instanceof String text && !text.isBlank()) {
+            return text;
+        }
+        Object member = session.getAttribute("loginMember");
+        if (member instanceof MemberEntity entity) {
+            return entity.getName();
+        }
+        Object user = session.getAttribute("loginUser");
+        if (user instanceof MemberEntity entity) {
+            return entity.getName();
+        }
+        if (user instanceof String text && !text.isBlank()) {
+            return text;
+        }
+        return null;
     }
 
     @ModelAttribute("categories")

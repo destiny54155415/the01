@@ -24,6 +24,10 @@
     <aside th:replace="~{fragments/product-filter-sidebar :: productFilterSidebar}"></aside>
 
     <div class="shop-content">
+        <p th:if="${loginSuccessMessage}"
+           class="form-success"
+           th:text="${loginSuccessMessage}">로그인 성공</p>
+
         <div class="product-list-head">
             <div>
                 <h1 class="section-title">우리 아이를 위한 특별한 쇼핑</h1>
