@@ -4,12 +4,12 @@ import com.example.shopping_project.dto.productdto.ProductDto;
 import com.example.shopping_project.entity.productentity.CategoryEntity;
 import com.example.shopping_project.entity.productentity.PetType;
 import com.example.shopping_project.entity.productentity.ProductEntity;
+import com.example.shopping_project.entity.productentity.ProductSort;
 import com.example.shopping_project.repository.productrepository.ProductRepository;
 import java.math.BigDecimal;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,18 +33,26 @@ public class ProductService {
     @Transactional(readOnly = true)
     public Page<ProductEntity> searchActive(String keyword, Long categoryId, PetType petType,
                                             BigDecimal minPrice, BigDecimal maxPrice, int page) {
+        return searchActive(keyword, categoryId, petType, minPrice, maxPrice, null, false, page);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ProductEntity> searchActive(String keyword, Long categoryId, PetType petType,
+                                            BigDecimal minPrice, BigDecimal maxPrice,
+                                            ProductSort sort, boolean inStockOnly, int page) {
         // Hibernate null 파라미터 비교 이슈 회피: 항상 숫자 구간으로 조회
         BigDecimal effectiveMin = minPrice == null ? PRICE_FLOOR : minPrice;
         BigDecimal effectiveMax = maxPrice == null ? PRICE_CEILING : maxPrice;
+        ProductSort effectiveSort = sort == null ? ProductSort.POPULAR : sort;
         return productRepository.search(
                 blankToNull(keyword),
                 categoryId,
                 petType,
                 effectiveMin,
                 effectiveMax,
+                inStockOnly,
                 false,
-                PageRequest.of(Math.max(page, 0), PAGE_SIZE,
-                        Sort.by(Sort.Direction.DESC, "salesCount", "productId"))
+                PageRequest.of(Math.max(page, 0), PAGE_SIZE, effectiveSort.getSort())
         );
     }
 
@@ -64,8 +72,11 @@ public class ProductService {
                 petType,
                 PRICE_FLOOR,
                 PRICE_CEILING,
+                false,
                 true,
-                PageRequest.of(Math.max(page, 0), PAGE_SIZE, Sort.by(Sort.Direction.DESC, "updatedAt", "productId"))
+                PageRequest.of(Math.max(page, 0), PAGE_SIZE,
+                        org.springframework.data.domain.Sort.by(
+                                org.springframework.data.domain.Sort.Direction.DESC, "updatedAt", "productId"))
         );
     }
 

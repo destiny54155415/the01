@@ -2,6 +2,7 @@ package com.example.shopping_project.config.productconfig;
 
 import com.example.shopping_project.entity.productentity.PetType;
 import com.example.shopping_project.entity.productentity.PriceRange;
+import com.example.shopping_project.entity.productentity.ProductSort;
 import com.example.shopping_project.service.productservice.CategoryService;
 import com.example.shopping_project.service.productservice.NotFoundException;
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,26 @@ public class GlobalModelAdvice {
     @ModelAttribute("priceRanges")
     public PriceRange[] priceRanges() {
         return PriceRange.values();
+    }
+
+    @ModelAttribute("sortOptions")
+    public ProductSort[] sortOptions() {
+        return ProductSort.values();
+    }
+
+    @ModelAttribute("selectedSort")
+    public ProductSort selectedSort() {
+        return ProductSort.POPULAR;
+    }
+
+    @ModelAttribute("sort")
+    public String sort() {
+        return ProductSort.POPULAR.name();
+    }
+
+    @ModelAttribute("inStockOnly")
+    public boolean inStockOnly() {
+        return false;
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)

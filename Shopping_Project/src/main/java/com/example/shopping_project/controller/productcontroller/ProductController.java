@@ -4,6 +4,7 @@ import com.example.shopping_project.entity.productentity.CategoryEntity;
 import com.example.shopping_project.entity.productentity.PetType;
 import com.example.shopping_project.entity.productentity.PriceRange;
 import com.example.shopping_project.entity.productentity.ProductEntity;
+import com.example.shopping_project.entity.productentity.ProductSort;
 import com.example.shopping_project.service.productservice.CategoryService;
 import com.example.shopping_project.service.productservice.ProductService;
 import java.math.BigDecimal;
@@ -31,10 +32,14 @@ public class ProductController {
                        @RequestParam(required = false) PetType petType,
                        @RequestParam(required = false) BigDecimal minPrice,
                        @RequestParam(required = false) BigDecimal maxPrice,
+                       @RequestParam(required = false) String sort,
+                       @RequestParam(required = false) Boolean inStockOnly,
                        @RequestParam(defaultValue = "0") int page,
                        Model model) {
+        ProductSort selectedSort = ProductSort.from(sort);
+        boolean stockOnly = Boolean.TRUE.equals(inStockOnly);
         Page<ProductEntity> result = productService.searchActive(
-                keyword, categoryId, petType, minPrice, maxPrice, page);
+                keyword, categoryId, petType, minPrice, maxPrice, selectedSort, stockOnly, page);
         CategoryEntity selectedCategory = categoryId == null ? null : categoryService.getActiveCategory(categoryId);
         PriceRange selectedPriceRange = PriceRange.fromBounds(minPrice, maxPrice).orElse(null);
 
@@ -48,6 +53,10 @@ public class ProductController {
         model.addAttribute("maxPrice", maxPrice);
         model.addAttribute("selectedPriceRange", selectedPriceRange);
         model.addAttribute("priceRanges", PriceRange.values());
+        model.addAttribute("sort", selectedSort.name());
+        model.addAttribute("selectedSort", selectedSort);
+        model.addAttribute("sortOptions", ProductSort.values());
+        model.addAttribute("inStockOnly", stockOnly);
         model.addAttribute("pageTitle", buildTitle(keyword, selectedCategory, selectedPriceRange));
         return "products";
     }

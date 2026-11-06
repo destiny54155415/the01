@@ -1,15 +1,11 @@
 <aside class="filter-sidebar" th:fragment="productFilterSidebar">
     <div class="filter-group">
-        <h3 class="filter-title">카테고리</h3>
+        <h3 class="filter-title">정렬</h3>
         <ul class="filter-list">
-            <li>
-                <a th:href="@{/(keyword=${keyword}, petType=${petType}, minPrice=${minPrice}, maxPrice=${maxPrice})}"
-                   th:classappend="${categoryId == null} ? ' is-active'">전체</a>
-            </li>
-            <li th:each="category : ${categories}">
-                <a th:href="@{/(keyword=${keyword}, categoryId=${category.categoryId}, petType=${petType}, minPrice=${minPrice}, maxPrice=${maxPrice})}"
-                   th:text="${category.categoryName}"
-                   th:classappend="${categoryId == category.categoryId} ? ' is-active'">카테고리</a>
+            <li th:each="option : ${sortOptions}">
+                <a th:href="@{/(keyword=${keyword}, categoryId=${categoryId}, petType=${petType}, minPrice=${minPrice}, maxPrice=${maxPrice}, sort=${option.name()}, inStockOnly=${inStockOnly} ? true : null)}"
+                   th:text="${option.label}"
+                   th:classappend="${selectedSort == option} ? ' is-active'">인기순</a>
             </li>
         </ul>
     </div>
@@ -18,11 +14,11 @@
         <h3 class="filter-title">동물 구분</h3>
         <ul class="filter-list">
             <li>
-                <a th:href="@{/(keyword=${keyword}, categoryId=${categoryId}, minPrice=${minPrice}, maxPrice=${maxPrice})}"
+                <a th:href="@{/(keyword=${keyword}, categoryId=${categoryId}, minPrice=${minPrice}, maxPrice=${maxPrice}, sort=${sort}, inStockOnly=${inStockOnly} ? true : null)}"
                    th:classappend="${petType == null} ? ' is-active'">전체</a>
             </li>
             <li th:each="type : ${petTypes}">
-                <a th:href="@{/(keyword=${keyword}, categoryId=${categoryId}, petType=${type}, minPrice=${minPrice}, maxPrice=${maxPrice})}"
+                <a th:href="@{/(keyword=${keyword}, categoryId=${categoryId}, petType=${type}, minPrice=${minPrice}, maxPrice=${maxPrice}, sort=${sort}, inStockOnly=${inStockOnly} ? true : null)}"
                    th:text="${type.label}"
                    th:classappend="${petType == type} ? ' is-active'">강아지</a>
             </li>
@@ -33,25 +29,38 @@
         <h3 class="filter-title">금액</h3>
         <ul class="filter-list filter-price">
             <li>
-                <a th:href="@{/(keyword=${keyword}, categoryId=${categoryId}, petType=${petType})}"
+                <a th:href="@{/(keyword=${keyword}, categoryId=${categoryId}, petType=${petType}, sort=${sort}, inStockOnly=${inStockOnly} ? true : null)}"
                    th:classappend="${selectedPriceRange == null} ? ' is-active'">전체 금액</a>
             </li>
-            <!-- 숫자 리터럴로 고정 → BigDecimal URL 변환 문제 방지 -->
             <li>
-                <a th:href="@{/(keyword=${keyword}, categoryId=${categoryId}, petType=${petType}, minPrice=0, maxPrice=10000)}"
+                <a th:href="@{/(keyword=${keyword}, categoryId=${categoryId}, petType=${petType}, minPrice=0, maxPrice=10000, sort=${sort}, inStockOnly=${inStockOnly} ? true : null)}"
                    th:classappend="${selectedPriceRange != null and selectedPriceRange.name() == 'UNDER_10000'} ? ' is-active'">1만원 미만</a>
             </li>
             <li>
-                <a th:href="@{/(keyword=${keyword}, categoryId=${categoryId}, petType=${petType}, minPrice=10000, maxPrice=30000)}"
+                <a th:href="@{/(keyword=${keyword}, categoryId=${categoryId}, petType=${petType}, minPrice=10000, maxPrice=30000, sort=${sort}, inStockOnly=${inStockOnly} ? true : null)}"
                    th:classappend="${selectedPriceRange != null and selectedPriceRange.name() == 'FROM_10000_TO_30000'} ? ' is-active'">1만원 ~ 3만원</a>
             </li>
             <li>
-                <a th:href="@{/(keyword=${keyword}, categoryId=${categoryId}, petType=${petType}, minPrice=30000, maxPrice=50000)}"
+                <a th:href="@{/(keyword=${keyword}, categoryId=${categoryId}, petType=${petType}, minPrice=30000, maxPrice=50000, sort=${sort}, inStockOnly=${inStockOnly} ? true : null)}"
                    th:classappend="${selectedPriceRange != null and selectedPriceRange.name() == 'FROM_30000_TO_50000'} ? ' is-active'">3만원 ~ 5만원</a>
             </li>
             <li>
-                <a th:href="@{/(keyword=${keyword}, categoryId=${categoryId}, petType=${petType}, minPrice=50000, maxPrice=999999999)}"
+                <a th:href="@{/(keyword=${keyword}, categoryId=${categoryId}, petType=${petType}, minPrice=50000, maxPrice=999999999, sort=${sort}, inStockOnly=${inStockOnly} ? true : null)}"
                    th:classappend="${selectedPriceRange != null and selectedPriceRange.name() == 'FROM_50000'} ? ' is-active'">5만원 이상</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="filter-group">
+        <h3 class="filter-title">재고</h3>
+        <ul class="filter-list">
+            <li>
+                <a th:href="@{/(keyword=${keyword}, categoryId=${categoryId}, petType=${petType}, minPrice=${minPrice}, maxPrice=${maxPrice}, sort=${sort})}"
+                   th:classappend="${!inStockOnly} ? ' is-active'">전체</a>
+            </li>
+            <li>
+                <a th:href="@{/(keyword=${keyword}, categoryId=${categoryId}, petType=${petType}, minPrice=${minPrice}, maxPrice=${maxPrice}, sort=${sort}, inStockOnly=true)}"
+                   th:classappend="${inStockOnly} ? ' is-active'">재고 있는 상품만</a>
             </li>
         </ul>
     </div>

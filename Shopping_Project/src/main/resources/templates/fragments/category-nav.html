@@ -5,11 +5,11 @@
 <nav class="category-nav" th:fragment="categoryNav">
     <ul>
         <li>
-            <a th:href="@{/(keyword=${keyword}, petType=${petType}, minPrice=${minPrice}, maxPrice=${maxPrice})}"
+            <a th:href="@{/(keyword=${keyword}, petType=${petType}, minPrice=${minPrice}, maxPrice=${maxPrice}, sort=${sort}, inStockOnly=${inStockOnly} ? true : null)}"
                th:classappend="${categoryId == null} ? ' is-active'">전체상품</a>
         </li>
         <li th:each="category : ${categories}">
-            <a th:href="@{/(keyword=${keyword}, categoryId=${category.categoryId}, petType=${petType}, minPrice=${minPrice}, maxPrice=${maxPrice})}"
+            <a th:href="@{/(keyword=${keyword}, categoryId=${category.categoryId}, petType=${petType}, minPrice=${minPrice}, maxPrice=${maxPrice}, sort=${sort}, inStockOnly=${inStockOnly} ? true : null)}"
                th:text="${category.categoryName}"
                th:classappend="${categoryId == category.categoryId} ? ' is-active'">카테고리</a>
         </li>
