@@ -1,17 +1,14 @@
 package com.example.shopping_project.controller.productcontroller;
 
 import jakarta.servlet.http.HttpSession;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * 회원 로그인 연동 전, 로컬에서 관리자 상품 화면을 확인하기 위한 임시 진입점입니다.
- * spring.profiles.active=local 일 때만 동작합니다.
  */
 @Controller
-@Profile("local")
 public class AdminDevController {
 
     @GetMapping("/admin/dev-login")
@@ -26,6 +23,6 @@ public class AdminDevController {
     public String disableAdmin(HttpSession session) {
         session.removeAttribute("adminDev");
         session.removeAttribute("loginRole");
-        return "redirect:/products";
+        return "redirect:/";
     }
 }
