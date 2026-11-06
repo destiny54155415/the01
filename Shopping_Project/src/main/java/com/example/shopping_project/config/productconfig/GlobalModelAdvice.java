@@ -52,8 +52,8 @@ public class GlobalModelAdvice {
     }
 
     @ModelAttribute("inStockOnly")
-    public boolean inStockOnly() {
-        return false;
+    public Boolean inStockOnlyDefault() {
+        return Boolean.FALSE;
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)

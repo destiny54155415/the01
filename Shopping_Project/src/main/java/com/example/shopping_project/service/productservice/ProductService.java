@@ -44,13 +44,15 @@ public class ProductService {
         BigDecimal effectiveMin = minPrice == null ? PRICE_FLOOR : minPrice;
         BigDecimal effectiveMax = maxPrice == null ? PRICE_CEILING : maxPrice;
         ProductSort effectiveSort = sort == null ? ProductSort.POPULAR : sort;
+        // 재고 필터: 전체=0 이상, 재고있음=1 이상 (boolean JPQL 비교 이슈 회피)
+        int minStock = inStockOnly ? 1 : 0;
         return productRepository.search(
                 blankToNull(keyword),
                 categoryId,
                 petType,
                 effectiveMin,
                 effectiveMax,
-                inStockOnly,
+                minStock,
                 false,
                 PageRequest.of(Math.max(page, 0), PAGE_SIZE, effectiveSort.getSort())
         );
@@ -72,7 +74,7 @@ public class ProductService {
                 petType,
                 PRICE_FLOOR,
                 PRICE_CEILING,
-                false,
+                0,
                 true,
                 PageRequest.of(Math.max(page, 0), PAGE_SIZE,
                         org.springframework.data.domain.Sort.by(

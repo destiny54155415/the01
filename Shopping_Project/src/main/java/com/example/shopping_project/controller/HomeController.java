@@ -26,11 +26,11 @@ public class HomeController {
                        @RequestParam(required = false) BigDecimal minPrice,
                        @RequestParam(required = false) BigDecimal maxPrice,
                        @RequestParam(required = false) String sort,
-                       @RequestParam(required = false) Boolean inStockOnly,
+                       @RequestParam(required = false, defaultValue = "false") boolean inStockOnly,
                        @RequestParam(defaultValue = "0") int page,
                        Model model) {
         ProductSort selectedSort = ProductSort.from(sort);
-        boolean stockOnly = Boolean.TRUE.equals(inStockOnly);
+        boolean stockOnly = inStockOnly;
         model.addAttribute("result", productService.searchActive(
                 keyword, categoryId, petType, minPrice, maxPrice, selectedSort, stockOnly, page));
         model.addAttribute("keyword", keyword == null ? "" : keyword.trim());

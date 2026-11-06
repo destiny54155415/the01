@@ -33,11 +33,11 @@ public class ProductController {
                        @RequestParam(required = false) BigDecimal minPrice,
                        @RequestParam(required = false) BigDecimal maxPrice,
                        @RequestParam(required = false) String sort,
-                       @RequestParam(required = false) Boolean inStockOnly,
+                       @RequestParam(required = false, defaultValue = "false") boolean inStockOnly,
                        @RequestParam(defaultValue = "0") int page,
                        Model model) {
         ProductSort selectedSort = ProductSort.from(sort);
-        boolean stockOnly = Boolean.TRUE.equals(inStockOnly);
+        boolean stockOnly = inStockOnly;
         Page<ProductEntity> result = productService.searchActive(
                 keyword, categoryId, petType, minPrice, maxPrice, selectedSort, stockOnly, page);
         CategoryEntity selectedCategory = categoryId == null ? null : categoryService.getActiveCategory(categoryId);

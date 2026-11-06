@@ -56,11 +56,11 @@
         <ul class="filter-list">
             <li>
                 <a th:href="@{/(keyword=${keyword}, categoryId=${categoryId}, petType=${petType}, minPrice=${minPrice}, maxPrice=${maxPrice}, sort=${sort}, inStockOnly=false)}"
-                   th:classappend="${!inStockOnly} ? ' is-active'">전체</a>
+                   th:classappend="${inStockOnly != true} ? ' is-active'">전체</a>
             </li>
             <li>
                 <a th:href="@{/(keyword=${keyword}, categoryId=${categoryId}, petType=${petType}, minPrice=${minPrice}, maxPrice=${maxPrice}, sort=${sort}, inStockOnly=true)}"
-                   th:classappend="${inStockOnly} ? ' is-active'">재고 있는 상품만</a>
+                   th:classappend="${inStockOnly == true} ? ' is-active'">재고 있는 상품만</a>
             </li>
         </ul>
     </div>

@@ -26,7 +26,7 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
               and (:petType is null or p.petType = :petType)
               and p.price >= :minPrice
               and p.price < :maxPrice
-              and (:inStockOnly = false or p.stock > 0)
+              and p.stock >= :minStock
               and (
                     :keyword is null
                     or lower(p.productName) like lower(concat('%', :keyword, '%'))
@@ -38,7 +38,7 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
                          @Param("petType") PetType petType,
                          @Param("minPrice") BigDecimal minPrice,
                          @Param("maxPrice") BigDecimal maxPrice,
-                         @Param("inStockOnly") boolean inStockOnly,
+                         @Param("minStock") int minStock,
                          @Param("includeInactive") boolean includeInactive,
                          Pageable pageable);
 

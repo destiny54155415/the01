@@ -79,6 +79,32 @@ class ProductSearchTest {
     }
 
     @Test
+    void filtersInStockOnly() throws Exception {
+        ProductEntity soldOut = productRepository.save(new ProductEntity(
+                food, "품절 사료", "재고 없음", new BigDecimal("15000"), 0, PetType.DOG, null));
+        soldOut.setSalesCount(1);
+
+        assertThat(productService.searchActive(null, null, null, null, null, null, false, 0)
+                .getContent())
+                .extracting(ProductEntity::getProductName)
+                .contains("품절 사료", "실내묘 건식사료");
+        assertThat(productService.searchActive(null, null, null, null, null, null, true, 0)
+                .getContent())
+                .extracting(ProductEntity::getProductName)
+                .contains("실내묘 건식사료")
+                .doesNotContain("품절 사료");
+
+        mockMvc.perform(get("/").param("inStockOnly", "true"))
+                .andExpect(status().isOk())
+                .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers
+                        .content().string(org.hamcrest.Matchers.not(org.hamcrest.Matchers.containsString("품절 사료"))));
+        mockMvc.perform(get("/").param("inStockOnly", "false"))
+                .andExpect(status().isOk())
+                .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers
+                        .content().string(org.hamcrest.Matchers.containsString("품절 사료")));
+    }
+
+    @Test
     void productListPageWorks() throws Exception {
         mockMvc.perform(get("/products").param("keyword", "건식"))
                 .andExpect(status().isOk());
