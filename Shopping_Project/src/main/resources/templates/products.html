@@ -54,11 +54,11 @@
         <nav class="pager" th:if="${result.totalPages > 1}" aria-label="페이지">
             <a th:if="${result.hasPrevious()}"
                class="btn btn-outline"
-               th:href="@{/products(keyword=${keyword}, categoryId=${categoryId}, petType=${petType}, minPrice=${minPrice}, maxPrice=${maxPrice}, sort=${sort}, inStockOnly=${inStockOnly} ? true : null, page=${result.number - 1})}">이전</a>
+               th:href="@{/products(keyword=${keyword}, categoryId=${categoryId}, petType=${petType}, minPrice=${minPrice}, maxPrice=${maxPrice}, sort=${sort}, inStockOnly=${inStockOnly}, page=${result.number - 1})}">이전</a>
             <span th:text="|${result.number + 1} / ${result.totalPages}|">1 / 1</span>
             <a th:if="${result.hasNext()}"
                class="btn btn-outline"
-               th:href="@{/products(keyword=${keyword}, categoryId=${categoryId}, petType=${petType}, minPrice=${minPrice}, maxPrice=${maxPrice}, sort=${sort}, inStockOnly=${inStockOnly} ? true : null, page=${result.number + 1})}">다음</a>
+               th:href="@{/products(keyword=${keyword}, categoryId=${categoryId}, petType=${petType}, minPrice=${minPrice}, maxPrice=${maxPrice}, sort=${sort}, inStockOnly=${inStockOnly}, page=${result.number + 1})}">다음</a>
         </nav>
     </div>
 
