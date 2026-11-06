@@ -1,4 +1,4 @@
-package com.example.shopping_project.config;
+package com.example.shopping_project.config.productconfig;
 
 import java.math.BigDecimal;
 import org.springframework.context.annotation.Configuration;

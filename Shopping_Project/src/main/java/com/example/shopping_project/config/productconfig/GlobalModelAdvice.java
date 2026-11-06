@@ -1,4 +1,4 @@
-package com.example.shopping_project.config;
+package com.example.shopping_project.config.productconfig;
 
 import com.example.shopping_project.entity.productentity.PetType;
 import com.example.shopping_project.entity.productentity.PriceRange;
@@ -33,16 +33,6 @@ public class GlobalModelAdvice {
     @ModelAttribute("priceRanges")
     public PriceRange[] priceRanges() {
         return PriceRange.values();
-    }
-
-    @ModelAttribute("categoryId")
-    public Long categoryId() {
-        return null;
-    }
-
-    @ModelAttribute("keyword")
-    public String keyword() {
-        return "";
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)

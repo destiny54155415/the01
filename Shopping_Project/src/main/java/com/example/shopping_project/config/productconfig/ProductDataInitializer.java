@@ -1,4 +1,4 @@
-package com.example.shopping_project.config;
+package com.example.shopping_project.config.productconfig;
 
 import com.example.shopping_project.entity.productentity.CategoryEntity;
 import com.example.shopping_project.entity.productentity.PetType;
