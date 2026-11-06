@@ -1,21 +1,82 @@
 package com.example.shopping_project.controller.membercontroller;
 
+import com.example.shopping_project.dto.memberdto.MemberJoinDto;
+import com.example.shopping_project.dto.memberdto.MemberLoginDto;
+import com.example.shopping_project.entity.memberentity.MemberEntity;
+import com.example.shopping_project.service.memberservice.MemberService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
- * 회원 담당 영역 (화면 경로만 맞춤 — 상세 로직은 회원 담당)
+ * 회원 로그인 / 회원가입
  */
 @Controller
 public class MemberController {
 
+    private final MemberService memberService;
+
+    public MemberController(MemberService memberService) {
+        this.memberService = memberService;
+    }
+
     @GetMapping("/login")
-    public String login() {
+    public String loginForm(@ModelAttribute("loginDto") MemberLoginDto loginDto) {
         return "member/login";
     }
 
+    @PostMapping("/login")
+    public String login(@ModelAttribute("loginDto") MemberLoginDto loginDto,
+                        HttpSession session,
+                        Model model) {
+        try {
+            MemberEntity member = memberService.login(loginDto);
+            bindLoginSession(session, member);
+            return "redirect:/";
+        } catch (IllegalArgumentException ex) {
+            model.addAttribute("errorMessage", ex.getMessage());
+            return "member/login";
+        }
+    }
+
     @GetMapping("/signup")
-    public String signup() {
+    public String signupForm(@ModelAttribute("joinDto") MemberJoinDto joinDto) {
         return "member/signup";
+    }
+
+    @PostMapping("/signup")
+    public String signup(@ModelAttribute("joinDto") MemberJoinDto joinDto,
+                         Model model,
+                         RedirectAttributes redirectAttributes) {
+        try {
+            memberService.join(joinDto);
+            redirectAttributes.addFlashAttribute("successMessage", "회원가입이 완료되었습니다. 로그인해주세요.");
+            return "redirect:/login";
+        } catch (IllegalArgumentException ex) {
+            model.addAttribute("errorMessage", ex.getMessage());
+            return "member/signup";
+        }
+    }
+
+    @PostMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/";
+    }
+
+    @GetMapping("/logout")
+    public String logoutGet(HttpSession session) {
+        session.invalidate();
+        return "redirect:/";
+    }
+
+    private void bindLoginSession(HttpSession session, MemberEntity member) {
+        session.setAttribute("loginMember", member);
+        session.setAttribute("loginUser", member);
+        session.setAttribute("loginRole", member.getRole());
     }
 }

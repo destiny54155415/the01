@@ -25,8 +25,15 @@
 
         <!-- 회원 메뉴 -->
         <nav class="header-menu" aria-label="회원 메뉴">
-            <a th:href="@{/login}">로그인</a>
-            <a th:href="@{/signup}">회원가입</a>
+            <th:block th:if="${session.loginMember == null}">
+                <a th:href="@{/login}">로그인</a>
+                <a th:href="@{/signup}">회원가입</a>
+            </th:block>
+            <th:block th:if="${session.loginMember != null}">
+                <span class="header-user"
+                      th:text="${session.loginMember.name} + '님'">회원님</span>
+                <a th:href="@{/logout}">로그아웃</a>
+            </th:block>
             <a th:href="@{/cart}">장바구니</a>
             <a th:href="@{/orders}">주문내역</a>
         </nav>
