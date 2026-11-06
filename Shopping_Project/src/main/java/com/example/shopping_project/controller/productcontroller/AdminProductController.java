@@ -127,8 +127,14 @@ public class AdminProductController {
         if (!isAdmin(session)) {
             return "redirect:/login";
         }
-        productService.delete(productId);
-        redirectAttributes.addFlashAttribute("message", "상품을 삭제했습니다.");
+        try {
+            productService.delete(productId);
+            redirectAttributes.addFlashAttribute("message", "상품을 삭제했습니다.");
+        } catch (RuntimeException ex) {
+            productService.deactivate(productId);
+            redirectAttributes.addFlashAttribute("message",
+                    "주문·장바구니에서 사용 중인 상품이라 삭제 대신 비활성화했습니다.");
+        }
         return "redirect:/admin/products";
     }
 

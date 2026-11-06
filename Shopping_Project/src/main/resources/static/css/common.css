@@ -600,6 +600,27 @@ textarea.form-control {
     max-width: 640px;
 }
 
+.admin-form-actions {
+    max-width: 640px;
+    margin-top: 16px;
+    display: grid;
+    gap: 10px;
+}
+
+.admin-image-preview {
+    margin-top: 12px;
+    max-width: 220px;
+}
+
+.admin-image-preview .product-image {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background: #f8fafc;
+}
+
 .narrow {
     max-width: 720px;
 }

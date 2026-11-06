@@ -19,14 +19,22 @@
 <nav th:replace="~{fragments/category-nav :: categoryNav}"></nav>
 
 <main class="page-container narrow">
-    <h1 class="section-title" th:text="${form.productId == null} ? '상품 등록' : '상품 수정'">상품 등록</h1>
+    <div class="product-list-head">
+        <h1 class="section-title"
+            th:text="${form.productId == null} ? '상품 등록' : '상품 수정'">상품 등록</h1>
+        <a class="btn btn-outline" th:href="@{/admin/products}">목록으로</a>
+    </div>
+
+    <p class="notice" th:if="${message}" th:text="${message}">알림</p>
 
     <form class="admin-form" th:object="${form}"
           th:action="${form.productId == null} ? @{/admin/products} : @{/admin/products/{id}(id=${form.productId})}"
           method="post">
+        <input type="hidden" th:field="*{productId}">
+
         <div class="form-group">
             <label class="form-label">상품카테고리</label>
-            <p class="text-muted">등록할 상품의 카테고리를 선택하세요.</p>
+            <p class="text-muted">등록/수정할 상품의 카테고리를 선택하세요.</p>
 
             <div class="category-chip-list" role="radiogroup" aria-label="상품카테고리">
                 <label class="category-chip"
@@ -59,7 +67,7 @@
         </div>
 
         <div class="form-group">
-            <label class="form-label" for="price">가격</label>
+            <label class="form-label" for="price">상품가격</label>
             <input id="price" type="number" min="0" step="100" class="form-control" th:field="*{price}" required>
             <p class="field-error" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></p>
         </div>
@@ -85,9 +93,19 @@
         </div>
 
         <div class="form-group">
-            <label class="form-label" for="imageUrl">대표 이미지 URL</label>
+            <label class="form-label" for="imageUrl">상품대표이미지 URL</label>
             <input id="imageUrl" type="text" class="form-control" th:field="*{imageUrl}"
-                   placeholder="/images/food-cat.jpg">
+                   placeholder="/images/food-cat.jpg"
+                   oninput="previewAdminImage(this.value)">
+            <div class="admin-image-preview" th:if="${form.imageUrl != null and !#strings.isEmpty(form.imageUrl)}">
+                <img id="adminImagePreview"
+                     th:src="@{${form.imageUrl}}"
+                     th:alt="${form.productName}"
+                     class="product-image">
+            </div>
+            <div class="admin-image-preview" th:if="${form.imageUrl == null or #strings.isEmpty(form.imageUrl)}">
+                <img id="adminImagePreview" src="" alt="미리보기" class="product-image" hidden>
+            </div>
         </div>
         <div class="form-group">
             <label class="form-label" for="imageUrl2">박스 형태 이미지 URL</label>
@@ -102,17 +120,40 @@
 
         <div class="form-group check-row">
             <label>
-                <input type="checkbox" th:field="*{isActive}"> 판매중으로 표시
+                <input type="checkbox" th:field="*{isActive}"> 판매중(판매가능)으로 표시
             </label>
         </div>
 
-        <button type="submit" class="btn btn-primary btn-block">저장</button>
-        <a class="btn btn-outline btn-block" th:href="@{/admin/products}">목록으로</a>
+        <button type="submit" class="btn btn-primary btn-block"
+                th:text="${form.productId == null} ? '상품 등록하기' : '상품 수정하기'">저장</button>
     </form>
+
+    <div class="admin-form-actions" th:if="${form.productId != null}">
+        <form th:action="@{/admin/products/{id}/deactivate(id=${form.productId})}" method="post">
+            <button type="submit" class="btn btn-outline btn-block">판매 비활성화</button>
+        </form>
+        <form th:action="@{/admin/products/{id}/delete(id=${form.productId})}" method="post"
+              onsubmit="return confirm('정말 이 상품을 삭제할까요? 삭제 후 복구할 수 없습니다.');">
+            <button type="submit" class="btn btn-danger btn-block">상품 삭제하기</button>
+        </form>
+    </div>
 </main>
 
 <!-- 공통 푸터 -->
 <footer th:replace="~{fragments/footer :: footer}"></footer>
 <script th:src="@{/js/product.js}"></script>
+<script>
+    function previewAdminImage(url) {
+        var img = document.getElementById('adminImagePreview');
+        if (!img) return;
+        if (url && url.trim()) {
+            img.hidden = false;
+            img.src = url.trim();
+        } else {
+            img.hidden = true;
+            img.removeAttribute('src');
+        }
+    }
+</script>
 </body>
 </html>
