@@ -27,6 +27,9 @@
         <p th:if="${loginSuccessMessage}"
            class="form-success"
            th:text="${loginSuccessMessage}">로그인 성공</p>
+        <p th:if="${message}"
+           class="notice"
+           th:text="${message}">알림</p>
 
         <div class="product-list-head">
             <div>

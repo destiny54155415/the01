@@ -3,6 +3,7 @@ package com.example.shopping_project;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -174,5 +175,25 @@ class ProductSearchTest {
         assertThat(productRepository.findAll())
                 .extracting(ProductEntity::getProductName)
                 .contains("캣타워");
+    }
+
+    @Test
+    void userSessionCannotOpenAdminProductForm() throws Exception {
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("loginRole", "USER");
+        session.setAttribute("loginUsername", "destiny66");
+        session.setAttribute("loginMemberName", "일반회원");
+
+        mockMvc.perform(get("/admin/products/new").session(session))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/"))
+                .andExpect(flash().attributeExists("message"));
+    }
+
+    @Test
+    void guestIsSentToLoginForAdminProductForm() throws Exception {
+        mockMvc.perform(get("/admin/products/new"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/login"));
     }
 }
