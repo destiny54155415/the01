@@ -1,12 +1,8 @@
 package com.example.shopping_project.controller.productcontroller;
 
-import com.example.shopping_project.entity.memberentity.MemberEntity;
-import com.example.shopping_project.service.memberservice.MemberService;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
@@ -14,12 +10,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  */
 @Controller
 public class AdminDevController {
-
-    private final ObjectProvider<MemberService> memberService;
-
-    public AdminDevController(ObjectProvider<MemberService> memberService) {
-        this.memberService = memberService;
-    }
 
     @GetMapping("/admin/dev-login")
     public String enableAdmin(HttpSession session, RedirectAttributes redirectAttributes) {
@@ -29,38 +19,6 @@ public class AdminDevController {
         session.setAttribute("loginMemberName", "관리자");
         redirectAttributes.addFlashAttribute("message", "로컬 관리자 모드로 들어왔습니다.");
         return "redirect:/admin/products";
-    }
-
-    /**
-     * DB members.role 을 ADMIN 으로 올리고, 현재 세션에도 반영합니다.
-     * 예: /admin/make-admin?username=destiny66
-     */
-    @GetMapping("/admin/make-admin")
-    public String makeAdmin(@RequestParam String username,
-                            HttpSession session,
-                            RedirectAttributes redirectAttributes) {
-        MemberService service = memberService.getIfAvailable();
-        if (service == null) {
-            redirectAttributes.addFlashAttribute("message", "회원 서비스가 없어 권한 부여를 할 수 없습니다. /admin/dev-login 을 사용하세요.");
-            return "redirect:/admin/dev-login";
-        }
-        try {
-            MemberEntity member = service.grantAdmin(username);
-            session.setAttribute("loginMember", member);
-            session.setAttribute("loginUser", member);
-            session.setAttribute("loginMemberId", member.getId());
-            session.setAttribute("loginUsername", member.getUsername());
-            session.setAttribute("loginMemberName", member.getName());
-            session.setAttribute("loginRole", "ADMIN");
-            session.setAttribute("adminDev", true);
-            redirectAttributes.addFlashAttribute(
-                    "message",
-                    member.getUsername() + " 계정에 ADMIN 권한을 부여했습니다.");
-            return "redirect:/admin/products";
-        } catch (IllegalArgumentException ex) {
-            redirectAttributes.addFlashAttribute("message", ex.getMessage());
-            return "redirect:/login";
-        }
     }
 
     @GetMapping("/admin/dev-logout")

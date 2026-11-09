@@ -1,6 +1,5 @@
 package com.example.shopping_project.config.productconfig;
 
-import com.example.shopping_project.entity.memberentity.MemberEntity;
 import com.example.shopping_project.entity.productentity.PetType;
 import com.example.shopping_project.entity.productentity.PriceRange;
 import com.example.shopping_project.entity.productentity.ProductSort;
@@ -38,24 +37,43 @@ public class GlobalModelAdvice {
         if (name instanceof String text && !text.isBlank()) {
             return text;
         }
-        Object member = session.getAttribute("loginMember");
-        if (member instanceof MemberEntity entity) {
-            return entity.getName();
+
+        String fromMember = readNameProperty(session.getAttribute("loginMember"));
+        if (fromMember != null) {
+            return fromMember;
         }
+
         Object user = session.getAttribute("loginUser");
-        if (user instanceof MemberEntity entity) {
-            return entity.getName();
+        String fromUser = readNameProperty(user);
+        if (fromUser != null) {
+            return fromUser;
         }
         if (user instanceof String text && !text.isBlank()) {
             return text;
         }
-        // /admin/dev-login 처럼 관리자 세션만 있는 경우에도 헤더에 로그인 상태로 표시
+
+        // /admin/dev-login 처럼 관리자 세션만 있는 경우
         if (Boolean.TRUE.equals(session.getAttribute("adminDev")) || isAdminRole(session.getAttribute("loginRole"))) {
             Object username = session.getAttribute("loginUsername");
             if (username instanceof String text && !text.isBlank()) {
                 return text;
             }
             return "관리자";
+        }
+        return null;
+    }
+
+    private static String readNameProperty(Object target) {
+        if (target == null) {
+            return null;
+        }
+        try {
+            Object value = target.getClass().getMethod("getName").invoke(target);
+            if (value instanceof String text && !text.isBlank()) {
+                return text;
+            }
+        } catch (ReflectiveOperationException ignored) {
+            // 회원 엔티티가 아직 없거나 getName 이 없는 경우
         }
         return null;
     }
