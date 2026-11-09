@@ -1,21 +1,14 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>상품 관리 | PetShop</title>
-
     <link rel="stylesheet" th:href="@{/css/common.css}">
 </head>
-
 <body>
 
-<!-- 공통 헤더 -->
 <header th:replace="~{fragments/header :: header}"></header>
-
-<!-- 공통 카테고리 -->
 <nav th:replace="~{fragments/category-nav :: categoryNav}"></nav>
 
 <main class="page-container">
@@ -27,20 +20,23 @@
     <p class="notice" th:if="${message}" th:text="${message}">알림</p>
 
     <form class="product-filter" method="get" th:action="@{/admin/products}">
-        <input type="search" name="keyword" class="form-control" th:value="${keyword}" placeholder="상품명 검색">
+        <input type="search" name="keyword" class="form-control"
+               th:value="${keyword}" placeholder="상품명 검색">
         <select name="categoryId" class="form-control">
             <option value="">전체 카테고리</option>
             <option th:each="category : ${adminCategories}"
                     th:value="${category.categoryId}"
                     th:text="${category.categoryName}"
-                    th:selected="${categoryId == category.categoryId}"></option>
+                    th:selected="${categoryId != null and categoryId == category.categoryId}">
+            </option>
         </select>
         <select name="petType" class="form-control">
             <option value="">전체 동물</option>
             <option th:each="type : ${petTypes}"
                     th:value="${type}"
                     th:text="${type.label}"
-                    th:selected="${petType == type}"></option>
+                    th:selected="${petType != null and petType == type}">
+            </option>
         </select>
         <button type="submit" class="btn btn-secondary">찾기</button>
     </form>
@@ -62,12 +58,12 @@
             <tbody>
             <tr th:each="product : ${result.content}">
                 <td th:text="${product.productName}">상품명</td>
-                <td th:text="${product.category.categoryName}">카테고리</td>
-                <td th:text="${#numbers.formatInteger(product.price, 0, 'COMMA')} + '원'">0원</td>
+                <td th:text="${product.category != null ? product.category.categoryName : '-'}">카테고리</td>
+                <td th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} + '원'">0원</td>
                 <td th:text="${product.stock}">0</td>
                 <td th:text="${product.salesCount}">0</td>
                 <td th:text="${product.petType.label}">공용</td>
-                <td th:text="${product.isActive} ? '판매중' : '비활성'">판매중</td>
+                <td th:text="${product.isActive ? '판매중' : '비활성'}">판매중</td>
                 <td class="admin-actions">
                     <a th:href="@{/admin/products/{id}/edit(id=${product.productId})}">수정</a>
                     <form th:action="@{/admin/products/{id}/deactivate(id=${product.productId})}" method="post">
@@ -96,7 +92,6 @@
     </nav>
 </main>
 
-<!-- 공통 푸터 -->
 <footer th:replace="~{fragments/footer :: footer}"></footer>
 <script th:src="@{/js/product.js}"></script>
 </body>
