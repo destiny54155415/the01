@@ -25,3 +25,8 @@ WHERE username = 'destiny66';
 -- UPDATE members
 -- SET password = '$2a$10$CeI0jMgeYYk74F.je3mniONUGilCWpbVnRZe22aHBSoO5fUYpuf0C'
 -- WHERE username = 'aa';
+
+-- 5) 관리자 권한 (반드시 'ADMIN' — 'Admin' 금지, CHECK 제약)
+UPDATE members
+SET role = 'ADMIN'
+WHERE username = 'destiny66';

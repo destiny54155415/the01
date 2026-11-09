@@ -148,15 +148,14 @@ public class AdminProductController {
      * 로컬 개발용으로 adminDev=true 세션도 허용합니다.
      */
     private boolean isAdmin(HttpSession session) {
-        Object role = session.getAttribute("loginRole");
-        if ("ADMIN".equals(role)) {
+        if (isAdminRole(session.getAttribute("loginRole"))) {
             return true;
         }
         Object member = session.getAttribute("loginMember");
         if (member != null) {
             try {
                 Object memberRole = member.getClass().getMethod("getRole").invoke(member);
-                if ("ADMIN".equals(String.valueOf(memberRole))) {
+                if (isAdminRole(memberRole)) {
                     return true;
                 }
             } catch (ReflectiveOperationException ignored) {
@@ -164,5 +163,16 @@ public class AdminProductController {
             }
         }
         return Boolean.TRUE.equals(session.getAttribute("adminDev"));
+    }
+
+    private static boolean isAdminRole(Object role) {
+        if (role == null) {
+            return false;
+        }
+        String normalized = String.valueOf(role).trim().toUpperCase();
+        if (normalized.startsWith("ROLE_")) {
+            normalized = normalized.substring(5);
+        }
+        return "ADMIN".equals(normalized);
     }
 }

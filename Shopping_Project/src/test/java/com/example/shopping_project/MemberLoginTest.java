@@ -109,4 +109,26 @@ class MemberLoginTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("member/login"));
     }
+
+    @Test
+    void makeAdminGrantsAdminRoleAndSession() throws Exception {
+        mockMvc.perform(post("/signup")
+                        .param("username", "destiny66")
+                        .param("password", "1234")
+                        .param("name", "데스티니")
+                        .param("email", "destiny66@test.com"))
+                .andExpect(status().is3xxRedirection());
+
+        MvcResult result = mockMvc.perform(get("/admin/make-admin")
+                        .param("username", "destiny66"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/admin/products"))
+                .andReturn();
+
+        assertThat(memberRepository.findByUsername("destiny66").orElseThrow().getRole())
+                .isEqualTo("ADMIN");
+        MockHttpSession session = (MockHttpSession) result.getRequest().getSession(false);
+        assertThat(session.getAttribute("loginRole")).isEqualTo("ADMIN");
+        assertThat(session.getAttribute("adminDev")).isEqualTo(true);
+    }
 }

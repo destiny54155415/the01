@@ -80,11 +80,18 @@ public class MemberController {
 
     private void bindLoginSession(HttpSession session, MemberEntity member) {
         // 엔티티 + 문자열을 함께 넣어 헤더/관리자 체크가 안정적으로 동작하게 함
+        String role = member.getRole() == null ? "USER" : member.getRole().trim().toUpperCase();
+        if (role.startsWith("ROLE_")) {
+            role = role.substring(5);
+        }
         session.setAttribute("loginMember", member);
         session.setAttribute("loginUser", member);
         session.setAttribute("loginMemberId", member.getId());
         session.setAttribute("loginUsername", member.getUsername());
         session.setAttribute("loginMemberName", member.getName());
-        session.setAttribute("loginRole", member.getRole());
+        session.setAttribute("loginRole", role);
+        if ("ADMIN".equals(role)) {
+            session.setAttribute("adminDev", true);
+        }
     }
 }

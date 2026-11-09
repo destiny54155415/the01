@@ -83,6 +83,25 @@ public class MemberEntity {
         this.password = encodedPassword;
     }
 
+    public void changeRole(String role) {
+        if (role == null || role.isBlank()) {
+            this.role = "USER";
+            return;
+        }
+        String normalized = role.trim().toUpperCase();
+        if (normalized.startsWith("ROLE_")) {
+            normalized = normalized.substring(5);
+        }
+        if (!"USER".equals(normalized) && !"ADMIN".equals(normalized)) {
+            throw new IllegalArgumentException("role 은 USER 또는 ADMIN 만 가능합니다.");
+        }
+        this.role = normalized;
+    }
+
+    public boolean isAdmin() {
+        return "ADMIN".equalsIgnoreCase(role);
+    }
+
     public Long getId() {
         return id;
     }

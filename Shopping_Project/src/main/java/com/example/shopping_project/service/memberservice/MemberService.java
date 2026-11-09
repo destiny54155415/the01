@@ -111,6 +111,19 @@ public class MemberService {
                 || value.startsWith("$2y$");
     }
 
+    @Transactional
+    public MemberEntity grantAdmin(String username) {
+        String trimmed = trim(username);
+        if (!StringUtils.hasText(trimmed)) {
+            throw new IllegalArgumentException("아이디를 입력하세요.");
+        }
+        MemberEntity member = memberRepository.findByUsername(trimmed)
+                .orElseThrow(() -> new IllegalArgumentException("회원을 찾을 수 없습니다: " + trimmed));
+        member.changeRole("ADMIN");
+        log.info("관리자 권한 부여: username={}", trimmed);
+        return member;
+    }
+
     private static String trim(String value) {
         return value == null ? null : value.trim();
     }
