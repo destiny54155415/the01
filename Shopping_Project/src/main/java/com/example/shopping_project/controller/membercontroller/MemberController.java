@@ -40,6 +40,9 @@ public class MemberController {
             redirectAttributes.addFlashAttribute(
                     "loginSuccessMessage",
                     member.getName() + "님, 로그인되었습니다.");
+            if (member.isAdmin()) {
+                return "redirect:/admin/products";
+            }
             return "redirect:/";
         } catch (IllegalArgumentException ex) {
             model.addAttribute("errorMessage", ex.getMessage());
