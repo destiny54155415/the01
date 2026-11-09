@@ -144,15 +144,21 @@ public class AdminProductController {
     }
 
     /**
-     * 회원 담당이 세션에 loginRole=ADMIN 또는 loginMember.role=ADMIN 을 넣으면 통과합니다.
-     * 로컬 개발용으로 adminDev=true 세션도 허용합니다.
+     * 회원 담당 세션 규약에 맞춤:
+     * - 회원 로그인은 loginUser(MemberEntity) 를 넣음
+     * - 추가로 loginRole / loginMember / adminDev 도 허용
+     * MemberController 는 수정하지 않음.
      */
-private boolean isAdmin(HttpSession session) {
+    private boolean isAdmin(HttpSession session) {
         if (isAdminRole(session.getAttribute("loginRole"))) {
             return true;
         }
-        if (hasAdminRole(session.getAttribute("loginMember"))
-                || hasAdminRole(session.getAttribute("loginUser"))) {
+        // 회원 모듈 기본 세션 키
+        if (hasAdminRole(session.getAttribute("loginUser"))) {
+            return true;
+        }
+        // 호환용
+        if (hasAdminRole(session.getAttribute("loginMember"))) {
             return true;
         }
         return Boolean.TRUE.equals(session.getAttribute("adminDev"));
