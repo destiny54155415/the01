@@ -3,6 +3,7 @@ package com.example.shopping_project.controller.productcontroller;
 import com.example.shopping_project.entity.memberentity.MemberEntity;
 import com.example.shopping_project.service.memberservice.MemberService;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,9 +15,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class AdminDevController {
 
-    private final MemberService memberService;
+    private final ObjectProvider<MemberService> memberService;
 
-    public AdminDevController(MemberService memberService) {
+    public AdminDevController(ObjectProvider<MemberService> memberService) {
         this.memberService = memberService;
     }
 
@@ -38,8 +39,13 @@ public class AdminDevController {
     public String makeAdmin(@RequestParam String username,
                             HttpSession session,
                             RedirectAttributes redirectAttributes) {
+        MemberService service = memberService.getIfAvailable();
+        if (service == null) {
+            redirectAttributes.addFlashAttribute("message", "회원 서비스가 없어 권한 부여를 할 수 없습니다. /admin/dev-login 을 사용하세요.");
+            return "redirect:/admin/dev-login";
+        }
         try {
-            MemberEntity member = memberService.grantAdmin(username);
+            MemberEntity member = service.grantAdmin(username);
             session.setAttribute("loginMember", member);
             session.setAttribute("loginUser", member);
             session.setAttribute("loginMemberId", member.getId());
