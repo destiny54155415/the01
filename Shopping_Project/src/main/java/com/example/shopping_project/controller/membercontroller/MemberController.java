@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
- * 회원 로그인 / 회원가입
+ * 회원 로그인 / 회원가입 (세션 키 통일)
  */
 @Controller
 public class MemberController {
@@ -45,6 +45,7 @@ public class MemberController {
             }
             return "redirect:/";
         } catch (IllegalArgumentException ex) {
+            model.addAttribute("error", ex.getMessage());
             model.addAttribute("errorMessage", ex.getMessage());
             return "member/login";
         }
@@ -82,7 +83,6 @@ public class MemberController {
     }
 
     private void bindLoginSession(HttpSession session, MemberEntity member) {
-        // 엔티티 + 문자열을 함께 넣어 헤더/관리자 체크가 안정적으로 동작하게 함
         String role = member.getRole() == null ? "USER" : member.getRole().trim().toUpperCase();
         if (role.startsWith("ROLE_")) {
             role = role.substring(5);
@@ -95,6 +95,8 @@ public class MemberController {
         session.setAttribute("loginRole", role);
         if ("ADMIN".equals(role)) {
             session.setAttribute("adminDev", true);
+        } else {
+            session.removeAttribute("adminDev");
         }
     }
 }

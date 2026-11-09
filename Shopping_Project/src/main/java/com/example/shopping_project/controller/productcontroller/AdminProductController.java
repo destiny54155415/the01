@@ -147,22 +147,27 @@ public class AdminProductController {
      * 회원 담당이 세션에 loginRole=ADMIN 또는 loginMember.role=ADMIN 을 넣으면 통과합니다.
      * 로컬 개발용으로 adminDev=true 세션도 허용합니다.
      */
-    private boolean isAdmin(HttpSession session) {
+private boolean isAdmin(HttpSession session) {
         if (isAdminRole(session.getAttribute("loginRole"))) {
             return true;
         }
-        Object member = session.getAttribute("loginMember");
-        if (member != null) {
-            try {
-                Object memberRole = member.getClass().getMethod("getRole").invoke(member);
-                if (isAdminRole(memberRole)) {
-                    return true;
-                }
-            } catch (ReflectiveOperationException ignored) {
-                // Member 연동 전
-            }
+        if (hasAdminRole(session.getAttribute("loginMember"))
+                || hasAdminRole(session.getAttribute("loginUser"))) {
+            return true;
         }
         return Boolean.TRUE.equals(session.getAttribute("adminDev"));
+    }
+
+    private static boolean hasAdminRole(Object member) {
+        if (member == null) {
+            return false;
+        }
+        try {
+            Object memberRole = member.getClass().getMethod("getRole").invoke(member);
+            return isAdminRole(memberRole);
+        } catch (ReflectiveOperationException ignored) {
+            return false;
+        }
     }
 
     private static boolean isAdminRole(Object role) {
