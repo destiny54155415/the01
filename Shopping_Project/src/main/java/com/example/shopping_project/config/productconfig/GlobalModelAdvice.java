@@ -49,7 +49,26 @@ public class GlobalModelAdvice {
         if (user instanceof String text && !text.isBlank()) {
             return text;
         }
+        // /admin/dev-login 처럼 관리자 세션만 있는 경우에도 헤더에 로그인 상태로 표시
+        if (Boolean.TRUE.equals(session.getAttribute("adminDev")) || isAdminRole(session.getAttribute("loginRole"))) {
+            Object username = session.getAttribute("loginUsername");
+            if (username instanceof String text && !text.isBlank()) {
+                return text;
+            }
+            return "관리자";
+        }
         return null;
+    }
+
+    private static boolean isAdminRole(Object role) {
+        if (role == null) {
+            return false;
+        }
+        String normalized = String.valueOf(role).trim().toUpperCase();
+        if (normalized.startsWith("ROLE_")) {
+            normalized = normalized.substring(5);
+        }
+        return "ADMIN".equals(normalized);
     }
 
     @ModelAttribute("categories")

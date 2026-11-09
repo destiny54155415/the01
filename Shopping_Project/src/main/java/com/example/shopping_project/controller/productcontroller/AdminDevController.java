@@ -24,6 +24,8 @@ public class AdminDevController {
     public String enableAdmin(HttpSession session, RedirectAttributes redirectAttributes) {
         session.setAttribute("adminDev", true);
         session.setAttribute("loginRole", "ADMIN");
+        session.setAttribute("loginUsername", "admin");
+        session.setAttribute("loginMemberName", "관리자");
         redirectAttributes.addFlashAttribute("message", "로컬 관리자 모드로 들어왔습니다.");
         return "redirect:/admin/products";
     }
@@ -57,8 +59,7 @@ public class AdminDevController {
 
     @GetMapping("/admin/dev-logout")
     public String disableAdmin(HttpSession session) {
-        session.removeAttribute("adminDev");
-        session.removeAttribute("loginRole");
+        session.invalidate();
         return "redirect:/";
     }
 }
