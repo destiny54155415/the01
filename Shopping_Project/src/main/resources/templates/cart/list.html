@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>장바구니 | Shopping_Project</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+</head>
+<body>
+<header th:replace="~{fragments/header :: header}"></header>
+<nav th:replace="~{fragments/category-nav :: categoryNav}"></nav>
+
+<main class="page-container">
+    <h1 class="section-title">장바구니</h1>
+
+    <div class="empty-state" th:if="${cartItems == null or #lists.isEmpty(cartItems)}">
+        <p>장바구니가 비어 있습니다.</p>
+        <a class="btn btn-primary" th:href="@{/}">상품 보러가기</a>
+    </div>
+
+    <table class="admin-table" th:if="${cartItems != null and !#lists.isEmpty(cartItems)}">
+        <thead>
+        <tr>
+            <th>상품</th>
+            <th>가격</th>
+            <th>수량</th>
+            <th>관리</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${cartItems}">
+            <td>
+                <a th:href="@{/products/{id}(id=${item.product.productId})}"
+                   th:text="${item.product.productName}">상품명</a>
+            </td>
+            <td th:text="${#numbers.formatDecimal(item.product.price, 0, 'COMMA', 0, 'POINT')} + '원'">0원</td>
+            <td>
+                <form th:action="@{/cart/update/{id}(id=${item.id})}" method="post" style="display:flex;gap:8px;align-items:center;">
+                    <input type="number" name="quantity" min="1" th:value="${item.quantity}" class="form-control" style="width:80px;">
+                    <button type="submit" class="btn btn-outline">변경</button>
+                </form>
+            </td>
+            <td>
+                <form th:action="@{/cart/delete/{id}(id=${item.id})}" method="post">
+                    <button type="submit" class="btn btn-danger">삭제</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+</body>
+</html>
