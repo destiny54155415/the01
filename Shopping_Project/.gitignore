@@ -59,3 +59,7 @@ application-local.properties
 application-local.yml
 application-secret.properties
 application-secret.yml
+
+# Uploaded product images (runtime)
+uploads/
+Shopping_Project/uploads/

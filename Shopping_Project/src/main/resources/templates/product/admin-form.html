@@ -29,8 +29,12 @@
 
     <form class="admin-form" th:object="${form}"
           th:action="${form.productId == null} ? @{/admin/products} : @{/admin/products/{id}(id=${form.productId})}"
-          method="post">
+          method="post"
+          enctype="multipart/form-data">
         <input type="hidden" th:field="*{productId}">
+        <p class="field-error"
+           th:each="err : ${#fields.globalErrors()}"
+           th:text="${err}">업로드 오류</p>
 
         <div class="form-group">
             <label class="form-label">상품카테고리</label>
@@ -93,9 +97,14 @@
         </div>
 
         <div class="form-group">
-            <label class="form-label" for="imageUrl">상품대표이미지 URL</label>
+            <label class="form-label" for="imageFile">상품대표이미지 업로드</label>
+            <input id="imageFile" name="imageFile" type="file" class="form-control"
+                   accept="image/jpeg,image/png,image/webp,image/gif"
+                   onchange="previewAdminFile(this)">
+            <p class="text-muted">웹에서 바로 이미지를 고르면 됩니다. (jpg/png/webp)</p>
+            <label class="form-label" for="imageUrl">또는 이미지 URL</label>
             <input id="imageUrl" type="text" class="form-control" th:field="*{imageUrl}"
-                   placeholder="/images/food-cat.jpg"
+                   placeholder="/images/food-dog.jpg"
                    oninput="previewAdminImage(this.value)">
             <div class="admin-image-preview">
                 <img id="adminImagePreview"
@@ -106,12 +115,18 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="form-label" for="imageUrl2">박스 형태 이미지 URL</label>
+            <label class="form-label" for="imageFile2">박스 형태 이미지 업로드</label>
+            <input id="imageFile2" name="imageFile2" type="file" class="form-control"
+                   accept="image/jpeg,image/png,image/webp,image/gif">
+            <label class="form-label" for="imageUrl2">또는 박스 이미지 URL</label>
             <input id="imageUrl2" type="text" class="form-control" th:field="*{imageUrl2}"
                    placeholder="/images/gallery/food-box.jpg">
         </div>
         <div class="form-group">
-            <label class="form-label" for="imageUrl3">제품 분리/구성 이미지 URL</label>
+            <label class="form-label" for="imageFile3">제품 분리/구성 이미지 업로드</label>
+            <input id="imageFile3" name="imageFile3" type="file" class="form-control"
+                   accept="image/jpeg,image/png,image/webp,image/gif">
+            <label class="form-label" for="imageUrl3">또는 구성 이미지 URL</label>
             <input id="imageUrl3" type="text" class="form-control" th:field="*{imageUrl3}"
                    placeholder="/images/gallery/food-open.jpg">
         </div>
@@ -151,6 +166,13 @@
             img.hidden = true;
             img.removeAttribute('src');
         }
+    }
+
+    function previewAdminFile(input) {
+        const img = document.getElementById('adminImagePreview');
+        if (!img || !input || !input.files || !input.files[0]) return;
+        img.hidden = false;
+        img.src = URL.createObjectURL(input.files[0]);
     }
 </script>
 </body>

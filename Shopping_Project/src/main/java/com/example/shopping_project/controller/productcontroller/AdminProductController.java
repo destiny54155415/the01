@@ -3,6 +3,7 @@ package com.example.shopping_project.controller.productcontroller;
 import com.example.shopping_project.dto.productdto.ProductDto;
 import com.example.shopping_project.entity.productentity.PetType;
 import com.example.shopping_project.service.productservice.CategoryService;
+import com.example.shopping_project.service.productservice.ProductImageStorageService;
 import com.example.shopping_project.service.productservice.ProductService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -21,10 +23,14 @@ public class AdminProductController {
 
     private final ProductService productService;
     private final CategoryService categoryService;
+    private final ProductImageStorageService productImageStorageService;
 
-    public AdminProductController(ProductService productService, CategoryService categoryService) {
+    public AdminProductController(ProductService productService,
+                                  CategoryService categoryService,
+                                  ProductImageStorageService productImageStorageService) {
         this.productService = productService;
         this.categoryService = categoryService;
+        this.productImageStorageService = productImageStorageService;
     }
 
     @GetMapping("/admin/products")
@@ -64,6 +70,9 @@ public class AdminProductController {
     @PostMapping("/admin/products")
     public String create(@Valid @ModelAttribute("form") ProductDto form,
                          BindingResult bindingResult,
+                         @RequestParam(value = "imageFile", required = false) MultipartFile imageFile,
+                         @RequestParam(value = "imageFile2", required = false) MultipartFile imageFile2,
+                         @RequestParam(value = "imageFile3", required = false) MultipartFile imageFile3,
                          HttpSession session,
                          Model model,
                          RedirectAttributes redirectAttributes) {
@@ -72,6 +81,13 @@ public class AdminProductController {
             return denied;
         }
         if (bindingResult.hasErrors()) {
+            addFormOptions(model);
+            return "product/admin-form";
+        }
+        try {
+            applyUploadedImages(form, imageFile, imageFile2, imageFile3);
+        } catch (IllegalArgumentException | IllegalStateException ex) {
+            bindingResult.reject("imageUpload", ex.getMessage());
             addFormOptions(model);
             return "product/admin-form";
         }
@@ -100,6 +116,9 @@ public class AdminProductController {
     public String update(@PathVariable Long productId,
                          @Valid @ModelAttribute("form") ProductDto form,
                          BindingResult bindingResult,
+                         @RequestParam(value = "imageFile", required = false) MultipartFile imageFile,
+                         @RequestParam(value = "imageFile2", required = false) MultipartFile imageFile2,
+                         @RequestParam(value = "imageFile3", required = false) MultipartFile imageFile3,
                          HttpSession session,
                          Model model,
                          RedirectAttributes redirectAttributes) {
@@ -112,9 +131,34 @@ public class AdminProductController {
             addFormOptions(model);
             return "product/admin-form";
         }
+        try {
+            applyUploadedImages(form, imageFile, imageFile2, imageFile3);
+        } catch (IllegalArgumentException | IllegalStateException ex) {
+            bindingResult.reject("imageUpload", ex.getMessage());
+            addFormOptions(model);
+            return "product/admin-form";
+        }
         productService.update(productId, form);
         redirectAttributes.addFlashAttribute("message", "상품을 수정했습니다.");
         return "redirect:/admin/products";
+    }
+
+    private void applyUploadedImages(ProductDto form,
+                                     MultipartFile imageFile,
+                                     MultipartFile imageFile2,
+                                     MultipartFile imageFile3) {
+        String main = productImageStorageService.store(imageFile);
+        if (main != null) {
+            form.setImageUrl(main);
+        }
+        String second = productImageStorageService.store(imageFile2);
+        if (second != null) {
+            form.setImageUrl2(second);
+        }
+        String third = productImageStorageService.store(imageFile3);
+        if (third != null) {
+            form.setImageUrl3(third);
+        }
     }
 
     @PostMapping("/admin/products/{productId}/deactivate")

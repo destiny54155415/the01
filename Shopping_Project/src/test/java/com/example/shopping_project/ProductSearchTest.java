@@ -2,6 +2,7 @@ package com.example.shopping_project;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
@@ -19,7 +20,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
@@ -195,5 +198,39 @@ class ProductSearchTest {
         mockMvc.perform(get("/admin/products/new"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/login"));
+    }
+
+    @Test
+    void adminCanUploadProductImageFromWebForm() throws Exception {
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("loginRole", "ADMIN");
+
+        MockMultipartFile image = new MockMultipartFile(
+                "imageFile",
+                "dog-chicken.jpg",
+                MediaType.IMAGE_JPEG_VALUE,
+                new byte[]{(byte) 0xFF, (byte) 0xD8, (byte) 0xFF, 0x00}
+        );
+
+        mockMvc.perform(multipart("/admin/products")
+                        .file(image)
+                        .session(session)
+                        .param("categoryId", String.valueOf(food.getCategoryId()))
+                        .param("productName", "강아지용 닭고기")
+                        .param("description", "닭고기 사료")
+                        .param("price", "19900")
+                        .param("stock", "20")
+                        .param("salesCount", "0")
+                        .param("petType", "DOG")
+                        .param("isActive", "true"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/admin/products"));
+
+        ProductEntity saved = productRepository.findAll().stream()
+                .filter(p -> "강아지용 닭고기".equals(p.getProductName()))
+                .findFirst()
+                .orElseThrow();
+        assertThat(saved.getImageUrl()).startsWith("/uploads/products/");
+        assertThat(saved.getImageUrl()).endsWith(".jpg");
     }
 }
