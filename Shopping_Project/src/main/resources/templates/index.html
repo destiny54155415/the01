@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PetShop | 반려동물 쇼핑몰</title>
+
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+</head>
+
+<body>
+
+<!-- 공통 헤더 -->
+<header th:replace="~{fragments/header :: header}"></header>
+
+<!-- 공통 카테고리 -->
+<nav th:replace="~{fragments/category-nav :: categoryNav}"></nav>
+
+<!-- 메인: 왼쪽 필터 + 바로 상품 목록 -->
+<main class="container page-container shop-layout">
+
+    <aside th:replace="~{fragments/product-filter-sidebar :: productFilterSidebar}"></aside>
+
+    <div class="shop-content">
+        <p th:if="${loginSuccessMessage}"
+           class="form-success"
+           th:text="${loginSuccessMessage}">로그인 성공</p>
+        <p th:if="${message}"
+           class="notice"
+           th:text="${message}">알림</p>
+
+        <div class="product-list-head">
+            <div>
+                <h1 class="section-title">우리 아이를 위한 특별한 쇼핑</h1>
+                <p class="text-muted"
+                   th:text="|총 ${result.totalElements}개 상품 · 왼쪽 필터로 바로 찾아보세요|">총 0개 상품</p>
+            </div>
+        </div>
+
+        <div class="empty-state" th:if="${result.totalElements == 0}">
+            <p>조건에 맞는 상품이 없습니다.</p>
+            <p class="text-muted">카테고리·동물·금액 조건을 넓히거나 초기화해 보세요.</p>
+            <a class="btn btn-outline" th:href="@{/}">필터 초기화</a>
+        </div>
+
+        <section class="product-grid" th:if="${result.totalElements > 0}">
+            <article class="product-card" th:each="product : ${result.content}">
+                <a th:href="@{/products/{id}(id=${product.productId})}">
+                    <img class="product-image"
+                         th:src="@{${product.imageUrl != null and !#strings.isEmpty(product.imageUrl) ? product.imageUrl : '/images/sample.jpg'}}"
+                         th:alt="${product.productName}">
+                    <div class="product-info">
+                        <p class="product-category" th:text="${product.category.categoryName}">사료</p>
+                        <h3 class="product-name" th:text="${product.productName}">상품명</h3>
+                        <p class="product-price">
+                            <span th:text="${#numbers.formatInteger(product.price, 0, 'COMMA')} + '원'">0원</span>
+                        </p>
+                        <p class="product-stock"
+                           th:text="|재고 ${product.stock}개 · 판매 ${product.salesCount}|">재고 0개</p>
+                    </div>
+                </a>
+            </article>
+        </section>
+
+        <nav class="pager" th:if="${result.totalPages > 1}" aria-label="페이지">
+            <a th:if="${result.hasPrevious()}"
+               class="btn btn-outline"
+               th:href="@{/(keyword=${keyword}, categoryId=${categoryId}, petType=${petType}, minPrice=${minPrice}, maxPrice=${maxPrice}, sort=${sort}, inStockOnly=${inStockOnly}, page=${result.number - 1})}">이전</a>
+            <span th:text="|${result.number + 1} / ${result.totalPages}|">1 / 1</span>
+            <a th:if="${result.hasNext()}"
+               class="btn btn-outline"
+               th:href="@{/(keyword=${keyword}, categoryId=${categoryId}, petType=${petType}, minPrice=${minPrice}, maxPrice=${maxPrice}, sort=${sort}, inStockOnly=${inStockOnly}, page=${result.number + 1})}">다음</a>
+        </nav>
+    </div>
+
+</main>
+
+<!-- 공통 푸터 -->
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+
+</body>
+</html>

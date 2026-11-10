@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입 | Shopping_Project</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+</head>
+<body>
+<header th:replace="~{fragments/header :: header}"></header>
+<nav th:replace="~{fragments/category-nav :: categoryNav}"></nav>
+<main class="page-container">
+    <div class="auth-container">
+        <h1 class="auth-title">회원가입</h1>
+
+        <p th:if="${errorMessage}" class="form-error" th:text="${errorMessage}">가입 오류</p>
+
+        <form th:action="@{/signup}" th:object="${joinDto}" method="post">
+            <div class="form-group">
+                <label class="form-label" for="username">아이디</label>
+                <input id="username" th:field="*{username}" type="text" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="password">비밀번호</label>
+                <input id="password" th:field="*{password}" type="password" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="name">이름</label>
+                <input id="name" th:field="*{name}" type="text" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="email">이메일</label>
+                <input id="email" th:field="*{email}" type="email" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="phone">휴대폰</label>
+                <input id="phone" th:field="*{phone}" type="text" class="form-control" placeholder="선택">
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">가입하기</button>
+        </form>
+
+        <div class="auth-links">
+            <a th:href="@{/login}">로그인으로 이동</a>
+        </div>
+    </div>
+</main>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+</body>
+</html>
