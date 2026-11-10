@@ -63,3 +63,7 @@ application-secret.yml
 # Uploaded product images (runtime)
 uploads/
 Shopping_Project/uploads/
+
+# Local H2 file DB
+Shopping_Project/data/
+data/
