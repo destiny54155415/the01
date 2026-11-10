@@ -298,6 +298,32 @@ textarea.form-control {
     text-decoration: underline;
 }
 
+.form-error {
+    margin: 0 0 16px;
+    padding: 10px 12px;
+    color: #b91c1c;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.form-success {
+    margin: 0 0 16px;
+    padding: 10px 12px;
+    color: #166534;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.header-user {
+    color: #334155;
+    font-size: 14px;
+    font-weight: 600;
+}
+
 /* ========================================
    8. 상품 목록
 ======================================== */
