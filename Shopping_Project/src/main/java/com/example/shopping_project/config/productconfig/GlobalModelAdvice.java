@@ -32,6 +32,31 @@ public class GlobalModelAdvice {
         return resolveLoginName(session);
     }
 
+    /** 헤더 상품관리/상품등록 노출용 */
+    @ModelAttribute("isAdmin")
+    public boolean isAdmin(HttpSession session) {
+        if (Boolean.TRUE.equals(session.getAttribute("adminDev"))) {
+            return true;
+        }
+        if (isAdminRole(session.getAttribute("loginRole"))) {
+            return true;
+        }
+        return hasAdminRole(session.getAttribute("loginUser"))
+                || hasAdminRole(session.getAttribute("loginMember"));
+    }
+
+    private static boolean hasAdminRole(Object member) {
+        if (member == null) {
+            return false;
+        }
+        try {
+            Object role = member.getClass().getMethod("getRole").invoke(member);
+            return isAdminRole(role);
+        } catch (ReflectiveOperationException ignored) {
+            return false;
+        }
+    }
+
     private static String resolveLoginName(HttpSession session) {
         Object name = session.getAttribute("loginMemberName");
         if (name instanceof String text && !text.isBlank()) {

@@ -29,6 +29,8 @@
                 <span class="header-user"
                       th:text="${loginMemberName} + '님'">회원님</span>
                 <a th:href="@{/logout}">로그아웃</a>
+                <a th:if="${isAdmin}" th:href="@{/admin/products}">상품관리</a>
+                <a th:if="${isAdmin}" th:href="@{/admin/products/new}">상품등록</a>
             </th:block>
             <th:block th:unless="${loggedIn}">
                 <a th:href="@{/login}">로그인</a>
