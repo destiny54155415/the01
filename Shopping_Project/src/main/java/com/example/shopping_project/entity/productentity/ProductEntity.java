@@ -60,6 +60,10 @@ public class ProductEntity {
     @Column(name = "image_url_3", length = 500)
     private String imageUrl3;
 
+    /** 알러지 성분 라벨 CSV (예: 닭고기,연어) — 장바구니 필터에 사용 */
+    @Column(name = "allergens", length = 255)
+    private String allergens;
+
     @Column(name = "is_active", nullable = false)
     private Boolean isActive = true;
 
@@ -200,6 +204,14 @@ public class ProductEntity {
 
     public void setImageUrl3(String imageUrl3) {
         this.imageUrl3 = imageUrl3;
+    }
+
+    public String getAllergens() {
+        return allergens;
+    }
+
+    public void setAllergens(String allergens) {
+        this.allergens = allergens;
     }
 
     public Boolean getIsActive() {

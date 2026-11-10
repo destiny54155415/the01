@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>장바구니 | Shopping_Project</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+</head>
+<body>
+<header th:replace="~{fragments/header :: header}"></header>
+<nav th:replace="~{fragments/category-nav :: categoryNav}"></nav>
+
+<main class="page-container">
+    <div class="product-list-head">
+        <h1 class="section-title">장바구니</h1>
+    </div>
+
+    <div class="notice" th:if="${allergyLabels != null and !#sets.isEmpty(allergyLabels)}">
+        <p>
+            등록된 반려동물 알러지:
+            <strong th:text="${allergyLabelText}">닭고기</strong>
+        </p>
+        <p th:if="${!showUnsafe and filteredOutCount > 0}">
+            알러지 성분 포함 상품 <strong th:text="${filteredOutCount}">0</strong>개를 숨겼습니다.
+            <a th:href="@{/cart(showUnsafe=true)}">주의 상품 포함해서 보기</a>
+        </p>
+        <p th:if="${showUnsafe}">
+            알러지 주의 상품을 포함해 표시 중입니다.
+            <a th:href="@{/cart}">안전한 상품만 보기</a>
+        </p>
+    </div>
+
+    <div class="empty-state" th:if="${cartItems == null or #lists.isEmpty(cartItems)}">
+        <p>표시할 장바구니 상품이 없습니다.</p>
+        <a class="btn btn-primary" th:href="@{/}">상품 보러가기</a>
+    </div>
+
+    <table class="admin-table" th:if="${cartItems != null and !#lists.isEmpty(cartItems)}">
+        <thead>
+        <tr>
+            <th>상품</th>
+            <th>가격</th>
+            <th>수량</th>
+            <th>알러지</th>
+            <th>관리</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${cartItems}"
+            th:classappend="${unsafeCartItemIds != null and #sets.contains(unsafeCartItemIds, item.id)} ? 'allergy-warning'">
+            <td>
+                <a th:href="@{/products/{id}(id=${item.product.productId})}"
+                   th:text="${item.product.productName}">상품명</a>
+            </td>
+            <td th:text="${#numbers.formatDecimal(item.product.price, 0, 'COMMA', 0, 'POINT')} + '원'">0원</td>
+            <td>
+                <form th:action="@{/cart/update}" method="post" class="inline-form">
+                    <input type="hidden" name="cartItemId" th:value="${item.id}">
+                    <input type="number" name="quantity" min="1" th:value="${item.quantity}" class="form-control" style="width:80px;display:inline-block;">
+                    <button type="submit" class="btn btn-outline">변경</button>
+                </form>
+            </td>
+            <td>
+                <span th:if="${unsafeCartItemIds != null and #sets.contains(unsafeCartItemIds, item.id)}"
+                      class="field-error">주의</span>
+                <span th:unless="${unsafeCartItemIds != null and #sets.contains(unsafeCartItemIds, item.id)}"
+                      class="text-muted">안전</span>
+            </td>
+            <td>
+                <form th:action="@{/cart/delete}" method="post">
+                    <input type="hidden" name="cartItemId" th:value="${item.id}">
+                    <button type="submit" class="btn btn-danger">삭제</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+</body>
+</html>

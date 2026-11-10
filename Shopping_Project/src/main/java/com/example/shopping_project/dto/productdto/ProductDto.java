@@ -8,6 +8,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProductDto {
 
@@ -47,6 +49,9 @@ public class ProductDto {
     @Size(max = 500, message = "이미지 주소는 500자 이하입니다.")
     private String imageUrl3;
 
+    /** 관리자 폼 체크박스 바인딩용 알러지 성분 라벨 */
+    private List<String> allergenLabels = new ArrayList<>();
+
     private Boolean isActive = true;
 
     public static ProductDto from(ProductEntity product) {
@@ -62,6 +67,8 @@ public class ProductDto {
         form.imageUrl = product.getImageUrl();
         form.imageUrl2 = product.getImageUrl2();
         form.imageUrl3 = product.getImageUrl3();
+        form.allergenLabels = new ArrayList<>(
+                com.example.shopping_project.service.productservice.AllergenLabels.parse(product.getAllergens()));
         form.isActive = product.getIsActive();
         return form;
     }
@@ -152,6 +159,14 @@ public class ProductDto {
 
     public void setImageUrl3(String imageUrl3) {
         this.imageUrl3 = imageUrl3;
+    }
+
+    public List<String> getAllergenLabels() {
+        return allergenLabels;
+    }
+
+    public void setAllergenLabels(List<String> allergenLabels) {
+        this.allergenLabels = allergenLabels == null ? new ArrayList<>() : allergenLabels;
     }
 
     public Boolean getIsActive() {

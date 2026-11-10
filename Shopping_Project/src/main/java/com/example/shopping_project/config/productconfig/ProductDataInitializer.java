@@ -310,6 +310,7 @@ public class ProductDataInitializer implements CommandLineRunner {
     private void upsert(CategoryEntity category, String name, String description, String price,
                         int stock, int salesCount, PetType petType, String imageUrl) {
         String[] gallery = galleryFor(category.getCategoryName(), name, imageUrl);
+        String allergens = com.example.shopping_project.service.productservice.AllergenLabels.inferFromText(name, description);
         productRepository.findByProductName(name).ifPresentOrElse(existing -> {
             existing.setCategory(category);
             existing.setDescription(description);
@@ -320,12 +321,14 @@ public class ProductDataInitializer implements CommandLineRunner {
             existing.setImageUrl(gallery[0]);
             existing.setImageUrl2(gallery[1]);
             existing.setImageUrl3(gallery[2]);
+            existing.setAllergens(allergens);
             existing.setIsActive(true);
         }, () -> {
             ProductEntity created = new ProductEntity(
                     category, name, description, new BigDecimal(price), stock, salesCount, petType, gallery[0]);
             created.setImageUrl2(gallery[1]);
             created.setImageUrl3(gallery[2]);
+            created.setAllergens(allergens);
             productRepository.save(created);
         });
     }

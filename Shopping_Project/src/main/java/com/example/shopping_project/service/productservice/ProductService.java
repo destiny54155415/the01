@@ -113,6 +113,7 @@ public class ProductService {
         );
         product.setImageUrl2(blankToNull(form.getImageUrl2()));
         product.setImageUrl3(blankToNull(form.getImageUrl3()));
+        product.setAllergens(AllergenLabels.join(form.getAllergenLabels()));
         product.setIsActive(form.getIsActive() == null || form.getIsActive());
         return productRepository.save(product);
     }
@@ -130,6 +131,7 @@ public class ProductService {
         product.setImageUrl(blankToNull(form.getImageUrl()));
         product.setImageUrl2(blankToNull(form.getImageUrl2()));
         product.setImageUrl3(blankToNull(form.getImageUrl3()));
+        product.setAllergens(AllergenLabels.join(form.getAllergenLabels()));
         product.setIsActive(form.getIsActive() == null || form.getIsActive());
         return product;
     }

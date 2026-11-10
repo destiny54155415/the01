@@ -1,6 +1,7 @@
 package com.example.shopping_project.controller.productcontroller;
 
 import com.example.shopping_project.dto.productdto.ProductDto;
+import com.example.shopping_project.entity.productentity.AllergyIngredient;
 import com.example.shopping_project.entity.productentity.PetType;
 import com.example.shopping_project.service.productservice.CategoryService;
 import com.example.shopping_project.service.productservice.ProductImageStorageService;
@@ -196,6 +197,7 @@ public class AdminProductController {
     private void addFormOptions(Model model) {
         model.addAttribute("adminCategories", categoryService.findAllCategories());
         model.addAttribute("petTypes", PetType.values());
+        model.addAttribute("allergyIngredients", AllergyIngredient.values());
     }
 
     /**
