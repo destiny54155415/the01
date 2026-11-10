@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>주문하기 | Shopping_Project</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+</head>
+<body>
+<header th:replace="~{fragments/header :: header}"></header>
+<nav th:replace="~{fragments/category-nav :: categoryNav}"></nav>
+<main class="page-container">
+    <h1 class="section-title">주문하기</h1>
+
+    <div th:if="${isDirectPurchase}">
+        <p th:if="${buyNowProduct != null}"
+           th:text="'상품: ' + ${buyNowProduct.productName} + ' / 수량: ' + ${buyNowQuantity}">상품</p>
+        <form th:action="@{/orders/create-direct}" method="post">
+            <input type="hidden" name="productId" th:value="${buyNowProduct.productId}">
+            <input type="hidden" name="quantity" th:value="${buyNowQuantity}">
+            <label>받는 분 <input class="form-control" type="text" name="recipient" required
+                   th:value="${defaultAddress != null ? defaultAddress.recipient : ''}"></label>
+            <label>배송지 <input class="form-control" type="text" name="shippingAddress" required
+                   th:value="${defaultAddress != null ? defaultAddress.fullAddress : ''}"></label>
+            <button class="btn btn-primary" type="submit">주문하기</button>
+        </form>
+    </div>
+
+    <div th:unless="${isDirectPurchase}">
+        <ul>
+            <li th:each="item : ${cartItems}"
+                th:text="${item.product != null ? item.product.productName : item} + ' x ' + ${item.quantity}">item</li>
+        </ul>
+        <form th:action="@{/orders/create-from-cart}" method="post">
+            <input th:each="id : ${cartItemIds}" type="hidden" name="cartItemIds" th:value="${id}">
+            <label>받는 분 <input class="form-control" type="text" name="recipient" required
+                   th:value="${defaultAddress != null ? defaultAddress.recipient : ''}"></label>
+            <label>배송지 <input class="form-control" type="text" name="shippingAddress" required
+                   th:value="${defaultAddress != null ? defaultAddress.fullAddress : ''}"></label>
+            <button class="btn btn-primary" type="submit">주문하기</button>
+        </form>
+    </div>
+</main>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+</body>
+</html>
