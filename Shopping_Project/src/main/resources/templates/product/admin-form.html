@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title th:text="${form.productId == null} ? '상품 등록' : '상품 수정'">상품 편집</title>
+
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+</head>
+
+<body>
+
+<!-- 공통 헤더 -->
+<header th:replace="~{fragments/header :: header}"></header>
+
+<!-- 공통 카테고리 -->
+<nav th:replace="~{fragments/category-nav :: categoryNav}"></nav>
+
+<main class="page-container narrow">
+    <div class="product-list-head">
+        <h1 class="section-title"
+            th:text="${form.productId == null} ? '상품 등록' : '상품 수정'">상품 등록</h1>
+        <a class="btn btn-outline" th:href="@{/admin/products}">목록으로</a>
+    </div>
+
+    <p class="notice" th:if="${message}" th:text="${message}">알림</p>
+
+    <form class="admin-form" th:object="${form}"
+          th:action="${form.productId == null} ? @{/admin/products} : @{/admin/products/{id}(id=${form.productId})}"
+          method="post"
+          enctype="multipart/form-data">
+        <input type="hidden" th:field="*{productId}">
+        <p class="field-error"
+           th:each="err : ${#fields.globalErrors()}"
+           th:text="${err}">업로드 오류</p>
+
+        <div class="form-group">
+            <label class="form-label">상품카테고리</label>
+            <p class="text-muted">등록/수정할 상품의 카테고리를 선택하세요.</p>
+
+            <div class="category-chip-list" role="radiogroup" aria-label="상품카테고리">
+                <label class="category-chip"
+                       th:each="category : ${adminCategories}"
+                       th:for="${'categoryChip-' + category.categoryId}">
+                    <input type="radio"
+                           th:id="${'categoryChip-' + category.categoryId}"
+                           th:field="*{categoryId}"
+                           th:value="${category.categoryId}"
+                           required>
+                    <span th:text="${category.categoryName}">사료</span>
+                </label>
+            </div>
+            <p class="field-error" th:if="${#fields.hasErrors('categoryId')}" th:errors="*{categoryId}"></p>
+            <p class="text-muted"
+               th:if="${adminCategories == null or #lists.isEmpty(adminCategories)}">
+                등록된 카테고리가 없습니다. 앱을 재시작하면 기본 카테고리가 생성됩니다.
+            </p>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="productName">상품명</label>
+            <input id="productName" type="text" class="form-control" th:field="*{productName}" required>
+            <p class="field-error" th:if="${#fields.hasErrors('productName')}" th:errors="*{productName}"></p>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="description">상품 설명</label>
+            <textarea id="description" class="form-control" rows="5" th:field="*{description}"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="price">상품가격</label>
+            <input id="price" type="number" min="0" step="100" class="form-control" th:field="*{price}" required>
+            <p class="field-error" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></p>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="stock">재고</label>
+            <input id="stock" type="number" min="0" class="form-control" th:field="*{stock}" required>
+            <p class="field-error" th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}"></p>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="salesCount">누적 판매량</label>
+            <input id="salesCount" type="number" min="0" class="form-control" th:field="*{salesCount}" required>
+            <p class="text-muted">인기/추천 정렬에 사용됩니다.</p>
+            <p class="field-error" th:if="${#fields.hasErrors('salesCount')}" th:errors="*{salesCount}"></p>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="petType">반려동물 구분</label>
+            <select id="petType" class="form-control" th:field="*{petType}">
+                <option th:each="type : ${petTypes}" th:value="${type}" th:text="${type.label}">공용</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="imageFile">상품대표이미지 업로드</label>
+            <input id="imageFile" name="imageFile" type="file" class="form-control"
+                   accept="image/jpeg,image/png,image/webp,image/gif"
+                   onchange="previewAdminFile(this)">
+            <p class="text-muted">웹에서 바로 이미지를 고르면 됩니다. (jpg/png/webp)</p>
+            <label class="form-label" for="imageUrl">또는 이미지 URL</label>
+            <input id="imageUrl" type="text" class="form-control" th:field="*{imageUrl}"
+                   placeholder="/images/food-dog.jpg"
+                   oninput="previewAdminImage(this.value)">
+            <div class="admin-image-preview">
+                <img id="adminImagePreview"
+                     class="product-image"
+                     th:src="${form.imageUrl != null and !#strings.isEmpty(form.imageUrl)} ? @{${form.imageUrl}} : ''"
+                     th:alt="${form.productName}"
+                     th:attr="hidden=${form.imageUrl == null or #strings.isEmpty(form.imageUrl)}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="imageFile2">박스 형태 이미지 업로드</label>
+            <input id="imageFile2" name="imageFile2" type="file" class="form-control"
+                   accept="image/jpeg,image/png,image/webp,image/gif">
+            <label class="form-label" for="imageUrl2">또는 박스 이미지 URL</label>
+            <input id="imageUrl2" type="text" class="form-control" th:field="*{imageUrl2}"
+                   placeholder="/images/gallery/food-box.jpg">
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="imageFile3">제품 분리/구성 이미지 업로드</label>
+            <input id="imageFile3" name="imageFile3" type="file" class="form-control"
+                   accept="image/jpeg,image/png,image/webp,image/gif">
+            <label class="form-label" for="imageUrl3">또는 구성 이미지 URL</label>
+            <input id="imageUrl3" type="text" class="form-control" th:field="*{imageUrl3}"
+                   placeholder="/images/gallery/food-open.jpg">
+        </div>
+
+        <div class="form-group check-row">
+            <label>
+                <input type="checkbox" th:field="*{isActive}"> 판매중(판매가능)으로 표시
+            </label>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block"
+                th:text="${form.productId == null} ? '상품 등록하기' : '상품 수정하기'">저장</button>
+    </form>
+
+    <div class="admin-form-actions" th:if="${form.productId != null}">
+        <form th:action="@{/admin/products/{id}/deactivate(id=${form.productId})}" method="post">
+            <button type="submit" class="btn btn-outline btn-block">판매 비활성화</button>
+        </form>
+        <form th:action="@{/admin/products/{id}/delete(id=${form.productId})}" method="post"
+              onsubmit="return confirm('정말 이 상품을 삭제할까요? 삭제 후 복구할 수 없습니다.');">
+            <button type="submit" class="btn btn-danger btn-block">상품 삭제하기</button>
+        </form>
+    </div>
+</main>
+
+<!-- 공통 푸터 -->
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+<script th:src="@{/js/product.js}"></script>
+<script>
+    function previewAdminImage(url) {
+        const img = document.getElementById('adminImagePreview');
+        if (!img) return;
+        if (url && url.trim()) {
+            img.hidden = false;
+            img.src = url.trim();
+        } else {
+            img.hidden = true;
+            img.removeAttribute('src');
+        }
+    }
+
+    function previewAdminFile(input) {
+        const img = document.getElementById('adminImagePreview');
+        if (!img || !input || !input.files || !input.files[0]) return;
+        img.hidden = false;
+        img.src = URL.createObjectURL(input.files[0]);
+    }
+</script>
+</body>
+</html>

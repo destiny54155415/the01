@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>상품을 찾을 수 없음</title>
+
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+</head>
+
+<body>
+
+<!-- 공통 헤더 -->
+<header th:replace="~{fragments/header :: header}"></header>
+
+<!-- 공통 카테고리 -->
+<nav th:replace="~{fragments/category-nav :: categoryNav}"></nav>
+
+<main class="page-container">
+    <h1 class="section-title">찾을 수 없습니다</h1>
+    <p th:text="${message}">상품을 찾을 수 없습니다.</p>
+    <a class="btn btn-primary" th:href="@{/products}">상품 목록으로</a>
+</main>
+
+<!-- 공통 푸터 -->
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+</body>
+</html>
