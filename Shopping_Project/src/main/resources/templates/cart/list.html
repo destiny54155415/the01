@@ -18,7 +18,10 @@
         </thead>
         <tbody>
         <tr th:each="item : ${cartItems}">
-            <td th:text="${item.product != null ? item.product.productName : item.id}">상품</td>
+            <td>
+                <span th:if="${item.product != null}" th:text="${item.product.productName}">상품</span>
+                <span th:unless="${item.product != null}" th:text="${item.id}">상품</span>
+            </td>
             <td>
                 <form th:action="@{/cart/update/{id}(id=${item.id})}" method="post" style="display:inline-flex;gap:8px;">
                     <input class="form-control" style="width:80px;" type="number" name="quantity" min="1" th:value="${item.quantity}">
