@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title th:text="${product.productName} + ' | PetShop'">상품 상세</title>
+
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+</head>
+
+<body>
+
+<!-- 공통 헤더 -->
+<header th:replace="~{fragments/header :: header}"></header>
+
+<!-- 공통 카테고리 -->
+<nav th:replace="~{fragments/category-nav :: categoryNav}"></nav>
+
+<main class="page-container">
+    <p class="crumb">
+        <a th:href="@{/}">전체상품</a>
+        <span>/</span>
+        <a th:href="@{/(categoryId=${product.category.categoryId})}"
+           th:text="${product.category.categoryName}">카테고리</a>
+    </p>
+
+    <section class="product-detail">
+        <div class="product-gallery">
+            <img id="productMainImage"
+                 class="product-detail-image"
+                 th:src="@{${product.imageUrl != null and !#strings.isEmpty(product.imageUrl) ? product.imageUrl : '/images/sample.jpg'}}"
+                 th:alt="${product.productName}">
+
+            <div class="product-thumbs" aria-label="상품 이미지 미리보기">
+                <button type="button"
+                        class="product-thumb is-active"
+                        th:attr="data-full=@{${product.imageUrl != null and !#strings.isEmpty(product.imageUrl) ? product.imageUrl : '/images/sample.jpg'}}"
+                        aria-label="대표 이미지">
+                    <img th:src="@{${product.imageUrl != null and !#strings.isEmpty(product.imageUrl) ? product.imageUrl : '/images/sample.jpg'}}"
+                         th:alt="|${product.productName} 대표|">
+                    <span class="thumb-label">대표</span>
+                </button>
+
+                <button type="button"
+                        class="product-thumb"
+                        th:if="${product.imageUrl2 != null and !#strings.isEmpty(product.imageUrl2)}"
+                        th:attr="data-full=@{${product.imageUrl2}}"
+                        aria-label="박스 형태 이미지">
+                    <img th:src="@{${product.imageUrl2}}"
+                         th:alt="|${product.productName} 박스|">
+                    <span class="thumb-label">박스</span>
+                </button>
+
+                <button type="button"
+                        class="product-thumb"
+                        th:if="${product.imageUrl3 != null and !#strings.isEmpty(product.imageUrl3)}"
+                        th:attr="data-full=@{${product.imageUrl3}}"
+                        aria-label="제품 분리 이미지">
+                    <img th:src="@{${product.imageUrl3}}"
+                         th:alt="|${product.productName} 구성|">
+                    <span class="thumb-label">구성</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="product-detail-info">
+            <p class="product-category" th:text="${product.category.categoryName}">사료</p>
+            <h1 th:text="${product.productName}">상품명</h1>
+            <p class="product-price">
+                <span th:text="${#numbers.formatInteger(product.price, 0, 'COMMA')} + '원'">0원</span>
+            </p>
+            <p class="text-muted" th:text="|구분: ${product.petType.label}|">구분</p>
+            <p class="text-muted" th:text="|재고: ${product.stock}개|">재고</p>
+            <p class="product-summary"
+               th:text="${product.description != null ? #strings.substringBefore(product.description, '【').trim() : ''}">요약</p>
+
+            <div class="product-actions">
+                <a class="btn btn-primary" th:href="@{/cart}">장바구니로 이동</a>
+                <a class="btn btn-outline" th:href="@{/(categoryId=${product.category.categoryId})}">같은 카테고리 보기</a>
+            </div>
+            <p class="text-muted">장바구니 담기는 3번 담당, 리뷰는 4번 담당 기능입니다.</p>
+        </div>
+    </section>
+
+    <!-- 이미지 하단 상세 페이지 -->
+    <section class="product-detail-body" th:if="${product.description != null and !#strings.isEmpty(product.description)}">
+        <h2 class="product-detail-title">상품 상세 정보</h2>
+        <div class="product-detail-content" th:text="${product.description}">상세 설명</div>
+
+        <div class="product-detail-meta">
+            <h3>기본 정보</h3>
+            <ul>
+                <li th:text="|상품명: ${product.productName}|">상품명</li>
+                <li th:text="|카테고리: ${product.category.categoryName}|">카테고리</li>
+                <li th:text="|반려동물 구분: ${product.petType.label}|">구분</li>
+                <li th:text="|판매가: ${#numbers.formatInteger(product.price, 0, 'COMMA')}원|">가격</li>
+                <li th:text="|재고: ${product.stock}개|">재고</li>
+            </ul>
+        </div>
+    </section>
+</main>
+
+<!-- 공통 푸터 -->
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+<script th:src="@{/js/product.js}"></script>
+</body>
+</html>
