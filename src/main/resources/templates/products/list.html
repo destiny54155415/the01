@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>냥마트 상품</title>
+    <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+<header th:replace="~{fragments/shell :: header}"></header>
+<main class="wrap">
+    <nav class="cats" aria-label="카테고리">
+        <a th:href="@{/products(q=${q}, sort=${sort})}" th:classappend="${categoryId == null} ? 'on'">전체</a>
+        <a th:each="parent : ${categories}"
+           th:if="${parent.visible}"
+           th:href="@{/products(categoryId=${parent.id}, q=${q}, sort=${sort})}"
+           th:text="${parent.name}"
+           th:classappend="${parentId == parent.id} ? 'on'">사료</a>
+    </nav>
+    <nav class="subs" th:if="${parentId != null}" aria-label="하위 카테고리">
+        <th:block th:each="parent : ${categories}" th:if="${parent.id == parentId}">
+            <a th:each="child : ${parent.children}"
+               th:if="${child.visible}"
+               th:href="@{/products(categoryId=${child.id}, q=${q}, sort=${sort})}"
+               th:text="${child.name}"
+               th:classappend="${categoryId == child.id} ? 'on'">건식</a>
+        </th:block>
+    </nav>
+
+    <div class="list-head">
+        <h1 th:text="${q != '' ? q + ' 검색' : (selected != null ? selected.name : '전체 상품')}">전체 상품</h1>
+        <p th:text="|${result.totalElements}개|">0개</p>
+    </div>
+    <div class="sorts">
+        <a th:each="item : ${sorts}"
+           th:href="@{/products(q=${q}, categoryId=${categoryId}, sort=${item})}"
+           th:text="${item.label}"
+           th:classappend="${sort == item} ? 'on'">신상품</a>
+    </div>
+
+    <p class="empty" th:if="${result.totalElements == 0}">검색 결과가 없습니다.</p>
+    <section class="grid" th:if="${result.totalElements > 0}">
+        <a class="card" th:each="product : ${result.content}" th:href="@{/products/{id}(id=${product.id})}">
+            <div th:class="|thumb tone-${product.category.id % 6}|">
+                <span th:if="${product.status.name() == 'SOLD_OUT'}" class="badge">품절</span>
+                <span th:if="${product.discountPercent() != null}" class="badge sale" th:text="|${product.discountPercent()}%|">10%</span>
+                <strong th:text="${product.brand}">브랜드</strong>
+            </div>
+            <p class="brand" th:text="${product.category.name}">카테고리</p>
+            <h2 th:text="${product.name}">상품명</h2>
+            <p class="price">
+                <del th:if="${product.discountPercent() != null}" th:text="${#numbers.formatInteger(product.price, 0, 'COMMA')} + '원'">10원</del>
+                <b th:text="${#numbers.formatInteger(product.sellingPrice, 0, 'COMMA')} + '원'">9원</b>
+            </p>
+            <p class="meta" th:if="${product.reviewCount > 0}"
+               th:text="|${#numbers.formatDecimal(product.averageRating, 1, 1)}점 · 후기 ${product.reviewCount}|">4.8점</p>
+        </a>
+    </section>
+
+    <nav class="pager" th:if="${result.totalPages > 1}" aria-label="페이지">
+        <a th:if="${result.hasPrevious()}"
+           th:href="@{/products(q=${q}, categoryId=${categoryId}, sort=${sort}, page=${result.number - 1})}">이전</a>
+        <span th:text="|${result.number + 1} / ${result.totalPages}|">1 / 2</span>
+        <a th:if="${result.hasNext()}"
+           th:href="@{/products(q=${q}, categoryId=${categoryId}, sort=${sort}, page=${result.number + 1})}">다음</a>
+    </nav>
+</main>
+<footer th:replace="~{fragments/shell :: footer}"></footer>
+</body>
+</html>
