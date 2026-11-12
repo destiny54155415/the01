@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>상품 리뷰 | PetShop</title>
+
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/review.css}">
+</head>
+<body>
+
+<header th:replace="~{fragments/header :: header}"></header>
+<nav th:replace="~{fragments/category-nav :: categoryNav}"></nav>
+
+<main class="container page-container">
+    <section class="review-container">
+
+        <h1>상품 리뷰</h1>
+        <p class="text-muted">상품을 구매한 고객들의 솔직한 리뷰입니다.</p>
+
+        <!-- 리뷰 통계 -->
+        <div class="review-summary">
+            <div>
+                <span>평균 평점</span>
+                <strong th:text="${#numbers.formatDecimal(averageRating, 1, 1)} + ' / 5.0'"></strong>
+            </div>
+
+            <div>
+                <span>전체 리뷰</span>
+                <strong th:text="${reviewCount} + '개'"></strong>
+            </div>
+        </div>
+
+        <!-- 리뷰 작성 -->
+        <div class="review-write-box"
+             th:if="${orderItemId != null and !alreadyReviewed}">
+            <h2>리뷰 작성하기</h2>
+
+            <form th:action="@{/reviews/create}"
+                  method="post">
+
+                <input type="hidden"
+                       name="productId"
+                       th:value="${productId}">
+
+                <input type="hidden"
+                       name="orderItemId"
+                       th:value="${orderItemId}">
+
+                <div class="form-group">
+                    <label for="rating">평점</label>
+
+                    <select id="rating" name="rating" required>
+                        <option value="5">★★★★★ - 아주 좋아요</option>
+                        <option value="4">★★★★ - 좋아요</option>
+                        <option value="3">★★★ - 보통이에요</option>
+                        <option value="2">★★ - 아쉬워요</option>
+                        <option value="1">★ - 별로예요</option>
+                    </select>
+                </div>
+                <div class="review-write-box"
+                     th:if="${orderItemId != null and alreadyReviewed}">
+                    <p>이미 해당 상품의 리뷰를 작성하셨습니다.</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="content">리뷰 내용</label>
+
+                    <textarea id="content"
+                              name="content"
+                              rows="5"
+                              placeholder="상품에 대한 솔직한 리뷰를 작성해주세요."
+                              required></textarea>
+                </div>
+
+                <button type="submit" class="review-submit-btn">
+                    리뷰 등록
+                </button>
+            </form>
+        </div>
+
+        <!-- 리뷰 목록 -->
+        <div class="review-list">
+            <h2>리뷰 목록</h2>
+
+            <div th:if="${#lists.isEmpty(reviews)}"
+                 class="empty-review">
+                아직 작성된 리뷰가 없습니다.
+                <p>첫 번째 리뷰를 작성해 보세요!</p>
+            </div>
+
+            <article class="review-card"
+                     th:each="review : ${reviews}">
+
+                <div class="review-card-header">
+                    <strong th:text="${review.memberName}"></strong>
+
+                    <span class="review-rating">
+                        <span th:each="star : ${#numbers.sequence(1, 5)}"
+                              th:text="${star <= review.rating ? '★' : '☆'}">
+                        </span>
+                    </span>
+                </div>
+
+                <p class="review-product"
+                   th:text="${review.productName}"></p>
+
+                <p class="review-content"
+                   th:text="${review.content}"></p>
+
+                <div class="review-date"
+                     th:text="${#temporals.format(review.createdAt, 'yyyy-MM-dd HH:mm')}">
+                </div>
+
+            </article>
+        </div>
+
+    </section>
+</main>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+
+</body>
+</html>

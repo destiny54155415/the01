@@ -1,0 +1,345 @@
+
+.order-complete-container {
+    max-width: 700px;
+    margin: 60px auto;
+    padding: 40px 30px;
+    text-align: center;
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 12px;
+}
+
+.order-complete-icon {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    background: #e8f7ed;
+    color: #28a745;
+    font-size: 42px;
+    line-height: 70px;
+    font-weight: bold;
+}
+
+.order-complete-container h1 {
+    margin-bottom: 12px;
+}
+
+.order-info {
+    margin: 30px 0;
+    padding: 20px;
+    text-align: left;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.order-info p {
+    margin: 12px 0;
+}
+
+.order-buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.order-buttons a {
+    display: inline-block;
+    padding: 12px 18px;
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: #333;
+    color: #fff;
+}
+
+.btn-secondary {
+    background: #eee;
+    color: #333;
+}
+
+
+/* 주문 내역 */
+.order-list-container {
+    max-width: 900px;
+    margin: 50px auto;
+}
+
+.order-list-container h1 {
+    margin-bottom: 10px;
+}
+
+.empty-order {
+    margin-top: 40px;
+    padding: 60px 20px;
+    text-align: center;
+    background: #f8f9fa;
+    border-radius: 10px;
+}
+
+.empty-order p {
+    margin: 15px 0 25px;
+    color: #777;
+}
+
+.order-btn,
+.order-detail-btn {
+    display: inline-block;
+    padding: 10px 18px;
+    border-radius: 6px;
+    text-decoration: none;
+    background: #333;
+    color: #fff;
+}
+
+.order-card {
+    margin-top: 25px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.order-card-header {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 18px 20px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #eee;
+}
+
+.order-date {
+    color: #777;
+    font-size: 14px;
+}
+
+.order-card-body {
+    padding: 10px 20px;
+}
+
+.order-product {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    padding: 18px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.order-product:last-child {
+    border-bottom: none;
+}
+
+.order-product-info p {
+    margin-top: 8px;
+    color: #777;
+    font-size: 14px;
+}
+
+.order-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 18px 20px;
+    background: #fafafa;
+    border-top: 1px solid #eee;
+}
+
+.order-card-footer > div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.order-card-footer > div span {
+    color: #777;
+    font-size: 13px;
+}
+
+.order-total-price {
+    font-size: 18px;
+}
+
+@media (max-width: 600px) {
+    .order-card-header,
+    .order-card-footer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .order-detail-btn {
+        width: 100%;
+        text-align: center;
+        box-sizing: border-box;
+    }
+}
+
+
+/* 주문 상세 */
+.order-detail-container {
+    max-width: 900px;
+    margin: 50px auto;
+}
+
+.order-detail-container h1 {
+    margin-bottom: 10px;
+}
+
+.order-detail-card {
+    margin-top: 25px;
+    padding: 25px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background: #fff;
+}
+
+.order-detail-card h2 {
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+
+.detail-info-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 14px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.detail-info-row:last-child {
+    border-bottom: none;
+}
+
+.detail-info-row span {
+    color: #777;
+}
+
+.detail-info-row strong {
+    text-align: right;
+}
+
+.detail-product {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    padding: 18px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.detail-product:last-child {
+    border-bottom: none;
+}
+
+.detail-product p {
+    margin-top: 8px;
+    color: #777;
+    font-size: 14px;
+}
+
+.payment-card {
+    background: #fafafa;
+}
+
+.total-row {
+    margin-top: 10px;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+    font-size: 18px;
+}
+
+.total-row strong {
+    color: #333;
+    font-size: 21px;
+}
+
+.order-detail-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin: 30px 0;
+}
+
+.order-back-btn {
+    display: inline-block;
+    padding: 12px 20px;
+    border-radius: 6px;
+    background: #333;
+    color: #fff;
+    text-decoration: none;
+}
+
+@media (max-width: 600px) {
+    .detail-info-row {
+        align-items: flex-start;
+    }
+
+    .order-detail-buttons {
+        flex-direction: column;
+    }
+
+    .order-back-btn {
+        text-align: center;
+    }
+
+
+    /* 주문 취소 안내 */
+    .order-cancel-notice {
+        margin: 20px 0;
+        padding: 18px;
+        background-color: #fff1f0;
+        border: 1px solid #ffccc7;
+        border-radius: 8px;
+        color: #cf1322;
+    }
+
+    .order-cancel-notice strong {
+        font-size: 18px;
+    }
+
+    .order-cancel-notice p {
+        margin: 8px 0 0;
+        font-size: 14px;
+    }
+
+    /* 주문 상태 표시 */
+    .order-status {
+        display: inline-block;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .order-status.ordered {
+        background-color: #e6f4ff;
+        color: #1677c8;
+    }
+
+    .order-status.preparing {
+        background-color: #fff7e6;
+        color: #d48806;
+    }
+
+    .order-status.shipping {
+        background-color: #f0eaff;
+        color: #722ed1;
+    }
+
+    .order-status.completed {
+        background-color: #e6f7ed;
+        color: #389e5d;
+    }
+
+    .order-status.cancelled {
+        background-color: #fff1f0;
+        color: #cf1322;
+    }
+}

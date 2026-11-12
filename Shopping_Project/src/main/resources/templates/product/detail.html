@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title th:text="${product.productName} + ' | PetShop'">상품 상세</title>
+
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <style>
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .quantity-control input {
+            width: 60px;
+            text-align: center;
+            padding: 5px;
+        }
+        .product-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+        .btn-wish {
+            background-color: #fff;
+            border: 1px solid #dc3545;
+            color: #dc3545;
+            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-wish:hover {
+            background-color: #fff5f5;
+        }
+        /* 하트 애니메이션 효과 클래스 */
+        @keyframes heartBounce {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+        .heart-animate {
+            animation: heartBounce 0.3s ease-in-out;
+        }
+
+        .review-section {
+            margin-top: 60px;
+            padding: 30px 0;
+            border-top: 1px solid #ddd;
+        }
+
+        .review-section h2 {
+            margin-bottom: 25px;
+        }
+
+        .review-summary {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        .review-average {
+            font-size: 28px;
+            font-weight: bold;
+            color: #f59e0b;
+        }
+
+        .review-item {
+            padding: 22px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .review-item-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .review-rating {
+            color: #f59e0b;
+            font-weight: bold;
+        }
+
+        .review-content {
+            line-height: 1.7;
+            white-space: pre-wrap;
+            margin-bottom: 12px;
+        }
+
+        .review-date {
+            color: #999;
+            font-size: 13px;
+        }
+
+        .no-review {
+            padding: 40px 0;
+            text-align: center;
+            color: #888;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- 공통 헤더 -->
+<header th:replace="~{fragments/header :: header}"></header>
+
+<!-- 공통 카테고리 -->
+<nav th:replace="~{fragments/category-nav :: categoryNav}"></nav>
+
+<main class="page-container">
+    <p class="crumb">
+        <a th:href="@{/}">전체상품</a>
+        <span>/</span>
+        <a th:href="@{/(categoryId=${product.category.categoryId})}"
+           th:text="${product.category.categoryName}">카테고리</a>
+    </p>
+
+    <section class="product-detail">
+        <div class="product-gallery">
+            <img id="productMainImage"
+                 class="product-detail-image"
+                 th:src="@{${product.imageUrl != null and !#strings.isEmpty(product.imageUrl) ? product.imageUrl : '/images/sample.jpg'}}"
+                 th:alt="${product.productName}">
+
+            <div class="product-thumbs" aria-label="상품 이미지 미리보기">
+                <button type="button"
+                        class="product-thumb is-active"
+                        th:attr="data-full=@{${product.imageUrl != null and !#strings.isEmpty(product.imageUrl) ? product.imageUrl : '/images/sample.jpg'}}"
+                        aria-label="대표 이미지">
+                    <img th:src="@{${product.imageUrl != null and !#strings.isEmpty(product.imageUrl) ? product.imageUrl : '/images/sample.jpg'}}"
+                         th:alt="|${product.productName} 대표|">
+                    <span class="thumb-label">대표</span>
+                </button>
+
+                <button type="button"
+                        class="product-thumb"
+                        th:if="${product.imageUrl2 != null and !#strings.isEmpty(product.imageUrl2)}"
+                        th:attr="data-full=@{${product.imageUrl2}}"
+                        aria-label="박스 형태 이미지">
+                    <img th:src="@{${product.imageUrl2}}"
+                         th:alt="|${product.productName} 박스|">
+                    <span class="thumb-label">박스</span>
+                </button>
+
+                <button type="button"
+                        class="product-thumb"
+                        th:if="${product.imageUrl3 != null and !#strings.isEmpty(product.imageUrl3)}"
+                        th:attr="data-full=@{${product.imageUrl3}}"
+                        aria-label="제품 분리 이미지">
+                    <img th:src="@{${product.imageUrl3}}"
+                         th:alt="|${product.productName} 구성|">
+                    <span class="thumb-label">구성</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="product-detail-info">
+            <p class="product-category" th:text="${product.category.categoryName}">사료</p>
+            <h1 th:text="${product.productName}">상품명</h1>
+            <p class="product-price">
+                <span th:text="${#numbers.formatInteger(product.price, 0, 'COMMA')} + '원'">0원</span>
+            </p>
+            <p class="text-muted" th:text="|구분: ${product.petType.label}|">구분</p>
+            <p class="text-muted" th:text="|재고: ${product.stock}개|">재고</p>
+            <p class="product-summary"
+               th:text="${product.description != null ? #strings.substringBefore(product.description, '【').trim() : ''}">요약</p>
+
+            <!-- 수량 선택 -->
+            <div class="quantity-control">
+                <label for="quantity">수량:</label>
+                <input type="number" id="quantity" value="1" min="1" th:max="${product.stock}">
+            </div>
+
+            <!-- 버튼 영역 (장바구니 / 바로구매 / 찜하기) -->
+            <div class="product-actions">
+                <button type="button" class="btn btn-primary" th:onclick="|addCart(${product.productId})|">🛒 장바구니 담기</button>
+                <button type="button" class="btn btn-success" th:onclick="|buyNow(${product.productId})|">⚡ 바로구매</button>
+                <button type="button" class="btn btn-wish" id="wishBtn" th:onclick="|toggleWish(${product.productId})|">
+                    <span id="wishIcon" th:text="${isWished} ? '❤️' : '🤍'">🤍</span>
+                    <span id="wishText" th:text="${isWished} ? '찜 완료' : '찜하기'">찜하기</span>
+                </button>
+                <a class="btn btn-outline" th:href="@{/(categoryId=${product.category.categoryId})}">같은 카테고리 보기</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 이미지 하단 상세 페이지 -->
+    <section class="product-detail-body" th:if="${product.description != null and !#strings.isEmpty(product.description)}">
+        <h2 class="product-detail-title">상품 상세 정보</h2>
+        <div class="product-detail-content" th:text="${product.description}">상세 설명</div>
+
+        <div class="product-detail-meta">
+            <h3>기본 정보</h3>
+            <ul>
+                <li th:text="|상품명: ${product.productName}|">상품명</li>
+                <li th:text="|카테고리: ${product.category.categoryName}|">카테고리</li>
+                <li th:text="|반려동물 구분: ${product.petType.label}|">구분</li>
+                <li th:text="|판매가: ${#numbers.formatInteger(product.price, 0, 'COMMA')}원|">가격</li>
+                <li th:text="|재고: ${product.stock}개|">재고</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- 상품 리뷰 영역 -->
+    <section class="review-section">
+        <h2>상품 리뷰</h2>
+
+        <!-- 평균 별점 -->
+        <div class="review-summary">
+            <span class="review-average"
+                  th:text="${#numbers.formatDecimal(averageRating, 1, 1)}">
+                0.0
+            </span>
+
+            <span class="review-stars">
+                ⭐
+            </span>
+
+            <span th:text="| / 5.0 (리뷰 ${reviewCount}개)|">
+                / 5.0 (리뷰 0개)
+            </span>
+        </div>
+
+        <hr>
+
+        <!-- 리뷰가 없는 경우 -->
+        <div th:if="${#lists.isEmpty(reviews)}" class="no-review">
+            아직 등록된 리뷰가 없습니다.
+        </div>
+
+        <!-- 리뷰 목록 -->
+        <div th:each="review : ${reviews}" class="review-item">
+
+            <div class="review-item-header">
+                <strong th:text="${review.memberName}">작성자</strong>
+
+                <span class="review-rating">
+                    <span th:text="${review.rating}">5</span>
+                    / 5점
+                </span>
+            </div>
+
+            <p class="review-content"
+               th:text="${review.content}">
+                리뷰 내용
+            </p>
+
+            <span class="review-date"
+                  th:text="${#temporals.format(review.createdAt, 'yyyy-MM-dd')}">
+                작성일
+            </span>
+
+        </div>
+    </section>
+
+</main>
+
+<!-- 공통 푸터 -->
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+
+<!-- 스크립트 영역: 장바구니 및 찜하기 AJAX 처리 -->
+<script th:inline="javascript">
+    // 1. 장바구니 담기
+    function addCart(productId) {
+        const quantityInput = document.getElementById('quantity');
+        const quantity = parseInt(quantityInput.value);
+        const maxStock = parseInt(quantityInput.max); // HTML input의 th:max값(재고) 가져오기
+
+        // 💡 재고 초과 검증 추가
+        if (quantity > maxStock) {
+            alert('재고 수량보다 많이 담을 수 없습니다. (현재 재고: ' + maxStock + '개)');
+            quantityInput.value = maxStock; // 최대 재고값으로 자동 보정
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('productId', productId);
+        formData.append('quantity', quantity);
+
+        fetch('/cart/add', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => {
+                if (response.status === 401) {
+                    alert('로그인이 필요한 서비스입니다.');
+                    location.href = '/login';
+                    return;
+                }
+                if (response.ok) {
+                    if (confirm('장바구니에 담겼습니다. 장바구니로 이동하시겠습니까?')) {
+                        location.href = '/cart';
+                    }
+                } else {
+                    // 💡 서버에서 보낸 에러 메시지(예: 재고 부족)가 있다면 알림창으로 출력
+                    return response.text().then(errorMessage => {
+                        alert(errorMessage || '장바구니 담기에 실패했습니다.');
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('오류가 발생했습니다.');
+            });
+    }
+
+    // 2. 찜하기 (위시리스트 토글)
+    function toggleWish(productId) {
+        fetch(`/wishlist/api/wishlist/${productId}`, {
+            method: 'POST'
+        })
+            .then(response => {
+                if (response.status === 401) {
+                    alert('로그인이 필요한 서비스입니다.');
+                    location.href = '/login';
+                    return;
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data) {
+                    const wishIcon = document.getElementById('wishIcon');
+                    const wishText = document.getElementById('wishText');
+                    const wishBtn = document.getElementById('wishBtn');
+
+                    // 애니메이션 클래스 재적용을 위해 잠시 제거 후 추가
+                    wishBtn.classList.remove('heart-animate');
+                    void wishBtn.offsetWidth; // reflow 강제 발생으로 애니메이션 리셋
+                    wishBtn.classList.add('heart-animate');
+
+                    // 백엔드 응답 상태(예: data.isWished 또는 data.success 등 프로젝트 API 구조에 맞춤)
+                    // 만약 메시지로 판단한다면:
+                    if (data.message && data.message.includes('취소')) {
+                        wishIcon.textContent = '🤍';
+                        wishText.textContent = '찜하기';
+                    } else {
+                        wishIcon.textContent = '❤️';
+                        wishText.textContent = '찜 완료';
+                    }
+
+                    // 서버에서 보내주는 메시지 alert (필요시 주석 해제)
+                    // alert(data.message);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+</script>
+
+
+<script th:src="@{/js/product.js}"></script>
+</body>
+</html>

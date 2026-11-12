@@ -1,0 +1,339 @@
+
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>배송주소록 관리 | PetShop</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+
+    <style>
+        .address-container {
+            max-width: 1100px;
+            margin: 50px auto;
+            padding: 30px;
+        }
+
+        .address-container h2 {
+            margin-bottom: 10px;
+        }
+
+        .address-description {
+            color: #777;
+            margin-bottom: 30px;
+        }
+
+        .address-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 22px;
+            margin-bottom: 18px;
+        }
+
+        .address-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .address-name {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .default-badge {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+        }
+
+        .address-info p {
+            margin: 7px 0;
+        }
+
+        .address-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 18px;
+        }
+
+        .address-actions button {
+            padding: 8px 13px;
+            border: 1px solid #ccc;
+            background: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .address-actions .delete-btn {
+            color: #d32f2f;
+        }
+
+        .address-form {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 25px;
+            margin-top: 35px;
+        }
+
+        .address-form h3 {
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .default-checkbox {
+            margin: 15px 0;
+        }
+
+        .submit-btn {
+            padding: 12px 25px;
+            background: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .empty-address {
+            padding: 35px;
+            text-align: center;
+            color: #777;
+            border: 1px dashed #ccc;
+            border-radius: 8px;
+        }
+
+        .edit-form {
+            display: none;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+
+<body>
+
+<header th:replace="~{fragments/header :: header}"></header>
+<nav th:replace="~{fragments/category-nav :: categoryNav}"></nav>
+
+<main class="address-container">
+
+    <li>
+        <a th:href="@{/mypage/address}"
+           th:classappend="${activeTab == 'address'} ? ' active' : ''">
+            배송주소록 관리
+        </a>
+    </li>
+
+    <!-- 배송지가 없는 경우 -->
+    <div class="empty-address" th:if="${#lists.isEmpty(addresses)}">
+        등록된 배송지가 없습니다.
+        <p>아래에서 배송지를 등록해 주세요.</p>
+    </div>
+
+    <!-- 배송지 목록 -->
+    <div th:each="address : ${addresses}" class="address-card">
+
+        <div class="address-header">
+            <span class="address-name"
+                  th:text="${address.addressName}"></span>
+
+            <span class="default-badge"
+                  th:if="${address.isDefault()}">
+                기본 배송지
+            </span>
+        </div>
+
+        <div class="address-info">
+            <p>
+                <strong th:text="${address.recipient}"></strong>
+                <span th:text="' / ' + ${address.phone}"></span>
+            </p>
+
+            <p th:text="'[' + ${address.zipcode} + '] ' + ${address.address}"></p>
+
+            <p th:text="${address.addressDetail}"></p>
+        </div>
+
+        <div class="address-actions">
+
+            <button type="button"
+                    th:onclick="|toggleEditForm(${address.id})|">
+                수정
+            </button>
+
+            <form th:if="${!address.isDefault()}"
+                  th:action="@{/mypage/address/default}"
+                  method="post">
+
+                <input type="hidden"
+                       name="addressId"
+                       th:value="${address.id}">
+
+                <button type="submit">기본 배송지 설정</button>
+            </form>
+
+            <form th:action="@{/mypage/address/delete}"
+                  method="post"
+                  onsubmit="return confirm('이 배송지를 삭제하시겠습니까?');">
+
+                <input type="hidden"
+                       name="addressId"
+                       th:value="${address.id}">
+
+                <button type="submit" class="delete-btn">삭제</button>
+            </form>
+
+        </div>
+
+        <!-- 배송지 수정 폼 -->
+        <div class="edit-form" th:id="'editForm-' + ${address.id}">
+
+            <h4>배송지 수정</h4>
+
+            <form th:action="@{/mypage/address/edit}" method="post">
+
+                <input type="hidden"
+                       name="addressId"
+                       th:value="${address.id}">
+
+                <div class="form-group">
+                    <label>배송지 이름</label>
+                    <input type="text" name="addressName"
+                           th:value="${address.addressName}" required>
+                </div>
+
+                <div class="form-group">
+                    <label>받는 사람</label>
+                    <input type="text" name="recipient"
+                           th:value="${address.recipient}" required>
+                </div>
+
+                <div class="form-group">
+                    <label>연락처</label>
+                    <input type="text" name="phone"
+                           th:value="${address.phone}" required>
+                </div>
+
+                <div class="form-group">
+                    <label>우편번호</label>
+                    <input type="text" name="zipcode"
+                           th:value="${address.zipcode}">
+                </div>
+
+                <div class="form-group">
+                    <label>기본 주소</label>
+                    <input type="text" name="address"
+                           th:value="${address.address}" required>
+                </div>
+
+                <div class="form-group">
+                    <label>상세 주소</label>
+                    <input type="text" name="addressDetail"
+                           th:value="${address.addressDetail}">
+                </div>
+
+                <button type="submit" class="submit-btn">수정 저장</button>
+
+            </form>
+        </div>
+
+    </div>
+
+    <!-- 배송지 추가 -->
+    <section class="address-form">
+
+        <h3>새 배송지 등록</h3>
+
+        <form th:action="@{/mypage/address/add}" method="post">
+
+            <div class="form-group">
+                <label>배송지 이름</label>
+                <input type="text" name="addressName"
+                       placeholder="예: 우리집, 회사" required>
+            </div>
+
+            <div class="form-group">
+                <label>받는 사람</label>
+                <input type="text" name="recipient"
+                       placeholder="받는 사람 이름" required>
+            </div>
+
+            <div class="form-group">
+                <label>연락처</label>
+                <input type="text" name="phone"
+                       placeholder="010-0000-0000" required>
+            </div>
+
+            <div class="form-group">
+                <label>우편번호</label>
+                <input type="text" name="zipcode"
+                       placeholder="우편번호">
+            </div>
+
+            <div class="form-group">
+                <label>기본 주소</label>
+                <input type="text" name="address"
+                       placeholder="기본 주소" required>
+            </div>
+
+            <div class="form-group">
+                <label>상세 주소</label>
+                <input type="text" name="addressDetail"
+                       placeholder="상세 주소">
+            </div>
+
+            <div class="default-checkbox">
+                <label>
+                    <input type="checkbox" name="makeDefault" value="true">
+                    기본 배송지로 설정
+                </label>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                배송지 등록
+            </button>
+
+        </form>
+
+    </section>
+
+</main>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+
+<script>
+    function toggleEditForm(addressId) {
+        const form = document.getElementById('editForm-' + addressId);
+
+        if (form.style.display === 'block') {
+            form.style.display = 'none';
+        } else {
+            form.style.display = 'block';
+        }
+    }
+</script>
+
+</body>
+</html>

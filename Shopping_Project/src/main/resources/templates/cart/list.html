@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>장바구니 Shopping_Project</title>
+	<link rel="stylesheet" th:href="@{/css/common.css}">
+	
+	<style>
+		/* 장바구니 페이지 전용 레이아웃 스타일 */
+		.cart-layout { display: flex; gap: 30px; align-items: flex-start; }
+		.cart-items-area { flex: 1; }
+		.cart-summary-area { width: 380px; }
+		
+		.cart-item-card {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			padding: 20px;
+			margin-bottom: 15px;
+			border: 1px solid #eee;
+			border-radius: 8px;
+			background-color: #fff;
+		}
+		
+		.quantity-control {
+			display: flex;
+			align-items: center;
+			border: 1px solid #ced4da;
+			border-radius: 6px;
+			overflow: hidden;
+			background: #fff;
+		}
+		.quantity-control button {
+			border: none;
+			background: #f8f9fa;
+			padding: 6px 12px;
+			cursor: pointer;
+			font-weight: bold;
+		}
+		.quantity-control button:hover { background: #e2e2e2; }
+		.quantity-control input {
+			width: 45px;
+			text-align: center;
+			border: none;
+			font-size: 14px;
+			outline: none;
+		}
+		input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+		
+		@media (max-width: 900px) {
+			.cart-layout { flex-direction: column; }
+			.cart-summary-area { width: 100%; }
+		}
+		.allergy-notice-box-side {
+			background-color: #fff8f6;
+			border: 1px solid #ffccc7;
+			border-radius: 6px;
+			padding: 10px 12px;
+			margin-top: 15px;
+		}
+	</style>
+</head>
+<body>
+
+<!-- 공통 헤더 -->
+<header th:replace="~{fragments/header :: header}"></header>
+
+<!-- 공통 카테고리 -->
+<nav th:replace="~{fragments/category-nav :: categoryNav}"></nav>
+<main class="page-container">
+	<div class="d-flex justify-content-between align-items-center mb-4">
+		<h2 class="section-title m-0">🛒 장바구니</h2>
+	</div>
+	
+	<!-- 비어있을 경우 -->
+	<div th:if="${cartItems == null or #lists.isEmpty(cartItems)}" class="text-center py-5 border rounded bg-white">
+		<p class="text-muted fs-5 mb-3">장바구니에 담긴 상품이 없습니다.</p>
+		<br>
+		<a href="/" class="btn btn-primary">상품 보러가기</a>
+	</div>
+	
+	<!-- 상품이 있을 경우 -->
+	<div th:if="${cartItems != null and not #lists.isEmpty(cartItems)}" class="cart-layout">
+		
+		<!-- 좌측: 장바구니 상품 목록 영역 -->
+		<div class="cart-items-area">
+			<!-- 전체 선택 바 -->
+			<div class="d-flex align-items-center p-3 mb-3 border rounded bg-light">
+				<div class="form-check d-flex align-items-center gap-2 m-0">
+					<input class="form-check-input" type="checkbox" id="selectAll" checked style="width: 20px; height: 20px; cursor: pointer;">
+					<label class="form-check-label fw-semibold" for="selectAll" style="cursor: pointer;">전체선택</label>
+				</div>
+			</div>
+			
+			<!-- 상품 카드 반복 -->
+			<div class="cart-item-card" th:each="item : ${cartItems}">
+				<div class="d-flex align-items-center gap-3">
+					<input class="form-check-input item-checkbox" type="checkbox" checked
+						   th:attr="data-price=${item.product.price}, data-quantity=${item.quantity}, data-stock=${item.product.stock}"
+						   th:id="'chk-' + ${item.id}" style="width: 20px; height: 20px; cursor: pointer;">
+					
+					<img th:src="${item.product.imageUrl != null ? item.product.imageUrl : '/images/default-product.png'}"
+						 class="cart-image rounded" alt="상품이미지">
+					<div>
+						<h5 class="mb-1 fw-semibold" th:text="${item.product.productName}">상품명</h5>
+						<p class="cart-price text-danger mb-0"
+						   th:text="${#numbers.formatInteger(item.product.price, 3, 'COMMA') + '원'}">가격</p>
+						<small class="text-muted" th:text="'재고: ' + ${item.product.stock} + '개'"></small>
+					</div>
+				</div>
+				
+				<!-- 수량 조절 및 삭제 -->
+				<div class="d-flex align-items-center gap-3">
+					<div class="quantity-control">
+						<button type="button" th:onclick="'changeQuantityByDelta(' + ${item.id} + ', -1, ' + ${item.product.stock} + ')'">-</button>
+						<!-- 💡 수정 포인트: readonly를 제거하고, 직접 입력 후 포커스가 벗어날 때(blur) 또는 엔터(change) 칠 때 반영되도록 수정 -->
+						<input type="number" th:id="'qty-input-' + ${item.id}" th:value="${item.quantity}" min="1" th:max="${item.product.stock}"
+							   th:onchange="'updateQuantityDirect(' + ${item.id} + ', ' + ${item.product.stock} + ')'">
+						<button type="button" th:onclick="'changeQuantityByDelta(' + ${item.id} + ', 1, ' + ${item.product.stock} + ')'">+</button>
+					</div>
+					
+					<form th:action="@{/cart/delete/{id}(id=${item.id})}" method="post" class="m-0">
+						<button type="submit" class="btn btn-danger btn-sm">삭제</button>
+					</form>
+				</div>
+			</div>
+		</div>
+		
+		<!-- 우측: 총 결제금액 요약 박스 -->
+		<div class="cart-summary-area">
+			<div class="order-summary">
+				<h5 class="fw-bold mb-3">총 결제금액</h5>
+				<div class="d-flex justify-content-between mb-2">
+					<span>상품수</span>
+					<span id="summary-count">0개</span>
+				</div>
+				<div class="d-flex justify-content-between mb-2">
+					<span>상품금액</span>
+					<span id="summary-product-price" class="fw-semibold">0원</span>
+				</div>
+				<div class="d-flex justify-content-between mb-3">
+					<span>배송비</span>
+					<span>0원</span>
+				</div>
+				<hr class="mb-3">
+				<div class="order-total text-danger mb-3">
+					<span>최종 결제금액</span>
+					<span id="summary-total-price">0원</span>
+				</div>
+				<button type="button" class="w-100 btn btn-primary mb-3" onclick="goToOrder()">
+					구매하기
+				</button>
+				
+				<!-- 💡 바로 이 위치(결제 요약 박스 안쪽 하단)에 알레르기 안내 추가 -->
+				<div class="allergy-notice-box-side">
+					<div class="d-flex align-items-center gap-1 text-danger fw-bold mb-1" style="font-size: 13px;">
+						<span>⚠️</span> <span>반려동물 알레르기 주의</span>
+					</div>
+					<p class="text-muted mb-0" style="font-size: 11px; line-height: 1.4;">
+						구매 전 닭고기, 소고기, 밀 글루텐 등 반려동물의 알레르기 유발 성분을 반드시 확인해 주세요.
+					</p>
+				</div>
+			
+			</div>
+		</div>
+
+	</div>
+</main>
+
+<!-- 푸터 프래그먼트 적용 -->
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+	document.addEventListener("DOMContentLoaded", function() {
+		const selectAllCheckbox = document.getElementById('selectAll');
+		const itemCheckboxes = document.querySelectorAll('.item-checkbox');
+		
+		// 1. 초기 금액 계산 실행
+		calculateTotal();
+		
+		// 2. 전체선택 체크박스 이벤트
+		if (selectAllCheckbox) {
+			selectAllCheckbox.addEventListener('change', function() {
+				itemCheckboxes.forEach(cb => {
+					cb.checked = selectAllCheckbox.checked;
+				});
+				calculateTotal();
+			});
+		}
+		
+		// 3. 개별 상품 체크박스 이벤트 연동
+		itemCheckboxes.forEach(cb => {
+			cb.addEventListener('change', function() {
+				if (selectAllCheckbox) {
+					const allChecked = Array.from(itemCheckboxes).every(item => item.checked);
+					selectAllCheckbox.checked = allChecked;
+				}
+				calculateTotal();
+			});
+		});
+	});
+	
+	// 4. 체크된 상품 금액 합산 및 우측 요약란 반영
+	function calculateTotal() {
+		const checkboxes = document.querySelectorAll('.item-checkbox');
+		let totalCount = 0;
+		let totalPrice = 0;
+		
+		checkboxes.forEach(cb => {
+			if (cb.checked) {
+				const price = parseFloat(cb.getAttribute('data-price')) || 0;
+				const quantity = parseInt(cb.getAttribute('data-quantity')) || 0;
+				totalCount += 1;
+				totalPrice += (price * quantity);
+			}
+		});
+		
+		const summaryCount = document.getElementById('summary-count');
+		const summaryProductPrice = document.getElementById('summary-product-price');
+		const summaryTotalPrice = document.getElementById('summary-total-price');
+		
+		if (summaryCount) summaryCount.innerText = totalCount + '개';
+		if (summaryProductPrice) summaryProductPrice.innerText = totalPrice.toLocaleString() + '원';
+		if (summaryTotalPrice) summaryTotalPrice.innerText = totalPrice.toLocaleString() + '원';
+	}
+	
+	// 5. 버튼(+ / -)으로 수량 변경할 때
+	function changeQuantityByDelta(cartItemId, delta, maxStock) {
+		const qtyInput = document.getElementById('qty-input-' + cartItemId);
+		if (!qtyInput) return;
+		
+		let currentQty = parseInt(qtyInput.value) || 1;
+		let newQuantity = currentQty + delta;
+		
+		sendQuantityUpdate(cartItemId, newQuantity, maxStock);
+	}
+	
+	// 6. 사용자가 수량 입력창에 직접 숫자를 타이핑하고 엔터/포커스 아웃할 때
+	function updateQuantityDirect(cartItemId, maxStock) {
+		const qtyInput = document.getElementById('qty-input-' + cartItemId);
+		if (!qtyInput) return;
+		
+		let newQuantity = parseInt(qtyInput.value);
+		
+		if (isNaN(newQuantity) || newQuantity < 1) {
+			alert('수량은 1개 이상 입력해야 합니다.');
+			window.location.reload(); // 원래 값으로 원복
+			return;
+		}
+		
+		sendQuantityUpdate(cartItemId, newQuantity, maxStock);
+	}
+	
+	// 7. 공통 AJAX 수량 전송 함수
+	function sendQuantityUpdate(cartItemId, newQuantity, maxStock) {
+		// 프론트엔드 재고 초과 1차 차단
+		if (newQuantity > maxStock) {
+			alert('재고 수량보다 많이 담을 수 없습니다. (현재 재고: ' + maxStock + '개)');
+			window.location.reload(); // 원래 값으로 원복
+			return;
+		}
+		
+		fetch(`/cart/update/${cartItemId}`, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			body: `quantity=${newQuantity}`
+		})
+				.then(response => {
+					if (response.ok) {
+						window.location.reload();
+					} else {
+						return response.text().then(errorMessage => {
+							alert(errorMessage || '수량 변경에 실패했습니다.');
+							window.location.reload();
+						});
+					}
+				})
+				.catch(err => {
+					console.error('Error:', err);
+					alert('오류가 발생했습니다.');
+				});
+	}
+
+	// 선택한 장바구니 상품으로 주문서 이동
+	function goToOrder() {
+
+		const checkedItems = document.querySelectorAll(
+				'.item-checkbox:checked'
+		);
+
+		if (checkedItems.length === 0) {
+			alert('구매할 상품을 선택해주세요.');
+			return;
+		}
+
+		const form = document.createElement('form');
+
+		form.method = 'GET';
+		form.action = '/orders/form';
+
+		checkedItems.forEach(item => {
+
+			const cartItemId = item.id.replace('chk-', '');
+
+			const input = document.createElement('input');
+
+			input.type = 'hidden';
+			input.name = 'cartItemIds';
+			input.value = cartItemId;
+
+			form.appendChild(input);
+		});
+
+		document.body.appendChild(form);
+
+		form.submit();
+	}
+</script>
+</body>
+</html>

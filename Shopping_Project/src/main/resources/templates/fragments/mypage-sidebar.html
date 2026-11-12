@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="sidebar" class="filter-sidebar" style="width: 250px; flex-shrink: 0; background: #fafafa; border: 1px solid #ececec; border-radius: 10px; padding: 18px 16px;">
+    <h3 class="filter-title" style="margin-bottom: 16px; font-size: 18px;">MY 쇼핑</h3>
+
+    <ul class="filter-list">
+        <li>
+            <a th:href="@{/mypage/order}" th:classappend="${currentMenu == 'order'} ? ' is-active' : ''">주문목록 / 배송조회</a>
+        </li>
+        <li>
+            <a th:href="@{/mypage/wishlist}" th:classappend="${currentMenu == 'wishlist'} ? ' is-active' : ''">관심상품 (찜)</a>
+        </li>
+        <li>
+            <a th:href="@{/mypage/reviews}" th:classappend="${currentMenu == 'reviews'} ? ' is-active' : ''">상품평 관리</a>
+        </li>
+
+        <li style="border-top: 1px solid #e5e5e5; margin: 12px 0;"></li>
+
+        <li>
+            <a th:href="@{/mypage/pets}" th:classappend="${currentMenu == 'pets'} ? ' is-active' : ''">내 반려동물</a>
+        </li>
+        <li>
+            <a th:href="@{/mypage/member}" th:classappend="${currentMenu == 'member'} ? ' is-active' : ''">회원 정보 조회</a>
+        </li>
+        <li>
+            <a th:href="@{/mypage/address}" th:classappend="${currentMenu == 'address'} ? ' is-active' : ''">배송주소록 관리</a>
+        </li>
+    </ul>
+</div>
+
+</body>
+</html>

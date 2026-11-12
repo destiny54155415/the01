@@ -1,0 +1,47 @@
+<tbody>
+
+<!-- 작성한 리뷰가 없는 경우 -->
+<tr th:if="${#lists.isEmpty(reviews)}">
+    <td colspan="4" style="padding: 40px; color: #777;">
+        아직 작성한 상품평이 없습니다.
+    </td>
+</tr>
+
+<!-- 작성한 리뷰가 있는 경우 -->
+<tr th:each="review : ${reviews}">
+
+    <!-- 상품정보 -->
+    <td style="padding: 15px;">
+        <strong th:text="${review.productName}"></strong>
+    </td>
+
+    <!-- 평점 -->
+    <td>
+        <span th:each="star : ${#numbers.sequence(1, 5)}"
+              th:text="${star <= review.rating ? '★' : '☆'}"
+              style="color: #f5a623;">
+        </span>
+    </td>
+
+    <!-- 작성내용 -->
+    <td th:text="${review.content}"></td>
+
+    <!-- 관리 -->
+    <td>
+        <button type="button"
+                th:onclick="|location.href='@{/mypage/reviews/edit/{reviewId}(reviewId=${review.reviewId})}'|">
+            수정
+        </button>
+
+        <form th:action="@{/reviews/delete/{reviewId}(reviewId=${review.reviewId})}"
+              method="post"
+              style="display: inline;"
+              onsubmit="return confirm('정말 삭제하시겠습니까?');">
+
+            <button type="submit">삭제</button>
+        </form>
+    </td>
+
+</tr>
+
+</tbody>

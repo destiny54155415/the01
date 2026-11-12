@@ -1,0 +1,38 @@
+<!-- 찜하기 버튼 영역 -->
+<button type="button" id="wishlistBtn" th:onclick="toggleWishlist([[${product.productId}]])" class="btn btn-outline-danger">
+    ❤️ <span id="wishlistText">찜하기</span>
+</button>
+
+<!-- 비동기(AJAX) 처리를 위한 자바스크립트 -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function toggleWishlist(productId) {
+        $.ajax({
+            type: "POST",
+            url: "/api/wishlist/" + productId,
+            contentType: "application/json",
+            success: function (response) {
+                if (response.success) {
+                    // 성공 시 서버에서 알려준 상태(isWished)에 따라 버튼 UI 변경
+                    if (response.isWished) {
+                        alert(response.message); // "위시리스트에 담겼습니다."
+                        $('#wishlistBtn').removeClass('btn-outline-danger').addClass('btn-danger');
+                        $('#wishlistText').text('찜 취소');
+                    } else {
+                        alert(response.message); // "위시리스트에서 취소되었습니다."
+                        $('#wishlistBtn').removeClass('btn-danger').addClass('btn-outline-danger');
+                        $('#wishlistText').text('찜하기');
+                    }
+                }
+            },
+            error: function (xhr) {
+                if (xhr.status === 401) {
+                    alert("로그인이 필요한 서비스입니다.");
+                    location.href = "/members/login"; // 로그인 페이지로 이동
+                } else {
+                    alert("오류가 발생했습니다. 다시 시도해주세요.");
+                }
+            }
+        });
+    }
+</script>

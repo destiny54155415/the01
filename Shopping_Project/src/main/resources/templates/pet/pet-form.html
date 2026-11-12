@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetShop | 반려동물 등록</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <style>
+        .chip-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .chip-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 10px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            user-select: none;
+            text-align: center;
+        }
+        .chip-label input {
+            display: none;
+        }
+        .chip-label input:checked + span {
+            color: #2563eb;
+            font-weight: bold;
+        }
+        .chip-label:has(input:checked) {
+            border-color: #2563eb;
+            background-color: #eff6ff;
+        }
+        .section-heading {
+            font-size: 15px;
+            font-weight: 700;
+            color: #111;
+            margin-bottom: 8px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+<!-- 공통 헤더 -->
+<header th:replace="~{fragments/header :: header}"></header>
+
+<!-- 메인 콘텐츠 -->
+<main class="page-container">
+    <div class="auth-container" style="width: 650px; margin: 40px auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+
+        <h2 class="auth-title" style="text-align: center; margin-bottom: 30px; font-size: 22px;">반려동물 등록</h2>
+
+        <!-- 반려동물 등록 폼 -->
+        <form th:action="@{/mypage/pets/add}" method="post">
+
+            <!-- 1. 동물 종류 -->
+            <div class="form-group">
+                <label class="form-label">동물 종류</label>
+                <div style="display: flex; gap: 20px; align-items: center; height: 45px;">
+                    <label style="cursor: pointer; display: flex; align-items: center; gap: 5px;">
+                        <input type="radio" name="petType" value="DOG" checked style="accent-color: #2563eb;"> 강아지
+                    </label>
+                    <label style="cursor: pointer; display: flex; align-items: center; gap: 5px;">
+                        <input type="radio" name="petType" value="CAT" style="accent-color: #2563eb;"> 고양이
+                    </label>
+                </div>
+            </div>
+
+            <!-- 2. 반려동물 이름 -->
+            <div class="form-group">
+                <label class="form-label" for="name">이름</label>
+                <input type="text" id="name" name="name" class="form-control" placeholder="반려동물의 이름을 입력해주세요" required>
+            </div>
+
+            <!-- 3. 견종 / 묘종 -->
+            <div class="form-group">
+                <label class="form-label" for="breed">견종 / 묘종</label>
+                <input type="text" id="breed" name="breed" class="form-control" placeholder="견종 / 묘종을 입력해주세요">
+            </div>
+
+            <!-- 4. 생일 -->
+            <div class="form-group">
+                <label class="form-label" for="birthDate">생일 (추정 가능)</label>
+                <input type="date" id="birthDate" name="birthDate" class="form-control">
+            </div>
+
+            <!-- 5. 성별 -->
+            <div class="form-group">
+                <label class="form-label">성별</label>
+                <div style="display: flex; gap: 20px; align-items: center; height: 45px;">
+                    <label style="cursor: pointer; display: flex; align-items: center; gap: 5px;">
+                        <input type="radio" name="gender" value="MALE" checked style="accent-color: #2563eb;"> 남아
+                    </label>
+                    <label style="cursor: pointer; display: flex; align-items: center; gap: 5px;">
+                        <input type="radio" name="gender" value="FEMALE" style="accent-color: #2563eb;"> 여아
+                    </label>
+                </div>
+            </div>
+
+            <!-- 6. 중성화 여부 -->
+            <div class="form-group">
+                <label class="form-label">중성화 여부</label>
+                <div style="display: flex; gap: 20px; align-items: center; height: 45px;">
+                    <label style="cursor: pointer; display: flex; align-items: center; gap: 5px;">
+                        <input type="radio" name="isNeutered" value="true" checked style="accent-color: #2563eb;"> 예
+                    </label>
+                    <label style="cursor: pointer; display: flex; align-items: center; gap: 5px;">
+                        <input type="radio" name="isNeutered" value="false" style="accent-color: #2563eb;"> 아니오
+                    </label>
+                </div>
+            </div>
+
+            <!-- 7. 몸무게 -->
+            <div class="form-group">
+                <label class="form-label" for="weight">몸무게 (kg)</label>
+                <input type="number" step="0.1" id="weight" name="weight" class="form-control" placeholder="예: 4.5">
+            </div>
+
+            <!-- 8. 알러지 성분 선택 -->
+            <div class="form-group" style="margin-top: 25px;">
+                <label class="form-label" style="font-size: 16px; font-weight: bold; margin-bottom: 10px;">알러지 성분 선택 (복수 선택 가능)</label>
+
+                <div class="section-heading">주 단백질원</div>
+                <div class="chip-grid">
+                    <label class="chip-label"><input type="checkbox" name="allergies" value="소고기"><span>소고기</span></label>
+                    <label class="chip-label"><input type="checkbox" name="allergies" value="돼지고기"><span>돼지고기</span></label>
+                    <label class="chip-label"><input type="checkbox" name="allergies" value="양고기"><span>양고기</span></label>
+                    <label class="chip-label"><input type="checkbox" name="allergies" value="오리고기"><span>오리고기</span></label>
+                    <label class="chip-label"><input type="checkbox" name="allergies" value="닭고기"><span>닭고기</span></label>
+                    <label class="chip-label"><input type="checkbox" name="allergies" value="연어"><span>연어</span></label>
+                </div>
+
+                <div class="section-heading">보조 성분 및 기타</div>
+                <div class="chip-grid">
+                    <label class="chip-label"><input type="checkbox" name="allergies" value="계란"><span>계란</span></label>
+                    <label class="chip-label"><input type="checkbox" name="allergies" value="우유"><span>우유</span></label>
+                    <label class="chip-label"><input type="checkbox" name="allergies" value="치즈"><span>치즈</span></label>
+                    <label class="chip-label"><input type="checkbox" name="allergies" value="콩"><span>콩</span></label>
+                    <label class="chip-label"><input type="checkbox" name="allergies" value="고구마"><span>고구마</span></label>
+                    <label class="chip-label"><input type="checkbox" name="allergies" value="감자"><span>감자</span></label>
+                </div>
+            </div>
+
+            <!-- 하단 버튼 영역 -->
+            <div style="display: flex; gap: 10px; margin-top: 40px;">
+                <!-- 공용 CSS(.btn, .btn-primary, .btn-block)를 활용한 버튼 -->
+                <button type="submit" class="btn btn-primary btn-block">등록 완료</button>
+                <a th:href="@{/mypage/pets}" class="btn btn-secondary btn-block" style="margin-top: 0; text-align: center;">취소</a>
+            </div>
+
+        </form>
+    </div>
+</main>
+
+<!-- 공통 푸터 -->
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+
+</body>
+</html>

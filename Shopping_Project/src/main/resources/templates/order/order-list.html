@@ -1,0 +1,114 @@
+
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>주문 내역 | PetShop</title>
+
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/order.css}">
+</head>
+<body>
+
+<header th:replace="~{fragments/header :: header}"></header>
+<nav th:replace="~{fragments/category-nav :: categoryNav}"></nav>
+
+<main class="container page-container">
+    <section class="order-list-container">
+
+        <h1>주문 내역</h1>
+        <p class="text-muted">지금까지 주문한 상품을 확인할 수 있습니다.</p>
+
+        <!-- 주문 내역이 없는 경우 -->
+        <div th:if="${#lists.isEmpty(orders)}" class="empty-order">
+            <h3>주문 내역이 없습니다.</h3>
+            <p>마음에 드는 상품을 찾아보세요!</p>
+
+            <a th:href="@{/products}" class="order-btn">
+                상품 둘러보기
+            </a>
+        </div>
+
+        <!-- 주문 내역이 있는 경우 -->
+        <div th:unless="${#lists.isEmpty(orders)}">
+
+            <div class="order-card"
+                 th:each="order : ${orders}">
+
+                <div class="order-card-header">
+                    <div>
+                        <strong>주문번호</strong>
+                        <span th:text="${order.orderNumber}"></span>
+                    </div>
+
+                    <span class="order-date"
+                          th:text="${#temporals.format(order.orderedAt, 'yyyy-MM-dd HH:mm')}">
+                    </span>
+                </div>
+
+                <div class="order-card-body">
+
+                    <div class="order-product"
+                         th:each="item : ${order.orderItems}">
+
+                        <div class="order-product-info">
+                            <strong th:text="${item.productName}"></strong>
+
+                            <p>
+                                <span th:text="${item.quantity}"></span>개
+                                ×
+                                <span th:text="${#numbers.formatDecimal(item.unitPrice, 0, 'COMMA', 0, 'POINT')}"></span>원
+                            </p>
+                        </div>
+
+                        <strong th:text="${#numbers.formatDecimal(item.totalPrice, 0, 'COMMA', 0, 'POINT')} + '원'"></strong>
+                        <a th:if="${order.orderStatus.name() == 'COMPLETED'}"
+                           th:href="@{/reviews/product/{productId}(productId=${item.productId}, orderItemId=${item.orderItemId})}"
+                           class="order-detail-btn">
+                            리뷰 작성하기
+                        </a>
+                    </div>
+
+                </div>
+
+                <div class="order-card-footer">
+
+                    <div>
+                        <span>주문 상태</span>
+
+                        <strong th:switch="${order.orderStatus.name()}">
+                            <span th:case="'ORDERED'" class="order-status ordered">주문 접수</span>
+                            <span th:case="'PREPARING'" class="order-status preparing">상품 준비 중</span>
+                            <span th:case="'SHIPPING'" class="order-status shipping">배송 중</span>
+                            <span th:case="'COMPLETED'" class="order-status completed">배송 완료</span>
+                            <span th:case="'CANCELLED'" class="order-status cancelled">주문 취소</span>
+                            <span th:case="*" class="order-status">확인 필요</span>
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span>총 결제 금액</span>
+                        <strong class="order-total-price"
+                                th:text="${#numbers.formatDecimal(order.totalPrice, 0, 'COMMA', 0, 'POINT')} + '원'">
+                        </strong>
+
+                    </div>
+
+                    <a th:href="@{/orders/{orderId}(orderId=${order.orderId})}"
+                       class="order-detail-btn">
+                        상세보기
+                    </a>
+
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+</main>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+
+</body>
+</html>

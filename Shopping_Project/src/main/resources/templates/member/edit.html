@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetShop | 회원정보 수정</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+</head>
+
+<body>
+
+<!-- 공통 헤더 -->
+<header th:replace="~{fragments/header :: header}"></header>
+
+<!-- 메인 콘텐츠 -->
+<main class="page-container">
+
+    <div style="display: flex; max-width: 1200px; margin: 0 auto; gap: 30px; align-items: flex-start;">
+
+        <!-- 왼쪽 공통 사이드바 -->
+        <div th:replace="~{fragments/mypage-sidebar :: sidebar}"></div>
+
+        <!-- 오른쪽 수정 폼 영역 -->
+        <div style="flex-grow: 1; background: #fff; padding: 40px; border: 1px solid #eee; border-radius: 8px;">
+
+            <h1 class="section-title" style="font-size: 24px; margin-bottom: 25px;">
+                회원정보 수정
+            </h1>
+
+            <!-- 회원 정보 수정 폼 -->
+            <form th:action="@{/mypage/edit}" method="post">
+
+                <!-- 아이디 (수정 불가) -->
+                <div class="form-group">
+                    <label class="form-label">아이디</label>
+                    <input type="text"
+                           class="form-control"
+                           th:value="${member.username}"
+                           disabled
+                           style="background-color: #f1f5f9; color: #777;">
+                </div>
+
+                <!-- 이름 (수정 불가) -->
+                <div class="form-group">
+                    <label class="form-label">이름</label>
+                    <input type="text"
+                           class="form-control"
+                           th:value="${member.name}"
+                           disabled
+                           style="background-color: #f1f5f9; color: #777;">
+                </div>
+
+                <!-- 비밀번호 -->
+                <div class="form-group">
+                    <label class="form-label">새 비밀번호</label>
+                    <input type="password"
+                           name="password"
+                           class="form-control"
+                           placeholder="변경할 비밀번호를 입력하세요">
+                </div>
+
+                <!-- 이메일 -->
+                <div class="form-group">
+                    <label class="form-label">이메일</label>
+                    <input type="email"
+                           name="email"
+                           class="form-control"
+                           th:value="${member.email}"
+                           required>
+                </div>
+
+                <!-- 전화번호 -->
+                <div class="form-group">
+                    <label class="form-label">전화번호</label>
+                    <input type="text"
+                           name="phone"
+                           class="form-control"
+                           th:value="${member.phone}"
+                           required>
+                </div>
+
+                <!-- 수정 및 취소 버튼 -->
+                <div style="display: flex; gap: 10px; margin-top: 30px;">
+                    <button type="submit" class="btn btn-primary btn-block">
+                        수정 완료
+                    </button>
+                    <a th:href="@{/mypage/member}"
+                       class="btn btn-secondary btn-block"
+                       style="margin-top: 0; text-align: center; display: flex; align-items: center; justify-content: center;">
+                        취소
+                    </a>
+                </div>
+
+            </form>
+
+            <!-- 회원 탈퇴 영역 -->
+            <div style="border-top: 1px solid #ddd; margin-top: 40px; padding-top: 25px;">
+                <h3 style="font-size: 16px; color: #dc2626; margin-bottom: 10px;">
+                    회원 탈퇴
+                </h3>
+                <p style="font-size: 13px; color: #777; margin-bottom: 15px;">
+                    회원 탈퇴 시 계정 이용이 제한됩니다. 탈퇴 여부를 신중하게 결정해 주세요.
+                </p>
+
+                <!-- 회원 탈퇴 폼 -->
+                <form th:action="@{/delete-member}"
+                      method="post"
+                      onsubmit="return confirm('정말 회원 탈퇴하시겠습니까?');">
+                    <div style="text-align: right;">
+                        <button type="submit"
+                                class="btn"
+                                style="background-color: #dc2626; color: white; padding: 10px 20px;">
+                            회원 탈퇴
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+</main>
+
+<!-- 공통 푸터 -->
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+
+</body>
+</html>

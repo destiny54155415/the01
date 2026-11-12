@@ -1,0 +1,212 @@
+
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>주문 상세 관리 | PetShop</title>
+
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+
+    <style>
+        .admin-detail-container {
+            width: 900px;
+            max-width: 95%;
+            margin: 50px auto;
+        }
+
+        .detail-section {
+            margin-bottom: 30px;
+            padding: 25px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .detail-section h3 {
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .info-row {
+            display: flex;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .info-row strong {
+            width: 150px;
+        }
+
+        .item-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+        }
+
+        .item-table th,
+        .item-table td {
+            padding: 13px 8px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .item-table th {
+            background: #f5f5f5;
+        }
+
+        .status-form {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .status-form select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .status-form button {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 5px;
+            background: #333;
+            color: white;
+            cursor: pointer;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            color: #16834a;
+        }
+
+        .error-message {
+            margin-bottom: 20px;
+            color: #d93025;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+
+<header th:replace="~{fragments/header :: header}"></header>
+<nav th:replace="~{fragments/category-nav :: categoryNav}"></nav>
+
+<main class="admin-detail-container">
+
+    <h2>주문 상세 관리</h2>
+
+    <p class="message" th:if="${message}" th:text="${message}"></p>
+    <p class="error-message" th:if="${errorMessage}"
+       th:text="${errorMessage}"></p>
+
+    <section class="detail-section">
+        <h3>주문 정보</h3>
+
+        <div class="info-row">
+            <strong>주문번호</strong>
+            <span th:text="${order.orderNumber}"></span>
+        </div>
+
+        <div class="info-row">
+            <strong>주문일</strong>
+            <span th:text="${#temporals.format(order.orderedAt, 'yyyy-MM-dd HH:mm')}"></span>
+        </div>
+
+        <div class="info-row">
+            <strong>주문자</strong>
+            <span th:text="${order.memberName}"></span>
+        </div>
+
+        <div class="info-row">
+            <strong>받는 사람</strong>
+            <span th:text="${order.recipient}"></span>
+        </div>
+
+        <div class="info-row">
+            <strong>배송 주소</strong>
+            <span th:text="${order.shippingAddress}"></span>
+        </div>
+    </section>
+
+    <section class="detail-section">
+        <h3>주문 상품</h3>
+
+        <table class="item-table">
+            <thead>
+            <tr>
+                <th>상품명</th>
+                <th>단가</th>
+                <th>수량</th>
+                <th>금액</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="item : ${order.orderItems}">
+                <td th:text="${item.productName}"></td>
+                <td th:text="${#numbers.formatDecimal(item.unitPrice, 0, 'COMMA', 0, 'POINT')} + '원'"></td>
+                <td th:text="${item.quantity}"></td>
+                <td th:text="${#numbers.formatDecimal(item.totalPrice, 0, 'COMMA', 0, 'POINT')} + '원'"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <h3 style="text-align: right; margin-top: 25px;">
+            총 주문 금액:
+            <span th:text="${#numbers.formatDecimal(order.totalPrice, 0, 'COMMA', 0, 'POINT')} + '원'"></span>
+        </h3>
+    </section>
+
+    <section class="detail-section">
+        <h3>주문 상태 변경</h3>
+
+        <div class="info-row">
+            <strong>현재 상태</strong>
+            <span th:text="${order.orderStatus}"></span>
+        </div>
+
+        <form class="status-form"
+              th:action="@{/admin/orders/{id}/status(id=${order.orderId})}"
+              method="post">
+
+            <select name="orderStatus" required>
+                <option th:each="status : ${statuses}"
+                        th:if="${status.name() != 'CANCELLED'}"
+                        th:value="${status}"
+                        th:text="${status.name() == 'ORDERED' ? '주문 접수' :
+                                  status.name() == 'PREPARING' ? '상품 준비 중' :
+                                  status.name() == 'SHIPPING' ? '배송 중' :
+                                  status.name() == 'COMPLETED' ? '배송 완료' : status.name()}"
+                        th:selected="${status == order.orderStatus}">
+                </option>
+            </select>
+
+            <button type="submit"
+                    th:disabled="${order.orderStatus.name() == 'CANCELLED'}">
+                상태 변경
+            </button>
+        </form>
+
+        <p th:if="${order.orderStatus.name() == 'CANCELLED'}">
+            취소된 주문은 상태를 변경할 수 없습니다.
+        </p>
+    </section>
+
+    <a class="back-link" th:href="@{/admin/orders}">
+        ← 주문 목록으로 돌아가기
+    </a>
+
+</main>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+
+</body>
+</html>

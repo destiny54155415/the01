@@ -1,0 +1,612 @@
+
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>주문서 | PetShop</title>
+
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+
+    <style>
+        .order-form-container {
+            width: 900px;
+            max-width: 95%;
+            margin: 50px auto;
+        }
+
+        .order-form-container h2 {
+            margin-bottom: 30px;
+        }
+
+        .order-section {
+            margin-bottom: 35px;
+            padding: 25px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .order-section h3 {
+            margin-bottom: 20px;
+        }
+
+        .order-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .order-item img {
+            width: 90px;
+            height: 90px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .order-item-info {
+            flex: 1;
+        }
+
+        .order-item-info p {
+            margin: 6px 0;
+        }
+
+        .order-input {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .total-price {
+            text-align: right;
+            font-size: 22px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .order-submit {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 6px;
+            background: #333;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .order-submit:hover {
+            background: #555;
+        }
+
+        .add-address-button {
+            margin-top: 12px;
+            padding: 10px 16px;
+            border: 1px solid #333;
+            border-radius: 5px;
+            background: white;
+            cursor: pointer;
+        }
+
+        .add-address-button:hover {
+            background: #f5f5f5;
+        }
+
+        /* 배송지 추가 모달 */
+        .address-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .address-modal-content {
+            width: 450px;
+            max-width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .modal-close-button {
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+        }
+
+        .modal-error {
+            color: red;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 600px) {
+            .order-section {
+                padding: 16px;
+            }
+
+            .order-item img {
+                width: 70px;
+                height: 70px;
+            }
+
+            .address-modal-content {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header th:replace="~{fragments/header :: header}"></header>
+<nav th:replace="~{fragments/category-nav :: categoryNav}"></nav>
+
+<div class="order-form-container">
+
+    <h2>주문서 작성</h2>
+
+    <!-- 주문 form 시작 -->
+    <form th:action="${isDirectPurchase} ? @{/orders/create-direct} : @{/orders/create-from-cart}"
+          method="post"
+          id="orderForm">
+
+        <!-- 장바구니 주문일 때만 전달 -->
+        <th:block th:unless="${isDirectPurchase}">
+            <input type="hidden"
+                   name="cartItemIds"
+                   th:each="cartItemId : ${cartItemIds}"
+                   th:value="${cartItemId}">
+        </th:block>
+
+        <!-- 바로구매 상품 -->
+        <section class="order-section" th:if="${isDirectPurchase}">
+
+            <input type="hidden"
+                   name="productId"
+                   th:value="${buyNowProduct.productId}">
+
+            <input type="hidden"
+                   name="quantity"
+                   th:value="${buyNowQuantity}">
+
+            <h3>주문 상품</h3>
+
+            <div class="order-item">
+                <img th:src="${buyNowProduct.imageUrl}"
+                     th:alt="${buyNowProduct.productName}">
+
+                <div class="order-item-info">
+                    <p th:text="${buyNowProduct.productName}"></p>
+                    <p th:text="${#numbers.formatInteger(buyNowProduct.price, 0, 'COMMA')} + '원'"></p>
+                    <p th:text="'수량: ' + ${buyNowQuantity}"></p>
+                    <p th:text="'상품 금액: ' + ${#numbers.formatInteger(buyNowProduct.price * buyNowQuantity, 0, 'COMMA')} + '원'"></p>
+                </div>
+            </div>
+
+            <div class="total-price">
+                <span>총 결제 금액</span>
+                <strong th:text="${#numbers.formatInteger(buyNowProduct.price * buyNowQuantity, 0, 'COMMA')} + '원'"></strong>
+            </div>
+
+        </section>
+
+        <!-- 장바구니 주문 상품 -->
+        <section class="order-section" th:unless="${isDirectPurchase}">
+
+            <h3>주문 상품</h3>
+
+            <div class="order-item" th:each="item : ${cartItems}">
+                <img th:src="${item.product.imageUrl}"
+                     th:alt="${item.product.productName}">
+
+                <div class="order-item-info">
+                    <p th:text="${item.product.productName}"></p>
+                    <p th:text="${#numbers.formatInteger(item.product.price, 0, 'COMMA')} + '원'"></p>
+                    <p th:text="${item.quantity} + '개'"></p>
+                    <p th:text="${#numbers.formatInteger(item.product.price * item.quantity, 0, 'COMMA')} + '원'"></p>
+                </div>
+            </div>
+
+            <div class="total-price">
+                <span>총 결제 금액</span>
+                <strong th:text="${#numbers.formatInteger(#aggregates.sum(cartItems.![product.price * quantity]), 0, 'COMMA')} + '원'"></strong>
+            </div>
+
+        </section>
+
+        <!-- 배송 정보 -->
+        <section class="order-section">
+
+            <h3>배송 정보</h3>
+
+            <!-- 등록된 배송지 선택 -->
+            <div class="input-group">
+
+                <label for="addressSelect">배송지 선택</label>
+
+                <select id="addressSelect" class="order-input">
+
+                    <option value="">직접 입력</option>
+
+                    <option th:each="address : ${addresses}"
+                            th:value="${address.id}"
+                            th:data-recipient="${address.recipient}"
+                            th:data-zipcode="${address.zipcode}"
+                            th:data-address="${address.address}"
+                            th:data-detail="${address.addressDetail}"
+                            th:selected="${address.isDefault()}"
+                            th:text="${address.addressName + (address.isDefault() ? ' (기본 배송지)' : '')}">
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="input-group">
+                <label for="recipient">받는 사람</label>
+
+                <input type="text"
+                       id="recipient"
+                       name="recipient"
+                       class="order-input"
+                       placeholder="받는 사람 이름을 입력하세요"
+                       th:value="${defaultRecipient}"
+                       required>
+            </div>
+
+            <div class="input-group">
+                <label for="shippingAddress">배송 주소</label>
+
+                <input type="text"
+                       id="shippingAddress"
+                       name="shippingAddress"
+                       class="order-input"
+                       placeholder="배송받을 주소를 입력하세요"
+                       th:value="${defaultShippingAddress}"
+                       required>
+            </div>
+
+            <button type="button"
+                    id="openAddressModal"
+                    class="add-address-button">
+                + 새 배송지 추가
+            </button>
+
+        </section>
+
+        <!-- 주문 제출 버튼 -->
+        <button type="submit" class="order-submit">
+            주문하기
+        </button>
+
+    </form>
+    <!-- 주문 form 끝 -->
+
+
+    <!-- 배송지 추가 모달: 반드시 주문 form 바깥에 위치 -->
+    <div id="addressModal" class="address-modal">
+
+        <div class="address-modal-content">
+
+            <h3 style="margin-bottom: 20px;">새 배송지 추가</h3>
+
+            <!-- 주문 form과 별개의 배송지 등록 form -->
+            <form id="addressAddForm">
+
+                <div class="input-group">
+                    <label for="newAddressName">배송지 이름</label>
+
+                    <input type="text"
+                           id="newAddressName"
+                           name="addressName"
+                           class="order-input"
+                           placeholder="예: 우리 집"
+                           required>
+                </div>
+
+                <div class="input-group">
+                    <label for="newRecipient">받는 사람</label>
+
+                    <input type="text"
+                           id="newRecipient"
+                           name="recipient"
+                           class="order-input"
+                           required>
+                </div>
+
+                <div class="input-group">
+                    <label for="newPhone">연락처</label>
+
+                    <input type="text"
+                           id="newPhone"
+                           name="phone"
+                           class="order-input"
+                           placeholder="01012345678"
+                           required>
+                </div>
+
+                <div class="input-group">
+                    <label for="newZipcode">우편번호</label>
+
+                    <input type="text"
+                           id="newZipcode"
+                           name="zipcode"
+                           class="order-input">
+                </div>
+
+                <div class="input-group">
+                    <label for="newAddress">기본 주소</label>
+
+                    <input type="text"
+                           id="newAddress"
+                           name="address"
+                           class="order-input"
+                           required>
+                </div>
+
+                <div class="input-group">
+                    <label for="newAddressDetail">상세 주소</label>
+
+                    <input type="text"
+                           id="newAddressDetail"
+                           name="addressDetail"
+                           class="order-input">
+                </div>
+
+                <div class="input-group">
+                    <label>
+                        <input type="checkbox"
+                               name="makeDefault"
+                               value="true">
+                        기본 배송지로 설정
+                    </label>
+                </div>
+
+                <div class="modal-buttons">
+
+                    <button type="submit" class="order-submit">
+                        저장하기
+                    </button>
+
+                    <button type="button"
+                            id="closeAddressModal"
+                            class="modal-close-button">
+                        닫기
+                    </button>
+
+                </div>
+
+                <p id="addressError" class="modal-error"></p>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const addressSelect = document.getElementById("addressSelect");
+        const recipientInput = document.getElementById("recipient");
+        const shippingAddressInput = document.getElementById("shippingAddress");
+
+        const modal = document.getElementById("addressModal");
+        const openButton = document.getElementById("openAddressModal");
+        const closeButton = document.getElementById("closeAddressModal");
+
+        const addForm = document.getElementById("addressAddForm");
+        const errorMessage = document.getElementById("addressError");
+
+        // 배송지 주소 문자열 만들기
+        function makeFullAddress(zipcode, address, detail) {
+
+            return (zipcode ? "[" + zipcode + "] " : "")
+                + (address || "")
+                + (detail ? " " + detail : "");
+        }
+
+        // 선택한 배송지 적용
+        function applyAddress(option) {
+
+            recipientInput.value = option.dataset.recipient || "";
+
+            shippingAddressInput.value = makeFullAddress(
+                option.dataset.zipcode,
+                option.dataset.address,
+                option.dataset.detail
+            );
+        }
+
+        // 배송지 선택 변경
+        function handleAddressChange() {
+
+            const option =
+                addressSelect.options[addressSelect.selectedIndex];
+
+            if (!addressSelect.value) {
+                recipientInput.value = "";
+                shippingAddressInput.value = "";
+                return;
+            }
+
+            applyAddress(option);
+        }
+
+        addressSelect.addEventListener("change", handleAddressChange);
+
+
+        // 모달 열기
+        openButton.addEventListener("click", function () {
+
+            modal.style.display = "flex";
+            errorMessage.textContent = "";
+        });
+
+
+        // 모달 닫기
+        function closeModal() {
+
+            modal.style.display = "none";
+            addForm.reset();
+            errorMessage.textContent = "";
+        }
+
+        closeButton.addEventListener("click", closeModal);
+
+        modal.addEventListener("click", function (event) {
+
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+
+
+        // ESC 키로 모달 닫기
+        document.addEventListener("keydown", function (event) {
+
+            if (event.key === "Escape" && modal.style.display === "flex") {
+                closeModal();
+            }
+        });
+
+
+        // 배송지 AJAX 등록
+        addForm.addEventListener("submit", async function (event) {
+
+            // 기본 form 제출 방지
+            event.preventDefault();
+            event.stopPropagation();
+
+            errorMessage.textContent = "";
+
+            const submitButton = addForm.querySelector(
+                'button[type="submit"]'
+            );
+
+            submitButton.disabled = true;
+            submitButton.textContent = "저장 중...";
+
+            const formData = new FormData(addForm);
+
+            try {
+
+                const response = await fetch("/mypage/address/add-ajax", {
+                    method: "POST",
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    throw new Error("배송지 등록 요청에 실패했습니다.");
+                }
+
+                const result = await response.json();
+
+                if (!result.success) {
+                    throw new Error(
+                        result.message || "배송지 등록에 실패했습니다."
+                    );
+                }
+
+
+                // 새 배송지 선택 항목 생성
+                const newOption = document.createElement("option");
+
+                newOption.value = result.id;
+
+                newOption.dataset.recipient = result.recipient || "";
+                newOption.dataset.zipcode = result.zipcode || "";
+                newOption.dataset.address = result.address || "";
+                newOption.dataset.detail = result.addressDetail || "";
+
+
+                // 새 배송지가 기본 배송지인 경우 기존 기본 표시 제거
+                if (result.isDefault) {
+
+                    Array.from(addressSelect.options).forEach(option => {
+
+                        if (option.value) {
+
+                            option.textContent =
+                                option.textContent.replace(
+                                    " (기본 배송지)", ""
+                                );
+                        }
+                    });
+                }
+
+
+                newOption.textContent =
+                    result.addressName
+                    + (result.isDefault ? " (기본 배송지)" : "");
+
+
+                // 기존 배송지 선택 해제
+                Array.from(addressSelect.options).forEach(option => {
+                    option.selected = false;
+                });
+
+
+                // 새 배송지 목록에 추가
+                addressSelect.appendChild(newOption);
+
+                // 방금 등록한 배송지 자동 선택
+                newOption.selected = true;
+
+
+                // 주문서 입력란에 새 배송지 반영
+                applyAddress(newOption);
+
+
+                // 모달 닫기
+                closeModal();
+
+                alert(
+                    "배송지가 등록되었습니다.\n"
+                    + "주문서의 배송 정보를 확인해 주세요."
+                );
+
+
+            } catch (error) {
+
+                errorMessage.textContent = error.message;
+
+            } finally {
+
+                submitButton.disabled = false;
+                submitButton.textContent = "저장하기";
+            }
+        });
+
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<header class="header" th:fragment="header">
+    <div class="header-inner">
+
+        <!-- 로고 -->
+        <a th:href="@{/}" class="logo">
+            Shopping_Project
+        </a>
+
+        <!-- 상품 검색 -->
+        <form class="header-search"
+              th:action="@{/}"
+              method="get">
+
+            <input type="search"
+                   name="keyword"
+                   placeholder="찾으시는 상품을 검색하세요"
+                   aria-label="상품 검색">
+
+            <button type="submit">검색</button>
+        </form>
+
+        <!-- 회원 메뉴 -->
+        <nav class="header-menu" aria-label="회원 메뉴">
+
+            <!-- 로그인 안되어있을때(261103 수정) -->
+            <div th:if="${session.loginUser == null}" style="display:flex; align-items:center; gap:18px;">
+                <a th:href="@{/login}">로그인</a>
+                <a th:href="@{/signup}">회원가입</a>
+            </div>
+
+            <!-- 로그인 되었을때(261104 수정) -->
+            <div th:if="${session.loginUser != null}" style="display:flex; align-items:center; gap:18px;">
+
+                <!-- 일반회원과 관리자 이름 -->
+                <a th:href="@{/mypage/order}" style="text-decoration:none; color:inherit;"> <!-- 이름 클릭시 MY쇼핑 페이지가 화면에 나오게 수정_261109 -->
+                    <span th:text="${session.loginUser.name + '님'}">사용자님</span>
+                </a>
+
+                <!-- 관리자 전용 메뉴 -->
+                <th:block th:if="${session.loginUser.role == 'ADMIN'}">
+                    <a th:href="@{/logout}">로그아웃</a>
+                    <a th:href="@{/admin/products}" style="color: #2563eb; font-weight: bold;">상품관리</a>
+                    <a th:href="@{/admin/orders}">주문관리</a>
+                    <a th:href="@{/admin/members}">고객관리</a>
+                </th:block>
+
+                <!-- 일반 회원 메뉴 -->
+                <th:block th:if="${session.loginUser.role == 'USER'}">
+                    <a th:href="@{/logout}">로그아웃</a>
+                    <a th:href="@{/cart}">장바구니</a>
+                    <a th:href="@{/orders}">주문내역</a>
+                </th:block>
+
+            </div>
+        </nav>
+    </div>
+</header>
+
+</body>
+</html>
